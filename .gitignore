@@ -33,8 +33,6 @@
 npm-debug.log
 testem.log
 /typings
-/screens.pdf
-/resources
 
 # e2e
 /e2e/*.js

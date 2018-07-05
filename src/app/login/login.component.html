@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="main-logo font-weight-bold">
+        <a href="" style="color:black !important">
+            <h1 class="text-center">TyreLess<span class="txt-green">.co.za</span></h1>
+        </a>
+        <h4 class="text-center search-select-save m-0">Search - Select - Save</h4>
+    </div>
+    <br>
+    <form class="form-signin" (ngSubmit)="login()" #loginForm="ngForm">
+        <!--<div class="alert alert-warning alert-dismissible" role="alert" *ngIf="message !== ''">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          {{message}}
+        </div>
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" class="form-control" placeholder="Email address" [(ngModel)]="loginData.username" name="username" required/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" class="form-control" placeholder="Password" [(ngModel)]="loginData.password" name="password" required/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!loginForm.form.valid">Sign in</button>
+        <p>
+            Not a member? <a [routerLink]="['/signup']">Signup here</a>
+        </p>-->
+        <h4 class="text-center m-0">Log in with your email</h4>
+        <br>
+        <div class="row m-1">
+            <div class="col-12 p-0">
+                <input type="text" id="loginUsername" name="loginUsername" class="form-control" [(ngModel)]="data.username" placeholder="Username"
+                    required/>
+            </div>
+        </div>
+        <div class="row m-1">
+            <div class="col-12 p-0">
+                <input type="password" id="loginPassword" name="loginPassword" class="form-control" [(ngModel)]="data.password" placeholder="Password"
+                    required/>
+            </div>
+        </div>
+        <div class="row m-1">
+            <div class="col-12 p-0">
+                <span class="login-error" *ngIf="data.message !=''" >{{data.message}}</span>
+            </div>
+        </div>
+        <div class="row m-1">
+            <div class="col-12 p-0">
+                <button class="btn btn-success w-100" type="submit" [disabled]="!loginForm.form.valid">Log In</button>
+            </div>
+        </div>
+    </form>
+</div>

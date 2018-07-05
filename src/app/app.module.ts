@@ -1,39 +1,54 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { MatSliderModule, MatSidenavModule } from '@angular/material';
-import { MultiselectDropdownModule } from './dropdown/dropdown.module';
-import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
-import { InViewportModule } from 'ng-in-viewport';
+import { HttpClientModule } from '@angular/common/http';
 
-import { routes } from './app.routes';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { BookComponent } from './book/book.component';
 
+import { RouterModule, Routes } from '@angular/router';
 
-import 'intersection-observer';
+const appRoutes: Routes = [
+  {
+    path: 'books',
+    component: BookComponent,
+    data: { title: 'Book List' }
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { title: 'Login' }
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
+    data: { title: 'Sign Up' }
+  },
+  { path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  }
+];
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpModule,
-    MatSliderModule,
-    MatSidenavModule,
-    MultiselectDropdownModule,
-    RouterModule.forRoot(routes),
-    InViewportModule.forRoot(),
-    NgbModule.forRoot(),
-    ScrollToModule.forRoot(),
-  ],
   declarations: [
     AppComponent,
-    HomeComponent,
+    LoginComponent,
+    SignupComponent,
+    BookComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    ),
+    NgbModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

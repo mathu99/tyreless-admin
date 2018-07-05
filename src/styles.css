@@ -1,16 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 @font-face {
-  font-family: "VarelaRound";
-  src:  url("/assets/VarelaRound-Regular.ttf") format("truetype")
-}
-
-@font-face {
-    font-family: "BryantMediumRegular";
-    src:    url("/assets/BryantMediumRegular.otf") format("opentype"),
-            url("/assets/BryantMediumRegular.ttf") format("truetype")
-}
+    font-family: "VarelaRound";
+    src:  url("/assets/VarelaRound-Regular.ttf") format("truetype")
+  }
+  
+  @font-face {
+      font-family: "BryantMediumRegular";
+      src:    url("/assets/BryantMediumRegular.otf") format("opentype"),
+              url("/assets/BryantMediumRegular.ttf") format("truetype")
+  }
+  
+  body{
+    font-family: "VarelaRound";
+    background: rgb(242,242,242);
+  }
 
 label{
    margin-bottom: 0;
@@ -590,12 +594,6 @@ a:hover{
   margin-left: 0pt;
 }
 
-body{
-  font-family: "VarelaRound";
-  background-color:white;
-  font-size: 0.9rem;
-}
-
 .page-card-deck{
   margin-bottom:50pt;
 }
@@ -733,10 +731,6 @@ h4{
   font-size: 1.2rem !important;
 }
 
-html{
-    background-color:white;
-}
-
 .jumbotron{
     background-color:white;
     margin-bottom: 0 !important;
@@ -870,15 +864,6 @@ li::before {
 
   .card-transparent{
     background: rgba(255,255,255,0.90);
-  }
-
-  .search-select-save{
-    margin-top:10pt;
-    max-width: 120pt;
-  }
-
-  .search-select-save-sm{
-      max-width: 50pt;
   }
 
   .plr-8{
