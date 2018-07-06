@@ -10,12 +10,18 @@ import { SignupComponent } from './signup/signup.component';
 import { BookComponent } from './book/book.component';
 
 import { RouterModule, Routes } from '@angular/router';
+import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
   {
     path: 'books',
     component: BookComponent,
     data: { title: 'Book List' }
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    data: { title: 'Administration' }
   },
   {
     path: 'login',
@@ -39,6 +45,7 @@ const appRoutes: Routes = [
     LoginComponent,
     SignupComponent,
     BookComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
