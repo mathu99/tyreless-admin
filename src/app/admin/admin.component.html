@@ -33,7 +33,47 @@
           <div class="col-10">
             <div class="tab-content p-3" id="v-pills-tabContent">
                 <div *ngIf="data.title == 'Admin'" class="tab-pane fade active show" id="v-pills-partner" role="tabpanel" aria-labelledby="v-pills-partner-tab">
-                  <p>Partner info</p>
+                  <form (ngSubmit)="partnerUpdate()" #partnerUpdateForm="ngForm">
+                  <div class="row m-1">
+                    <div class="col-2 p-1">
+                      <span class="font-weight-bold">Cust Code:</span>
+                      <br>Pending
+                    </div>
+                    <div class="col-4 p-1">
+                        <input type="text" id="partnerRetailerName" name="partnerRetailerName" class="form-control" [(ngModel)]="data.partner.retailerName" placeholder="Retailer/Franchise Name" required/>
+                    </div>
+                    <div class="col-6 p-1">
+                        <input type="text" id="partnerRegisteredName" name="partnerRegisteredName" class="form-control" [(ngModel)]="data.partner.registeredName" placeholder="Registered Name" required/>
+                    </div>
+                  </div>
+                  <div class="row m-1">
+                    <div class="col-6 p-1">
+                      <input type="text" id="partnerProvince" name="partnerProvince" class="form-control" [(ngModel)]="data.partner.province" placeholder="Province" required/>
+                    </div>
+                    <div class="col-6 p-1">
+                      <input type="text" id="partnerSuburb" name="partnerSuburb" class="form-control" [(ngModel)]="data.partner.suburb" placeholder="Suburb" required/>
+                    </div>
+                  </div>
+                  <div class="row m-1">
+                    <div class="col-6 p-1">
+                      <input type="text" id="partnerBranchName" name="partnerBranchName" class="form-control" [(ngModel)]="data.partner.branchName" placeholder="Branch Name" required/>
+                    </div>
+                    <div class="col-6 p-1">
+                      <input type="text" id="partnerBranchPin" name="partnerBranchPin" class="form-control" [(ngModel)]="data.partner.branchPin" placeholder="Branch Pin" required/>
+                    </div>
+                  </div>
+                  <div class="row m-1">
+                    <div class="col-6 p-1">
+                        <input type="text" id="partnerPartnerZoneEmail" name="partnerPartnerZoneEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.partnerZoneEmail" placeholder="Partner Zone Email" required/>
+                    </div>
+                    <div class="col-4 p-1">
+                        <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
+                    </div>
+                    <div class="col-2 p-1">
+                        <button class="btn btn-success w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid">Create</button>
+                    </div>
+                  </div>
+                  </form>
                 </div>
                 <div class="tab-pane fade" id="v-pills-deal-inputs" role="tabpanel" aria-labelledby="v-pills-deal-inputs-tab">
                   <p>Deal inputs</p>
@@ -46,6 +86,46 @@
                 </div>
               </div>
             </div>
+            <table class="table table-striped" style="text-align: center" id="partnerTable">
+                <thead>
+                  <tr>
+                    <th scope="col">Cust_Code</th>
+                    <th scope="col">Retailer / Franchise</th>
+                    <th scope="col">Registered Name</th>
+                    <th scope="col">Province</th>
+                    <th scope="col">Suburb</th>
+                    <th scope="col">Branch</th>
+                    <th scope="col">Partner Zone Email</th>
+                    <th scope="col">Sales Email</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngIf="!data.partnerList || data.partnerList.length == 0">
+                    <td colspan="12" class="text-center">No results</td>
+                  </tr>
+                  <!--<tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>-->
+              </table>
         </div>
   </div>
 </div>
