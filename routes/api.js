@@ -19,12 +19,13 @@ router.post('/signup', function (req, res) {
     } else {
         var newUser = new User({
             username: req.body.username,
-            password: req.body.password
+            password: req.body.password,
+            role: req.body.role,
         });
         // save the user
         newUser.save(function (err) {
             if (err) {
-                return res.json({ success: false, msg: 'Username already exists.' });
+                return res.json({ success: false, msg: err.message });
             }
             res.json({ success: true, msg: 'Successful created new user.' });
         });
@@ -40,6 +41,7 @@ router.post('/signin', function (req, res) {
         if (!user) {
             res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
         } else {
+            console.log(user)
             // check if password matches
             user.comparePassword(req.body.password, function (err, isMatch) {
                 if (isMatch && !err) {
@@ -55,10 +57,18 @@ router.post('/signin', function (req, res) {
     });
 });
 
+router.get('/user', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        return res.json(jwt.decode(token, config.secret));
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.post('/book', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        console.log(req.body);
         var newBook = new Book({
             isbn: req.body.isbn,
             title: req.body.title,
