@@ -1,0 +1,47 @@
+.col-header{
+    background-color: rgb(107,172,70);
+    border: 1px solid grey;
+    color:white;
+    font-weight: bold;
+    padding: 8pt;
+}
+
+.nav-link.active{
+    background-color: rgb(107,172,70);
+    color:white !important;
+}
+
+.main-logo > a{
+    text-decoration: none;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.6);
+  }
+  .main-logo > a > h1{
+    font-size: 32pt;
+    font-weight: 800 !important;
+  }
+  .main-logo > a > h1 > .txt-green{
+    font-size:32px;
+  }
+  .sub-header{
+      font-style: italic;
+  }
+
+  .admin-body{
+      font-size:10pt;
+      background: white;
+      border-left:1px solid grey;
+      border-right:1px solid grey;
+      border-bottom:1px solid grey;
+  }
+
+  .partner-zone{
+      border-radius:2pt;
+  }
+
+  .nav-pills .nav-link{
+      border-radius: 25pt;
+  }
+
+  .tab-content{
+    border-left: 1px solid gray;
+  }
