@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 export class AdminComponent implements OnInit {
 
   data: any = {
-    title: 'Admin'
+    title: 'PartnerZone'
   };
   userInfo: any = {};
 
