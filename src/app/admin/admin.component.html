@@ -10,22 +10,22 @@
   <div class="partner-zone">
       <div class="row">
           <div class="col-12 col-header text-center">
-            <h5 class="m-0">Manage Partner</h5>
+            <h5 class="m-0">{{ data.activeTab }}</h5>
           </div>
       </div>
       <div class="row admin-body p-3">
           <div class="col-2 p-2">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a *ngIf="data.title == 'Admin'" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
+              <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('Manage Partner')" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
                   <i class="fa fa-user"></i> Partner
                 </a>
-                <a *ngIf="data.title == 'Admin'" class="nav-link" id="v-pills-deal-inputs-tab" data-toggle="pill" href="#v-pills-deal-inputs" role="tab" aria-controls="v-pills-deal-inputs" aria-selected="false">
+                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('Deal Input')" class="nav-link" id="v-pills-deal-inputs-tab" data-toggle="pill" href="#v-pills-deal-inputs" role="tab" aria-controls="v-pills-deal-inputs" aria-selected="false">
                     <i class="fa fa-upload"></i> Deal Input
                 </a>
-                <a *ngIf="data.title == 'Admin'" class="nav-link" id="v-pills-partner-deals-tab" data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
+                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('Partner Deals')" class="nav-link" id="v-pills-partner-deals-tab" data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
                     <i class="fa fa-handshake-o"></i> Partner Deals
                 </a>
-                <a *ngIf="data.title == 'PartnerZone'" class="nav-link active show" id="v-pills-my-deals-tab" data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
+                <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('My Deals')" class="nav-link active show" id="v-pills-my-deals-tab" data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
                   <i class="fa fa-handshake-o"></i> My Deals
                 </a> 
             </div>
@@ -70,13 +70,80 @@
                         <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
                     </div>
                     <div class="col-2 p-1">
-                        <button class="btn btn-success w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid">Create</button>
+                        <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid">Create</button>
                     </div>
                   </div>
                   </form>
                 </div>
-                <div class="tab-pane fade" id="v-pills-deal-inputs" role="tabpanel" aria-labelledby="v-pills-deal-inputs-tab">
-                  <p>Deal inputs</p>
+                <div class="tab-pane fade text-center" id="v-pills-deal-inputs" role="tabpanel" aria-labelledby="v-pills-deal-inputs-tab">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="tyres-tab" data-toggle="tab" href="#tyres" role="tab" aria-controls="tyres" aria-selected="true">Tyres</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="services-tab" data-toggle="tab" href="#services" role="tab" aria-controls="services" aria-selected="false">Services</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="inclusions-tab" data-toggle="tab" href="#inclusions" role="tab" aria-controls="inclusions" aria-selected="false">Inclusions</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content p-2" id="myTabContent">
+                        <div class="tab-pane fade show active" id="tyres" role="tabpanel" aria-labelledby="tyres-tab">
+                          <form (ngSubmit)="dealInputTyresSave()" #dealInputTyresForm="ngForm">
+                              <div class="row m-1">
+                                <div class="col-6 p-1">
+                                  <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.dealInputTyres.vehicleType" placeholder="Vehicle Type" required/>
+                                </div>
+                                <div class="col-6 p-1">
+                                    <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.dealInputTyres.brand" placeholder="Brand" required/>
+                                </div>
+                              </div>
+                              <div class="row m-1">
+                                  <div class="col-6 p-1">
+                                    <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.dealInputTyres.logo" placeholder="Logo" required/>
+                                  </div>
+                                  <div class="col-6 p-1">
+                                      <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.dealInputTyres.tyreModel" placeholder="Tyre Model" required/>
+                                  </div>
+                                </div>
+                                <div class="row m-1">
+                                  <div class="col-6 p-1">
+                                    <input type="text" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.dealInputTyres.tyreImage" placeholder="Tyre Image" required/>
+                                  </div>
+                                  <div class="col-2 p-1">
+                                    <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.dealInputTyres.width" placeholder="Width" required/>
+                                  </div>
+                                  <div class="col-2 p-1">
+                                    <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.dealInputTyres.profile" placeholder="Profile" required/>
+                                  </div>
+                                  <div class="col-2 p-1">
+                                    <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.dealInputTyres.size" placeholder="Size" required/>
+                                  </div>
+                                </div>
+                                <div class="row m-1">
+                                  <div class="col-3 p-1">
+                                    <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.dealInputTyres.speedRating" placeholder="Speed Rating"/>
+                                  </div>
+                                  <div class="col-3 p-1">
+                                    <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!dealInputTyresForm.form.valid">Create</button>
+                                  </div>
+                                </div>
+                              </form>
+                        </div>
+                        <div class="tab-pane fade" id="services" role="tabpanel" aria-labelledby="services-tab">
+                            <form (ngSubmit)="dealInputServicesSave()" #dealInputServicesForm="ngForm">
+                                <div class="row m-1">
+                                    <div class="col-9 p-1">
+                                      <input type="text" id="dealInputServicesDescription" name="dealInputServicesDescription" class="form-control" [(ngModel)]="data.dealInputServices.description" placeholder="Description" required/>
+                                    </div>
+                                    <div class="col-3 p-1">
+                                      <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!dealInputServicesForm.form.valid">Add Service</button>
+                                    </div>
+                                  </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">Inclusions</div>
+                      </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
                   <p>Partner deals</p>
@@ -86,7 +153,7 @@
                 </div>
               </div>
             </div>
-            <table class="table table-striped" style="text-align: center" id="partnerTable">
+            <table *ngIf="data.activeTab == 'Manage Partner'" class="table table-striped text-center" id="partnerTable">
                 <thead>
                   <tr>
                     <th scope="col">Cust_Code</th>
@@ -106,25 +173,7 @@
                   <tr *ngIf="!data.partnerList || data.partnerList.length == 0">
                     <td colspan="12" class="text-center">No results</td>
                   </tr>
-                  <!--<tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>-->
+                </tbody>
               </table>
         </div>
   </div>

@@ -40,7 +40,7 @@
 }
 
 .table th{
-    border-top: 1px solid grey;
+    border-top: 1px solid dee2e6;
     vertical-align: middle;
 }
 
@@ -52,6 +52,10 @@
     border-radius: 25pt;
 }
 
-.tab-content{
-border-left: 1px solid gray;
+#v-pills-tabContent{
+border-left: 1px solid #dee2e6;
+}
+
+.form-control{
+    font-size:inherit;
 }
