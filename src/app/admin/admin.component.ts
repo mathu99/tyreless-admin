@@ -12,10 +12,13 @@ export class AdminComponent implements OnInit {
   data: any = {
     title: 'Admin',
     activeTab: 'Manage Partner',
+    activeDealInputTab: 'Tyres',
     partner: {},
     dealInputTyres: {},
-    dealInputServices: {},
+    dealInputInclusions: {},
     partnerList: [],
+    tyreList: [],
+    inclusionList: [],
   };
   userInfo: any = {};
 
@@ -33,8 +36,8 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  setActiveTab = (tab: string) => {
-    this.data.activeTab = tab;
+  setActiveTab = (tab:string, value: string) => {
+    this.data[tab] = value;
   }
 
 }

@@ -16,16 +16,16 @@
       <div class="row admin-body p-3">
           <div class="col-2 p-2">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('Manage Partner')" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
+              <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Manage Partner')" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
                   <i class="fa fa-user"></i> Partner
                 </a>
-                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('Deal Input')" class="nav-link" id="v-pills-deal-inputs-tab" data-toggle="pill" href="#v-pills-deal-inputs" role="tab" aria-controls="v-pills-deal-inputs" aria-selected="false">
+                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Deal Input')" class="nav-link" id="v-pills-deal-inputs-tab" data-toggle="pill" href="#v-pills-deal-inputs" role="tab" aria-controls="v-pills-deal-inputs" aria-selected="false">
                     <i class="fa fa-upload"></i> Deal Input
                 </a>
-                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('Partner Deals')" class="nav-link" id="v-pills-partner-deals-tab" data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
+                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Partner Deals')" class="nav-link" id="v-pills-partner-deals-tab" data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
                     <i class="fa fa-handshake-o"></i> Partner Deals
                 </a>
-                <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('My Deals')" class="nav-link active show" id="v-pills-my-deals-tab" data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
+                <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('activeTab', 'My Deals')" class="nav-link active show" id="v-pills-my-deals-tab" data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
                   <i class="fa fa-handshake-o"></i> My Deals
                 </a> 
             </div>
@@ -78,13 +78,10 @@
                 <div class="tab-pane fade text-center" id="v-pills-deal-inputs" role="tabpanel" aria-labelledby="v-pills-deal-inputs-tab">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                          <a class="nav-link active" id="tyres-tab" data-toggle="tab" href="#tyres" role="tab" aria-controls="tyres" aria-selected="true">Tyres</a>
+                          <a (click)="setActiveTab('activeDealInputTab', 'Tyres')" class="nav-link active" id="tyres-tab" data-toggle="tab" href="#tyres" role="tab" aria-controls="tyres" aria-selected="true">Tyres</a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" id="services-tab" data-toggle="tab" href="#services" role="tab" aria-controls="services" aria-selected="false">Services</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="inclusions-tab" data-toggle="tab" href="#inclusions" role="tab" aria-controls="inclusions" aria-selected="false">Inclusions</a>
+                          <a (click)="setActiveTab('activeDealInputTab', 'Inclusions')" class="nav-link" id="inclusions-tab" data-toggle="tab" href="#inclusions" role="tab" aria-controls="inclusions" aria-selected="false">Inclusions</a>
                         </li>
                       </ul>
                       <div class="tab-content p-2" id="myTabContent">
@@ -130,19 +127,18 @@
                                 </div>
                               </form>
                         </div>
-                        <div class="tab-pane fade" id="services" role="tabpanel" aria-labelledby="services-tab">
-                            <form (ngSubmit)="dealInputServicesSave()" #dealInputServicesForm="ngForm">
+                        <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">
+                            <form (ngSubmit)="dealInputInclusionsSave()" #dealInputInclusionsForm="ngForm">
                                 <div class="row m-1">
                                     <div class="col-9 p-1">
-                                      <input type="text" id="dealInputServicesDescription" name="dealInputServicesDescription" class="form-control" [(ngModel)]="data.dealInputServices.description" placeholder="Description" required/>
+                                      <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.dealInputInclusions.description" placeholder="Description" required/>
                                     </div>
                                     <div class="col-3 p-1">
-                                      <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!dealInputServicesForm.form.valid">Add Service</button>
+                                      <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!dealInputInclusionsForm.form.valid">Add Inclusion</button>
                                     </div>
                                   </div>
                             </form>
-                        </div>
-                        <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">Inclusions</div>
+                          </div>
                       </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
@@ -175,6 +171,39 @@
                   </tr>
                 </tbody>
               </table>
+              <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Tyres'" class="table table-striped text-center" id="dealInputTyresTable">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Brand</th>
+                      <th scope="col">Logo</th>
+                      <th scope="col">Tyre Model</th>
+                      <th scope="col">Tyre Image</th>
+                      <th scope="col">Tyre Width</th>
+                      <th scope="col">Tyre Profile</th>
+                      <th scope="col">Wheel Size</th>
+                      <th scope="col">Speed Rating</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
+                      <td colspan="9" class="text-center">No results</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Inclusions'" class="table table-striped text-center" id="dealInputTyresTable">
+                    <thead>
+                      <tr>
+                        <th scope="col" width="10%"></th>
+                        <th scope="col" width="90%">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
+                        <td colspan="2" class="text-center">No results</td>
+                      </tr>
+                    </tbody>
+                  </table>
         </div>
   </div>
 </div>
