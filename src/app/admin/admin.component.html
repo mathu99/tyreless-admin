@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-increased">
   <div class="row">
     <div class="col-12 p-3 main-logo">
         <a href="" style="color:black !important">
@@ -149,7 +149,7 @@
                 </div>
               </div>
             </div>
-            <table *ngIf="data.activeTab == 'Manage Partner'" class="table table-striped text-center" id="partnerTable">
+            <table *ngIf="data.activeTab == 'Manage Partner'" class="table table-striped text-center table-smaller" id="partnerTable">
                 <thead>
                   <tr>
                     <th scope="col">Cust_Code</th>
@@ -166,6 +166,19 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr *ngFor="let partner of data.partnerList">
+                    <td>-</td>
+                    <td>{{ partner.retailerName }}</td>
+                    <td>{{ partner.registeredName }}</td>
+                    <td>{{ partner.province }}</td>
+                    <td>{{ partner.suburb }}</td>
+                    <td>{{ partner.branchName }}</td>
+                    <td>{{ partner.partnerZoneEmail }}</td>
+                    <td>{{ partner.salesEmail }}</td>
+                    <td>{{ partner.status }}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
                   <tr *ngIf="!data.partnerList || data.partnerList.length == 0">
                     <td colspan="12" class="text-center">No results</td>
                   </tr>

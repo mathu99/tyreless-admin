@@ -5,8 +5,10 @@ require('../config/passport')(passport);
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
+var crypto = require('crypto');
 var User = require("../models/user");
 var Book = require("../models/book");
+var Partner = require("../models/partner");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -98,6 +100,53 @@ router.get('/book', passport.authenticate('jwt', { session: false }), function (
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }
 });
+
+
+router.post('/partner', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var partner = new Partner({
+            customerCode: uuidv4(),
+            retailerName: req.body.retailerName,
+            registeredName: req.body.registeredName,
+            province: req.body.province,
+            suburb: req.body.suburb,
+            branchName: req.body.branchName,
+            branchPin: req.body.branchPin,
+            partnerZoneEmail: req.body.partnerZoneEmail,
+            salesEmail: req.body.salesEmail,
+            status: 'Active'
+        });
+
+        partner.save(function (err) {
+            if (err) {
+                return res.json({ success: false, msg: 'Save Partner failed.' });
+            }
+            res.json({ success: true, msg: 'Successful created new Partner.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.get('/partner', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        Partner.find(function (err, books) {
+            if (err) return next(err);
+            res.json(books);
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 getToken = function (headers) {
     if (headers && headers.authorization) {

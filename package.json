@@ -38,9 +38,9 @@
     "passport-jwt": "^4.0.0",
     "popper.js": "^1.12.9",
     "rxjs": "^6.2.1",
+    "rxjs-compat": "^6.0.0-rc.0",
     "serve-favicon": "^2.5.0",
-    "zone.js": "^0.8.19",
-    "rxjs-compat": "^6.0.0-rc.0"
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "^6.0.8",

@@ -68,3 +68,11 @@ border-left: 1px solid #dee2e6;
 .nav-tabs{
     border:none;
 }
+
+.table-smaller{
+    font-size: 9pt;
+}
+
+.table-smaller td, .table-smaller th{
+    padding: .25rem;
+}
