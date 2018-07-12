@@ -181,6 +181,18 @@ router.get('/tyre', passport.authenticate('jwt', { session: false }), function (
     }
 });
 
+router.delete('/tyre', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        Tyre.find({ _id:req.body._id }, err => {
+            if (err) return res.json({ success: false, msg: 'Delete Tyre failed - could not find by ID' });
+        }).remove().exec();
+        res.json({ success: true, msg: 'Tyre deleted' });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.post('/inclusion', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
@@ -214,11 +226,6 @@ router.get('/inclusion', passport.authenticate('jwt', { session: false }), funct
 router.delete('/inclusion', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        /*let search = { _id:req.body._id };
-        Inclusion.find((err, search) => {
-            if (err) return res.json({ success: false, msg: 'Delete Inclusion failed - could not find by ID' });
-            res.json({ success: true, msg: 'Deleted Inclusion.' });
-        });*/
         Inclusion.find({ _id:req.body._id }, err => {
             if (err) return res.json({ success: false, msg: 'Delete Inclusion failed - could not find by ID' });
         }).remove().exec();

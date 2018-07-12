@@ -188,7 +188,7 @@
                   <thead>
                     <tr>
                       <th scope="col"></th>
-                      <th scope="col">Car</th>
+                      <th scope="col">Vehicle Type</th>
                       <th scope="col">Brand</th>
                       <th scope="col">Logo</th>
                       <th scope="col">Tyre Model</th>
@@ -197,12 +197,13 @@
                       <th scope="col">Tyre Profile</th>
                       <th scope="col">Wheel Size</th>
                       <th scope="col">Speed Rating</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let tyre of data.tyreList">
                       <td></td>
-                      <td>{{ tyre.car }}</td>
+                      <td>{{ tyre.vehicleType }}</td>
                       <td>{{ tyre.brand }}</td>
                       <td>{{ tyre.logo }}</td>
                       <td>{{ tyre.tyreModel }}</td>
@@ -211,6 +212,9 @@
                       <td>{{ tyre.profile }}</td>
                       <td>{{ tyre.size }}</td>
                       <td>{{ tyre.speedRating }}</td>
+                      <td>
+                        <button (click)="removeTyre(tyre)" type="button" class="close delete-row">&times;</button>
+                      </td>
                     </tr>
                     <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
                       <td colspan="9" class="text-center">No results</td>

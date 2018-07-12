@@ -90,6 +90,19 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  removeTyre = (tyre: any) => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') }),
+      body: tyre,
+    };
+
+    this.http.delete('/api/tyre', httpOptions).subscribe(resp => {
+      this.getTyres();
+    }, err => {
+      console.log(err);
+    });
+  }
+
   inclusionUpdate = () => {
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
