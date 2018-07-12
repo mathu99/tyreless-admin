@@ -13,6 +13,7 @@ import { of } from 'rxjs/observable/of';
 export class LoginComponent implements OnInit {
 
   data: any = { username:'', password:'', message: '' };
+  properties: any = { loggingIn: false };
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -20,12 +21,15 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.properties.loggingIn = true;
     this.http.post('/api/signin',this.data).subscribe(resp => {
       this.data = resp;
       localStorage.setItem('jwtToken', this.data.token);
       this.router.navigate(['admin']);
     }, err => {
       this.data.message = err.error.msg;
+    }, () => {
+      this.properties.loggingIn = true;
     });
   }
 

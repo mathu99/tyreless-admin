@@ -20,6 +20,11 @@ export class AdminComponent implements OnInit {
     tyreList: [],
     inclusionList: [],
   };
+  properties: any = {
+    createPartnerLoading: false,
+    createTyresLoading: false,
+    createInclusionsLoading: false,
+  };
   userInfo: any = {};
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -56,6 +61,7 @@ export class AdminComponent implements OnInit {
   }
 
   getPartners = () => {
+    //this.properties.createPartnerLoading = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
@@ -68,6 +74,7 @@ export class AdminComponent implements OnInit {
   }
 
   tyreUpdate = () => {
+    this.properties.createTyresLoading = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
@@ -76,6 +83,8 @@ export class AdminComponent implements OnInit {
       this.data.dealInputTyres = {};
     }, err => {
       console.log(err.error.msg);
+    }, () => {
+      this.properties.createTyresLoading = false;
     });
   }
 
@@ -104,6 +113,7 @@ export class AdminComponent implements OnInit {
   }
 
   inclusionUpdate = () => {
+    this.properties.createInclusionsLoading = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
@@ -112,6 +122,8 @@ export class AdminComponent implements OnInit {
       this.data.dealInputInclusions = {};
     }, err => {
       console.log(err);
+    }, ()=>{
+      this.properties.createInclusionsLoading = false;
     });
   }
 

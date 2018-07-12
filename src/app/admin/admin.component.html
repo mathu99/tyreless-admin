@@ -10,7 +10,7 @@
   <div class="partner-zone">
       <div class="row">
           <div class="col-12 col-header text-center">
-            <h5 class="m-0">{{ data.activeTab }}</h5>
+            <h5 class="m-0">{{ data.activeTab }} <span *ngIf="data.activeTab == 'Deal Input'"> - {{ data.activeDealInputTab }}</span></h5>
           </div>
       </div>
       <div class="row admin-body p-3">
@@ -70,7 +70,7 @@
                         <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
                     </div>
                     <div class="col-2 p-1">
-                        <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid">Create</button>
+                        <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">Create</button>
                     </div>
                   </div>
                   </form>
@@ -122,7 +122,7 @@
                                     <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.dealInputTyres.speedRating" placeholder="Speed Rating"/>
                                   </div>
                                   <div class="col-3 p-1">
-                                    <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!dealInputTyresForm.form.valid">Create</button>
+                                    <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">Create</button>
                                   </div>
                                 </div>
                               </form>
@@ -134,7 +134,7 @@
                                       <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.dealInputInclusions.description" placeholder="Description" required/>
                                     </div>
                                     <div class="col-3 p-1">
-                                      <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!dealInputInclusionsForm.form.valid">Add Inclusion</button>
+                                      <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">Add Inclusion</button>
                                     </div>
                                   </div>
                             </form>
