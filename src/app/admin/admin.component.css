@@ -75,9 +75,16 @@ border-left: 1px solid #dee2e6;
 
 .table-smaller td, .table-smaller th{
     padding: .50rem;
+    height: 28pt;
 }
 
 .delete-row{
     color:darkred;
     float: none;
+}
+
+.row-spinner{
+    height: 24px;
+    position: relative;
+    top: -3px;
 }

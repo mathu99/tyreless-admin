@@ -213,7 +213,8 @@
                       <td>{{ tyre.size }}</td>
                       <td>{{ tyre.speedRating }}</td>
                       <td>
-                        <button (click)="removeTyre(tyre)" type="button" class="close delete-row">&times;</button>
+                        <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
+                        <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre)" type="button" class="close delete-row">&times;</button>
                       </td>
                     </tr>
                     <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
@@ -232,7 +233,8 @@
                       <tr *ngFor="let inclusion of data.inclusionList">
                         <td>{{ inclusion.description }}</td>
                         <td>
-                            <button (click)="removeInclusion(inclusion)" type="button" class="close delete-row">&times;</button>
+                            <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
+                            <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion)" type="button" class="close delete-row">&times;</button>
                         </td>
                       </tr>
                       <tr *ngIf="!data.inclusionList || data.inclusionList.length == 0">

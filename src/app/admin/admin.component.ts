@@ -100,6 +100,7 @@ export class AdminComponent implements OnInit {
   }
 
   removeTyre = (tyre: any) => {
+    tyre.deleting = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') }),
       body: tyre,
@@ -108,6 +109,7 @@ export class AdminComponent implements OnInit {
     this.http.delete('/api/tyre', httpOptions).subscribe(resp => {
       this.getTyres();
     }, err => {
+      tyre.delting = false;
       console.log(err);
     });
   }
@@ -139,6 +141,7 @@ export class AdminComponent implements OnInit {
   }
 
   removeInclusion = (inclusion: any) => {
+    inclusion.deleting = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') }),
       body: inclusion,
@@ -147,6 +150,7 @@ export class AdminComponent implements OnInit {
     this.http.delete('/api/inclusion', httpOptions).subscribe(resp => {
       this.getInclusions();
     }, err => {
+      inclusion.deleting = false;
       console.log(err);
     });
   }
