@@ -16,7 +16,7 @@ export class AdminComponent implements OnInit {
     partner: {},
     dealInputTyres: {},
     dealInputInclusions: {},
-    partnerList: {},
+    partnerList: [],
     tyreList: [],
     inclusionList: [],
   };
@@ -35,6 +35,8 @@ export class AdminComponent implements OnInit {
       console.log(err);
     });
     this.getPartners();
+    this.getTyres();
+    this.getInclusions();
   }
 
   setActiveTab = (tab:string, value: string) => {
@@ -46,7 +48,6 @@ export class AdminComponent implements OnInit {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.post('/api/partner', this.data.partner, httpOptions).subscribe(resp => {
-      console.log('success');
       this.getPartners();
       this.data.partner = {};
     }, err => {
@@ -63,6 +64,65 @@ export class AdminComponent implements OnInit {
       this.data.partnerList = data;
     }, err => {
       console.log(err)
+    });
+  }
+
+  tyreUpdate = () => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.post('/api/tyre', this.data.dealInputTyres, httpOptions).subscribe(resp => {
+      this.getTyres();
+      this.data.dealInputTyres = {};
+    }, err => {
+      console.log(err.error.msg);
+    });
+  }
+
+  getTyres = () => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/tyre', httpOptions).subscribe(data => {
+      this.data.tyreList = data;
+    }, err => {
+      console.log(err)
+    });
+  }
+
+  inclusionUpdate = () => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.post('/api/inclusion', this.data.dealInputInclusions, httpOptions).subscribe(resp => {
+      this.getInclusions();
+      this.data.dealInputInclusions = {};
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  getInclusions = () => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/inclusion', httpOptions).subscribe(data => {
+      this.data.inclusionList = data;
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  removeInclusion = (inclusion: any) => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') }),
+      body: inclusion,
+    };
+
+    this.http.delete('/api/inclusion', httpOptions).subscribe(resp => {
+      this.getInclusions();
+    }, err => {
+      console.log(err);
     });
   }
 

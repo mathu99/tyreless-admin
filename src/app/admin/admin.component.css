@@ -76,3 +76,8 @@ border-left: 1px solid #dee2e6;
 .table-smaller td, .table-smaller th{
     padding: .25rem;
 }
+
+.delete-row{
+    color:darkred;
+    float: none;
+}

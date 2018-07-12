@@ -86,7 +86,7 @@
                       </ul>
                       <div class="tab-content p-2" id="myTabContent">
                         <div class="tab-pane fade show active" id="tyres" role="tabpanel" aria-labelledby="tyres-tab">
-                          <form (ngSubmit)="dealInputTyresSave()" #dealInputTyresForm="ngForm">
+                          <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
                               <div class="row m-1">
                                 <div class="col-6 p-1">
                                   <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.dealInputTyres.vehicleType" placeholder="Vehicle Type" required/>
@@ -128,7 +128,7 @@
                               </form>
                         </div>
                         <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">
-                            <form (ngSubmit)="dealInputInclusionsSave()" #dealInputInclusionsForm="ngForm">
+                            <form (ngSubmit)="inclusionUpdate()" #dealInputInclusionsForm="ngForm">
                                 <div class="row m-1">
                                     <div class="col-9 p-1">
                                       <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.dealInputInclusions.description" placeholder="Description" required/>
@@ -184,10 +184,11 @@
                   </tr>
                 </tbody>
               </table>
-              <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Tyres'" class="table table-striped text-center" id="dealInputTyresTable">
+              <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Tyres'" class="table table-striped text-center table-smaller" id="dealInputTyresTable">
                   <thead>
                     <tr>
                       <th scope="col"></th>
+                      <th scope="col">Car</th>
                       <th scope="col">Brand</th>
                       <th scope="col">Logo</th>
                       <th scope="col">Tyre Model</th>
@@ -199,20 +200,38 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr *ngFor="let tyre of data.tyreList">
+                      <td></td>
+                      <td>{{ tyre.car }}</td>
+                      <td>{{ tyre.brand }}</td>
+                      <td>{{ tyre.logo }}</td>
+                      <td>{{ tyre.tyreModel }}</td>
+                      <td>{{ tyre.tyreImage }}</td>
+                      <td>{{ tyre.width }}</td>
+                      <td>{{ tyre.profile }}</td>
+                      <td>{{ tyre.size }}</td>
+                      <td>{{ tyre.speedRating }}</td>
+                    </tr>
                     <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
                       <td colspan="9" class="text-center">No results</td>
                     </tr>
                   </tbody>
                 </table>
-                <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Inclusions'" class="table table-striped text-center" id="dealInputTyresTable">
+                <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Inclusions'" class="table table-striped text-center table-smaller" id="dealInputTyresTable">
                     <thead>
                       <tr>
-                        <th scope="col" width="10%"></th>
                         <th scope="col" width="90%">Description</th>
+                        <th scope="col" width="10%"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
+                      <tr *ngFor="let inclusion of data.inclusionList">
+                        <td>{{ inclusion.description }}</td>
+                        <td>
+                            <button (click)="removeInclusion(inclusion)" type="button" class="close delete-row">&times;</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="!data.inclusionList || data.inclusionList.length == 0">
                         <td colspan="2" class="text-center">No results</td>
                       </tr>
                     </tbody>

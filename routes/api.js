@@ -9,6 +9,8 @@ var crypto = require('crypto');
 var User = require("../models/user");
 var Book = require("../models/book");
 var Partner = require("../models/partner");
+var Tyre = require("../models/tyre");
+var Inclusion = require("../models/inclusion");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -136,6 +138,91 @@ router.get('/partner', passport.authenticate('jwt', { session: false }), functio
             if (err) return next(err);
             res.json(books);
         });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.post('/tyre', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var tyre = new Tyre({
+            vehicleType: req.body.vehicleType,
+            brand: req.body.brand,
+            logo: req.body.logo,
+            tyreModel: req.body.tyreModel,
+            tyreImage: req.body.tyreImage,
+            width: req.body.width,
+            profile: req.body.profile,
+            size: req.body.size,
+            speedRating: req.body.speedRating,
+        });
+
+        tyre.save(function (err) {
+            if (err) {
+                return res.json({ success: false, msg: 'Save Tyre failed.' });
+            }
+            res.json({ success: true, msg: 'Successful created new Tyre.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.get('/tyre', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        Tyre.find(function (err, tyres) {
+            if (err) return next(err);
+            res.json(tyres);
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.post('/inclusion', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var inclusion = new Inclusion({
+            description: req.body.description,
+        });
+
+        inclusion.save(function (err) {
+            if (err) {
+                return res.json({ success: false, msg: 'Save Inclusion failed.' });
+            }
+            res.json({ success: true, msg: 'Successful created new Inclusion.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.get('/inclusion', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        Inclusion.find(function (err, inclusions) {
+            if (err) return next(err);
+            res.json(inclusions);
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.delete('/inclusion', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        /*let search = { _id:req.body._id };
+        Inclusion.find((err, search) => {
+            if (err) return res.json({ success: false, msg: 'Delete Inclusion failed - could not find by ID' });
+            res.json({ success: true, msg: 'Deleted Inclusion.' });
+        });*/
+        Inclusion.find({ _id:req.body._id }, err => {
+            if (err) return res.json({ success: false, msg: 'Delete Inclusion failed - could not find by ID' });
+        }).remove().exec();
+        res.json({ success: true, msg: 'Inclusion deleted' });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }
