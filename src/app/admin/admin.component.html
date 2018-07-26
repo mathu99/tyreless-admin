@@ -1,10 +1,17 @@
 <div class="container-increased">
   <div class="row">
-    <div class="col-12 p-3 main-logo">
-        <a href="" style="color:black !important">
+    <div class="col-3"></div>
+    <div class="col-6 p-3 main-logo">
+        <span style="color:black !important">
             <h1 class="text-center m-0">TyreLess<span class="txt-green">.co.za</span></h1>
-        </a>
+        </span>
         <h5 class="text-center sub-header">{{data.title}}</h5>
+    </div>
+    <div class="col-3 text-right">
+        <br><br>
+        Welcome, <b>{{ userInfo.username }}</b>
+        <br>
+        <a (click)="logout()">Logout</a>
     </div>
   </div>
   <div class="partner-zone">
@@ -166,7 +173,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let partner of data.partnerList">
+                  <tr *ngFor="let partner of data.partnerList" class="clickable-row">
                     <td>-</td>
                     <td>{{ partner.retailerName }}</td>
                     <td>{{ partner.registeredName }}</td>
@@ -201,7 +208,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let tyre of data.tyreList">
+                    <tr *ngFor="let tyre of data.tyreList" class="clickable-row">
                       <td></td>
                       <td>{{ tyre.vehicleType }}</td>
                       <td>{{ tyre.brand }}</td>
@@ -230,7 +237,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let inclusion of data.inclusionList">
+                      <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row">
                         <td>{{ inclusion.description }}</td>
                         <td>
                             <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>

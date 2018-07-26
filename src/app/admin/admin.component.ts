@@ -44,6 +44,11 @@ export class AdminComponent implements OnInit {
     this.getInclusions();
   }
 
+  logout() {
+    localStorage.removeItem('jwtToken');
+    this.router.navigate(['login']);
+  }
+
   setActiveTab = (tab:string, value: string) => {
     this.data[tab] = value;
   }

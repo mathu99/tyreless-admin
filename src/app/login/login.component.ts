@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     }, err => {
       this.data.message = err.error.msg;
     }, () => {
-      this.properties.loggingIn = true;
+      this.properties.loggingIn = false;
     });
   }
 
