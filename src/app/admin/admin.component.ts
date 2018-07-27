@@ -24,6 +24,9 @@ export class AdminComponent implements OnInit {
     createPartnerLoading: false,
     createTyresLoading: false,
     createInclusionsLoading: false,
+    isPartnerSelected: false,
+    isTyreSelected: false,
+    isInclusionSelected: false,
   };
   userInfo: any = {};
 
@@ -53,6 +56,12 @@ export class AdminComponent implements OnInit {
     this.data[tab] = value;
   }
 
+  setActiveRow = (row:any) => {
+    this.data.partner = row.selected ? {} : JSON.parse(JSON.stringify(row));
+    this.data.partnerList.map(e => e.selected = (e === row) ? !e.selected : false);
+    this.properties.isPartnerSelected = row.selected;
+  }
+
   partnerUpdate = () => {
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
@@ -66,14 +75,13 @@ export class AdminComponent implements OnInit {
   }
 
   getPartners = () => {
-    //this.properties.createPartnerLoading = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.get('/api/partner', httpOptions).subscribe(data => {
-      console.log(data)
       this.data.partnerList = data;
     }, err => {
+      // this.data.partnerList = JSON.parse('[{"_id":"5b466061932d6770183fdc15","customerCode":"be42bc92-30ec-4538-8997-5592c2a0fbba","retailerName":"Tiger Wheel & Tyre","registeredName":"-","province":"Gauteng","suburb":"Sandton","branchName":"Sandton City","branchPin":"test pin","partnerZoneEmail":"admin@twt.co.za","salesEmail":"sales@twt.co.za","status":"Active","__v":0},{"_id":"5b470694824e3e0014b762f1","customerCode":"99b1850d-c6ec-4068-ae77-fcfd66b37548","retailerName":"Supa Quick","registeredName":"ABC (Pty) Ltd","province":"Gauteng","suburb":"Sandton","branchName":"Wynberg","branchPin":"26.109636. 28.083778","partnerZoneEmail":"admin@supaquick.co.za","salesEmail":"sales@supaquick.co.za","status":"Active","__v":0}]');
       console.log(err)
     });
   }

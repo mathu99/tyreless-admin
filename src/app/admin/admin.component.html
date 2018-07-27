@@ -77,7 +77,10 @@
                         <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
                     </div>
                     <div class="col-2 p-1">
-                        <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">Create</button>
+                        <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
+                          <span *ngIf="!properties.isPartnerSelected">Create</span>
+                          <span *ngIf="properties.isPartnerSelected">Update</span>
+                        </button>
                     </div>
                   </div>
                   </form>
@@ -173,7 +176,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let partner of data.partnerList" class="clickable-row">
+                  <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner)">
                     <td>-</td>
                     <td>{{ partner.retailerName }}</td>
                     <td>{{ partner.registeredName }}</td>

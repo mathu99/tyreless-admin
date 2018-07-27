@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['admin']);
     }, err => {
       this.data.message = err.error.msg;
-    }, () => {
       this.properties.loggingIn = false;
     });
   }

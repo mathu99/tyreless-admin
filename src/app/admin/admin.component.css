@@ -87,6 +87,11 @@ border-left: 1px solid #dee2e6;
     cursor: pointer;
 }
 
+.selected-row{
+    background-color: rgba(107,172,70,0.9) !important;
+    color: white;
+}
+
 .row-spinner{
     height: 24px;
     position: relative;
