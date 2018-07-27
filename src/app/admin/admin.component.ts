@@ -24,9 +24,9 @@ export class AdminComponent implements OnInit {
     createPartnerLoading: false,
     createTyresLoading: false,
     createInclusionsLoading: false,
-    isPartnerSelected: false,
-    isTyreSelected: false,
-    isInclusionSelected: false,
+    partnerSelected: false,
+    tyreSelected: false,
+    inclusionSelected: false,
   };
   userInfo: any = {};
 
@@ -56,10 +56,10 @@ export class AdminComponent implements OnInit {
     this.data[tab] = value;
   }
 
-  setActiveRow = (row:any) => {
-    this.data.partner = row.selected ? {} : JSON.parse(JSON.stringify(row));
-    this.data.partnerList.map(e => e.selected = (e === row) ? !e.selected : false);
-    this.properties.isPartnerSelected = row.selected;
+  setActiveRow = (row:any, type:string) => {
+    this.data[type] = row.selected ? {} : JSON.parse(JSON.stringify(row));
+    this.data[type + 'List'].map(e => e.selected = (e === row) ? !e.selected : false);
+    this.properties[type + 'Selected'] = row.selected;
   }
 
   partnerUpdate = () => {

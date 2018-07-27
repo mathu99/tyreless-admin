@@ -78,8 +78,8 @@
                     </div>
                     <div class="col-2 p-1">
                         <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
-                          <span *ngIf="!properties.isPartnerSelected">Create</span>
-                          <span *ngIf="properties.isPartnerSelected">Update</span>
+                          <span *ngIf="!properties.partnerSelected">Create</span>
+                          <span *ngIf="properties.partnerSelected">Update</span>
                         </button>
                     </div>
                   </div>
@@ -132,7 +132,10 @@
                                     <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.dealInputTyres.speedRating" placeholder="Speed Rating"/>
                                   </div>
                                   <div class="col-3 p-1">
-                                    <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">Create</button>
+                                    <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
+                                        <span *ngIf="!properties.tyreSelected">Create</span>
+                                        <span *ngIf="properties.tyreSelected">Update</span>
+                                    </button>
                                   </div>
                                 </div>
                               </form>
@@ -144,7 +147,10 @@
                                       <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.dealInputInclusions.description" placeholder="Description" required/>
                                     </div>
                                     <div class="col-3 p-1">
-                                      <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">Add Inclusion</button>
+                                      <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
+                                          <span *ngIf="!properties.inclusionSelected">Add Inclusion</span>
+                                          <span *ngIf="properties.inclusionSelected">Update Inclusion</span>
+                                      </button>
                                     </div>
                                   </div>
                             </form>
@@ -176,7 +182,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner)">
+                  <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner, 'partner')">
                     <td>-</td>
                     <td>{{ partner.retailerName }}</td>
                     <td>{{ partner.registeredName }}</td>
@@ -211,7 +217,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let tyre of data.tyreList" class="clickable-row">
+                    <tr *ngFor="let tyre of data.tyreList" class="clickable-row" [ngClass]="{'selected-row':tyre.selected}" (click)="setActiveRow(tyre, 'tyre')">
                       <td></td>
                       <td>{{ tyre.vehicleType }}</td>
                       <td>{{ tyre.brand }}</td>
@@ -240,7 +246,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row">
+                      <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':tyre.inclusion}" (click)="setActiveRow(inclusion, 'inclusion')">
                         <td>{{ inclusion.description }}</td>
                         <td>
                             <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>

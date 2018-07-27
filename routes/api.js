@@ -108,7 +108,7 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
     var token = getToken(req.headers);
     if (token) {
         var partner = new Partner({
-            customerCode: uuidv4(),
+            customerCode: (req.body.customerCode) ? req.body.customerCode : uuidv4(),
             retailerName: req.body.retailerName,
             registeredName: req.body.registeredName,
             province: req.body.province,
