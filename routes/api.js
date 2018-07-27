@@ -119,13 +119,19 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
             salesEmail: req.body.salesEmail,
             status: 'Active'
         });
-
-        partner.save(function (err) {
+        var query = {};
+        partner.findOneAndUpdate(query, partner, {upsert:true}, function(err, doc){
             if (err) {
                 return res.json({ success: false, msg: 'Save Partner failed.' });
             }
-            res.json({ success: true, msg: 'Successful created new Partner.' });
+            res.json({ success: true, msg: 'Successful created/updated Partner.' });
         });
+        /*partner.save(function (err) {
+            if (err) {
+                return res.json({ success: false, msg: 'Save Partner failed.' });
+            }
+            res.json({ success: true, msg: 'Successful created/updated Partner.' });
+        });*/
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }
@@ -162,7 +168,7 @@ router.post('/tyre', passport.authenticate('jwt', { session: false }), function 
             if (err) {
                 return res.json({ success: false, msg: 'Save Tyre failed.' });
             }
-            res.json({ success: true, msg: 'Successful created new Tyre.' });
+            res.json({ success: true, msg: 'Successful created/updated Tyre.' });
         });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
@@ -204,7 +210,7 @@ router.post('/inclusion', passport.authenticate('jwt', { session: false }), func
             if (err) {
                 return res.json({ success: false, msg: 'Save Inclusion failed.' });
             }
-            res.json({ success: true, msg: 'Successful created new Inclusion.' });
+            res.json({ success: true, msg: 'Successful created/updated Inclusion.' });
         });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });

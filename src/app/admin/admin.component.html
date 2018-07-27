@@ -99,37 +99,37 @@
                           <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
                               <div class="row m-1">
                                 <div class="col-6 p-1">
-                                  <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.dealInputTyres.vehicleType" placeholder="Vehicle Type" required/>
+                                  <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.tyre.vehicleType" placeholder="Vehicle Type" required/>
                                 </div>
                                 <div class="col-6 p-1">
-                                    <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.dealInputTyres.brand" placeholder="Brand" required/>
+                                    <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.tyre.brand" placeholder="Brand" required/>
                                 </div>
                               </div>
                               <div class="row m-1">
                                   <div class="col-6 p-1">
-                                    <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.dealInputTyres.logo" placeholder="Logo" required/>
+                                    <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.tyre.logo" placeholder="Logo" required/>
                                   </div>
                                   <div class="col-6 p-1">
-                                      <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.dealInputTyres.tyreModel" placeholder="Tyre Model" required/>
+                                      <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.tyre.tyreModel" placeholder="Tyre Model" required/>
                                   </div>
                                 </div>
                                 <div class="row m-1">
                                   <div class="col-6 p-1">
-                                    <input type="text" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.dealInputTyres.tyreImage" placeholder="Tyre Image" required/>
+                                    <input type="text" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.tyre.tyreImage" placeholder="Tyre Image" required/>
                                   </div>
                                   <div class="col-2 p-1">
-                                    <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.dealInputTyres.width" placeholder="Width" required/>
+                                    <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.tyre.width" placeholder="Width" required/>
                                   </div>
                                   <div class="col-2 p-1">
-                                    <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.dealInputTyres.profile" placeholder="Profile" required/>
+                                    <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.tyre.profile" placeholder="Profile" required/>
                                   </div>
                                   <div class="col-2 p-1">
-                                    <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.dealInputTyres.size" placeholder="Size" required/>
+                                    <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.tyre.size" placeholder="Size" required/>
                                   </div>
                                 </div>
                                 <div class="row m-1">
                                   <div class="col-3 p-1">
-                                    <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.dealInputTyres.speedRating" placeholder="Speed Rating"/>
+                                    <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.tyre.speedRating" placeholder="Speed Rating"/>
                                   </div>
                                   <div class="col-3 p-1">
                                     <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
@@ -144,7 +144,7 @@
                             <form (ngSubmit)="inclusionUpdate()" #dealInputInclusionsForm="ngForm">
                                 <div class="row m-1">
                                     <div class="col-9 p-1">
-                                      <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.dealInputInclusions.description" placeholder="Description" required/>
+                                      <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.inclusion.description" placeholder="Description" required/>
                                     </div>
                                     <div class="col-3 p-1">
                                       <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
@@ -234,7 +234,7 @@
                       </td>
                     </tr>
                     <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
-                      <td colspan="9" class="text-center">No results</td>
+                      <td colspan="11" class="text-center">No results</td>
                     </tr>
                   </tbody>
                 </table>
@@ -246,7 +246,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':tyre.inclusion}" (click)="setActiveRow(inclusion, 'inclusion')">
+                      <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
                         <td>{{ inclusion.description }}</td>
                         <td>
                             <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>

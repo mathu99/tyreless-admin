@@ -14,8 +14,8 @@ export class AdminComponent implements OnInit {
     activeTab: 'Manage Partner',
     activeDealInputTab: 'Tyres',
     partner: {},
-    dealInputTyres: {},
-    dealInputInclusions: {},
+    tyre: {},
+    inclusion: {},
     partnerList: [],
     tyreList: [],
     inclusionList: [],
@@ -91,9 +91,9 @@ export class AdminComponent implements OnInit {
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
-    this.http.post('/api/tyre', this.data.dealInputTyres, httpOptions).subscribe(resp => {
+    this.http.post('/api/tyre', this.data.tyre, httpOptions).subscribe(resp => {
       this.getTyres();
-      this.data.dealInputTyres = {};
+      this.data.tyre = {};
     }, err => {
       console.log(err.error.msg);
     }, () => {
@@ -132,9 +132,9 @@ export class AdminComponent implements OnInit {
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
-    this.http.post('/api/inclusion', this.data.dealInputInclusions, httpOptions).subscribe(resp => {
+    this.http.post('/api/inclusion', this.data.inclusion, httpOptions).subscribe(resp => {
       this.getInclusions();
-      this.data.dealInputInclusions = {};
+      this.data.inclusion = {};
     }, err => {
       console.log(err);
     }, ()=>{
