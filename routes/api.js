@@ -83,7 +83,7 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
             branchPin: req.body.branchPin,
             partnerZoneEmail: req.body.partnerZoneEmail,
             salesEmail: req.body.salesEmail,
-            status: 'Active'
+            status: (req.body.status) ? req.body.status : 'Active',
         };
         var query = {'customerCode': partner.customerCode};
         Partner.findOneAndUpdate(query, partner, {upsert:true}, function(err, doc){

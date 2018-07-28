@@ -107,6 +107,13 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  updateStatus = (partner: any, $event: any, status: string) => {
+    $event.stopPropagation();
+    this.data.partner = JSON.parse(JSON.stringify(partner));
+    this.data.partner.status = status;
+    this.partnerUpdate();
+  }
+
   getPartners = () => {
     this.data.partnerList = [];
     this.properties.loadingPartners = true;

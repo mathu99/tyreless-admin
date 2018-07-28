@@ -87,6 +87,10 @@ border-left: 1px solid #dee2e6;
     cursor: pointer;
 }
 
+td{
+    vertical-align: middle !important;
+}
+
 .selected-row{
     background-color: rgba(107,172,70,0.9) !important;
     color: white;
@@ -97,4 +101,12 @@ border-left: 1px solid #dee2e6;
     height: 24px;
     position: relative;
     top: -3px;
+}
+
+.suspend-icon{
+    font-size:14pt;
+    color:rgba(250, 168, 15, 0.7);
+}
+.suspend-icon:hover{
+    color:rgba(255, 166, 0, 1);
 }
