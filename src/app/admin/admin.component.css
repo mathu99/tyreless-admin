@@ -90,6 +90,7 @@ border-left: 1px solid #dee2e6;
 .selected-row{
     background-color: rgba(107,172,70,0.9) !important;
     color: white;
+    border: 1px solid grey !important;
 }
 
 .row-spinner{

@@ -58,6 +58,9 @@ const appRoutes: Routes = [
       { enableTracing: true } // <-- debugging purposes only
     ),
     NgbModule.forRoot(),
+    LaddaModule.forRoot({
+      style: "zoom-in",
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

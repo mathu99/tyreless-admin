@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TyreSchema = new Schema({
+  id: {
+    type: String,
+    required: true
+  },
   vehicleType: {
     type: String,
     required: true

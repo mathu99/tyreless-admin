@@ -70,44 +70,10 @@ router.get('/user', passport.authenticate('jwt', { session: false }), function (
     }
 });
 
-router.post('/book', passport.authenticate('jwt', { session: false }), function (req, res) {
-    var token = getToken(req.headers);
-    if (token) {
-        var newBook = new Book({
-            isbn: req.body.isbn,
-            title: req.body.title,
-            author: req.body.author,
-            publisher: req.body.publisher
-        });
-
-        newBook.save(function (err) {
-            if (err) {
-                return res.json({ success: false, msg: 'Save book failed.' });
-            }
-            res.json({ success: true, msg: 'Successful created new book.' });
-        });
-    } else {
-        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
-    }
-});
-
-router.get('/book', passport.authenticate('jwt', { session: false }), function (req, res) {
-    var token = getToken(req.headers);
-    if (token) {
-        Book.find(function (err, books) {
-            if (err) return next(err);
-            res.json(books);
-        });
-    } else {
-        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
-    }
-});
-
-
 router.post('/partner', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        var partner = new Partner({
+        var partner = {
             customerCode: (req.body.customerCode) ? req.body.customerCode : uuidv4(),
             retailerName: req.body.retailerName,
             registeredName: req.body.registeredName,
@@ -118,20 +84,14 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
             partnerZoneEmail: req.body.partnerZoneEmail,
             salesEmail: req.body.salesEmail,
             status: 'Active'
-        });
+        };
         var query = {'customerCode': partner.customerCode};
-        partner.findOneAndUpdate(query, partner, {upsert:true}, function(err, doc){
+        Partner.findOneAndUpdate(query, partner, {upsert:true}, function(err, doc){
             if (err) {
-                return res.json({ success: false, msg: 'Save Partner failed.' + err });
+                return res.status(500).send({ success: false, msg: 'Save Partner failed. ' + err });
             }
             res.json({ success: true, msg: 'Successful created/updated Partner.' });
         });
-        /*partner.save(function (err) {
-            if (err) {
-                return res.json({ success: false, msg: 'Save Partner failed.' });
-            }
-            res.json({ success: true, msg: 'Successful created/updated Partner.' });
-        });*/
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }
@@ -149,10 +109,23 @@ router.get('/partner', passport.authenticate('jwt', { session: false }), functio
     }
 });
 
+router.delete('/partner', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        Partner.find({ _id:req.body._id }, err => {
+            if (err) return res.json({ success: false, msg: 'Delete Partner failed - could not find by ID' });
+        }).remove().exec();
+        res.json({ success: true, msg: 'Partner deleted' });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.post('/tyre', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        var tyre = new Tyre({
+        var tyre ={
+            id: (req.body.id) ? req.body.id : uuidv4(),
             vehicleType: req.body.vehicleType,
             brand: req.body.brand,
             logo: req.body.logo,
@@ -162,11 +135,11 @@ router.post('/tyre', passport.authenticate('jwt', { session: false }), function 
             profile: req.body.profile,
             size: req.body.size,
             speedRating: req.body.speedRating,
-        });
-
-        tyre.save(function (err) {
+        };
+        var query = {'id': tyre.id};
+        Tyre.findOneAndUpdate(query, tyre, {upsert:true}, function(err, doc){
             if (err) {
-                return res.json({ success: false, msg: 'Save Tyre failed.' });
+                return res.status(500).send({ success: false, msg: 'Save Tyre failed. ' + err });
             }
             res.json({ success: true, msg: 'Successful created/updated Tyre.' });
         });
@@ -202,13 +175,14 @@ router.delete('/tyre', passport.authenticate('jwt', { session: false }), functio
 router.post('/inclusion', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        var inclusion = new Inclusion({
+        var inclusion = {
+            id: (req.body.id) ? req.body.id : uuidv4(),
             description: req.body.description,
-        });
-
-        inclusion.save(function (err) {
+        };
+        var query = {'id': inclusion.id};
+        Inclusion.findOneAndUpdate(query, inclusion, {upsert:true}, function(err, doc){
             if (err) {
-                return res.json({ success: false, msg: 'Save Inclusion failed.' });
+                return res.status(500).send({ success: false, msg: 'Save Inclusion failed. ' + err });
             }
             res.json({ success: true, msg: 'Successful created/updated Inclusion.' });
         });

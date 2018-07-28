@@ -149,7 +149,7 @@
                                     <div class="col-3 p-1">
                                       <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
                                           <span *ngIf="!properties.inclusionSelected">Add Inclusion</span>
-                                          <span *ngIf="properties.inclusionSelected">Update Inclusion</span>
+                                          <span *ngIf="properties.inclusionSelected">Update</span>
                                       </button>
                                     </div>
                                   </div>
@@ -193,7 +193,10 @@
                     <td>{{ partner.salesEmail }}</td>
                     <td>{{ partner.status }}</td>
                     <td></td>
-                    <td></td>
+                    <td>
+                      <img *ngIf="partner.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
+                      <button *ngIf="!partner.deleting" (click)="removePartner(partner, $event)" type="button" class="close delete-row">&times;</button>
+                    </td>
                   </tr>
                   <tr *ngIf="!data.partnerList || data.partnerList.length == 0">
                     <td colspan="12" class="text-center">No results</td>
@@ -230,7 +233,7 @@
                       <td>{{ tyre.speedRating }}</td>
                       <td>
                         <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                        <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre)" type="button" class="close delete-row">&times;</button>
+                        <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre, $event)" type="button" class="close delete-row">&times;</button>
                       </td>
                     </tr>
                     <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
@@ -250,7 +253,7 @@
                         <td>{{ inclusion.description }}</td>
                         <td>
                             <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                            <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion)" type="button" class="close delete-row">&times;</button>
+                            <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row">&times;</button>
                         </td>
                       </tr>
                       <tr *ngIf="!data.inclusionList || data.inclusionList.length == 0">
