@@ -119,10 +119,10 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
             salesEmail: req.body.salesEmail,
             status: 'Active'
         });
-        var query = {};
+        var query = {'customerCode': partner.customerCode};
         partner.findOneAndUpdate(query, partner, {upsert:true}, function(err, doc){
             if (err) {
-                return res.json({ success: false, msg: 'Save Partner failed.' });
+                return res.json({ success: false, msg: 'Save Partner failed.' + err });
             }
             res.json({ success: true, msg: 'Successful created/updated Partner.' });
         });
