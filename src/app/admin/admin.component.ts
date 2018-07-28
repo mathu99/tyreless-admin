@@ -21,10 +21,13 @@ export class AdminComponent implements OnInit {
     inclusionList: [],
   };
   properties: any = {
-    createPartnerLoading: false,
+    loadingPartners: true, /* Service call to retrieve */
+    loadingTyres: true, 
+    loadingInclusions: true, 
+    createPartnerLoading: false, /* Service call to create */
     createTyresLoading: false,
     createInclusionsLoading: false,
-    partnerSelected: false,
+    partnerSelected: false, /* Is row selected for modification */
     tyreSelected: false,
     inclusionSelected: false,
   };
@@ -79,12 +82,16 @@ export class AdminComponent implements OnInit {
   }
 
   getPartners = () => {
+    this.data.partnerList = {};
+    this.properties.loadingPartners = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.get('/api/partner', httpOptions).subscribe(data => {
       this.data.partnerList = data;
+      this.properties.loadingPartners = false;
     }, err => {
+      this.properties.loadingPartners = false;
       // this.data.partnerList = JSON.parse('[{"_id":"5b466061932d6770183fdc15","customerCode":"be42bc92-30ec-4538-8997-5592c2a0fbba","retailerName":"Tiger Wheel & Tyre","registeredName":"-","province":"Gauteng","suburb":"Sandton","branchName":"Sandton City","branchPin":"test pin","partnerZoneEmail":"admin@twt.co.za","salesEmail":"sales@twt.co.za","status":"Active","__v":0},{"_id":"5b470694824e3e0014b762f1","customerCode":"99b1850d-c6ec-4068-ae77-fcfd66b37548","retailerName":"Supa Quick","registeredName":"ABC (Pty) Ltd","province":"Gauteng","suburb":"Sandton","branchName":"Wynberg","branchPin":"26.109636. 28.083778","partnerZoneEmail":"admin@supaquick.co.za","salesEmail":"sales@supaquick.co.za","status":"Active","__v":0}]');
       console.log(err)
     });
@@ -125,12 +132,16 @@ export class AdminComponent implements OnInit {
   }
 
   getTyres = () => {
+    this.data.tyreList = {};
+    this.properties.loadingTyres = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.get('/api/tyre', httpOptions).subscribe(data => {
+      this.properties.loadingTyres = false;
       this.data.tyreList = data;
     }, err => {
+      this.properties.loadingTyres = false;
       console.log(err)
     });
   }
@@ -170,12 +181,16 @@ export class AdminComponent implements OnInit {
   }
 
   getInclusions = () => {
+    this.data.inclusionList = {};
+    this.properties.loadingInclusions = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.get('/api/inclusion', httpOptions).subscribe(data => {
+      this.properties.loadingInclusions = false;
       this.data.inclusionList = data;
     }, err => {
+      this.properties.loadingInclusions = false;
       console.log(err);
     });
   }

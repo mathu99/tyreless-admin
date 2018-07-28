@@ -198,8 +198,13 @@
                       <button *ngIf="!partner.deleting" (click)="removePartner(partner, $event)" type="button" class="close delete-row">&times;</button>
                     </td>
                   </tr>
-                  <tr *ngIf="!data.partnerList || data.partnerList.length == 0">
+                  <tr *ngIf="!properties.loadingPartners && (!data.partnerList || data.partnerList.length == 0)">
                     <td colspan="12" class="text-center">No results</td>
+                  </tr>
+                  <tr *ngIf="properties.loadingPartners">
+                    <td colspan="12" class="text-center">
+                        <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -236,8 +241,13 @@
                         <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre, $event)" type="button" class="close delete-row">&times;</button>
                       </td>
                     </tr>
-                    <tr *ngIf="!data.tyreList || data.tyreList.length == 0">
+                    <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
                       <td colspan="11" class="text-center">No results</td>
+                    </tr>
+                    <tr *ngIf="properties.loadingTyres">
+                      <td colspan="2" class="text-center">
+                          <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -256,8 +266,13 @@
                             <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row">&times;</button>
                         </td>
                       </tr>
-                      <tr *ngIf="!data.inclusionList || data.inclusionList.length == 0">
+                      <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
                         <td colspan="2" class="text-center">No results</td>
+                      </tr>
+                      <tr *ngIf="properties.loadingInclusions">
+                        <td colspan="2" class="text-center">
+                            <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                        </td>
                       </tr>
                     </tbody>
                   </table>
