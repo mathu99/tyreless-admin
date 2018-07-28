@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from "@angular/router";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { error } from 'util';
 
 @Component({
   selector: 'app-admin',
@@ -30,10 +32,12 @@ export class AdminComponent implements OnInit {
     partnerSelected: false, /* Is row selected for modification */
     tyreSelected: false,
     inclusionSelected: false,
+    errorMessage: '' /* Msg that pops up in modal */
   };
   userInfo: any = {};
+  @ViewChild('errorModal') private errorModal;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) { }
 
   ngOnInit() {
     let httpOptions = {
@@ -43,11 +47,33 @@ export class AdminComponent implements OnInit {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
     }, err => {
-      console.log(err);
+      this.properties.errorMessage = err.error.msg;
+      this.openErrorModal();
     });
     this.getPartners();
     this.getTyres();
     this.getInclusions();
+  }
+
+  extractError = (err: any):string => {
+    let errorMessage = 'The following error occured: ';
+    if (err.error && err.error.msg) {
+      errorMessage += err.error.msg;
+    } else if (err.message) {
+      errorMessage += err.message;
+    } else {
+      errorMessage = 'An unknown error occured';
+    }
+    this.openErrorModal();
+    return errorMessage;
+  }
+
+  openErrorModal = ():void => {
+    this.open(this.errorModal);
+  }
+
+  open(content) {
+    this.modalService.open(content).result.then((result) => {}, (reason) => {});
   }
 
   logout() {
@@ -77,12 +103,12 @@ export class AdminComponent implements OnInit {
       this.properties.createPartnerLoading = false;
     }, err => {
       this.properties.createPartnerLoading = false;
-      console.log(err.error.msg);
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
   getPartners = () => {
-    this.data.partnerList = {};
+    this.data.partnerList = [];
     this.properties.loadingPartners = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
@@ -93,7 +119,7 @@ export class AdminComponent implements OnInit {
     }, err => {
       this.properties.loadingPartners = false;
       // this.data.partnerList = JSON.parse('[{"_id":"5b466061932d6770183fdc15","customerCode":"be42bc92-30ec-4538-8997-5592c2a0fbba","retailerName":"Tiger Wheel & Tyre","registeredName":"-","province":"Gauteng","suburb":"Sandton","branchName":"Sandton City","branchPin":"test pin","partnerZoneEmail":"admin@twt.co.za","salesEmail":"sales@twt.co.za","status":"Active","__v":0},{"_id":"5b470694824e3e0014b762f1","customerCode":"99b1850d-c6ec-4068-ae77-fcfd66b37548","retailerName":"Supa Quick","registeredName":"ABC (Pty) Ltd","province":"Gauteng","suburb":"Sandton","branchName":"Wynberg","branchPin":"26.109636. 28.083778","partnerZoneEmail":"admin@supaquick.co.za","salesEmail":"sales@supaquick.co.za","status":"Active","__v":0}]');
-      console.log(err)
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
@@ -112,7 +138,7 @@ export class AdminComponent implements OnInit {
       this.getPartners();
     }, err => {
       partner.deleting = false;
-      console.log(err);
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
@@ -124,15 +150,15 @@ export class AdminComponent implements OnInit {
     this.http.post('/api/tyre', this.data.tyre, httpOptions).subscribe(resp => {
       this.getTyres();
       this.data.tyre = {};
-    }, err => {
-      console.log(err.error.msg);
-    }, () => {
       this.properties.createTyresLoading = false;
+    }, err => {
+      this.properties.createTyresLoading = false;
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
   getTyres = () => {
-    this.data.tyreList = {};
+    this.data.tyreList = [];
     this.properties.loadingTyres = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
@@ -142,7 +168,7 @@ export class AdminComponent implements OnInit {
       this.data.tyreList = data;
     }, err => {
       this.properties.loadingTyres = false;
-      console.log(err)
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
@@ -161,7 +187,7 @@ export class AdminComponent implements OnInit {
       this.getTyres();
     }, err => {
       tyre.delting = false;
-      console.log(err);
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
@@ -173,15 +199,15 @@ export class AdminComponent implements OnInit {
     this.http.post('/api/inclusion', this.data.inclusion, httpOptions).subscribe(resp => {
       this.getInclusions();
       this.data.inclusion = {};
-    }, err => {
-      console.log(err);
-    }, ()=>{
       this.properties.createInclusionsLoading = false;
+    }, err => {
+      this.properties.createInclusionsLoading = false;
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
   getInclusions = () => {
-    this.data.inclusionList = {};
+    this.data.inclusionList = [];
     this.properties.loadingInclusions = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
@@ -191,7 +217,7 @@ export class AdminComponent implements OnInit {
       this.data.inclusionList = data;
     }, err => {
       this.properties.loadingInclusions = false;
-      console.log(err);
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
@@ -210,7 +236,7 @@ export class AdminComponent implements OnInit {
       this.getInclusions();
     }, err => {
       inclusion.deleting = false;
-      console.log(err);
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
