@@ -8,17 +8,11 @@ import { LaddaModule } from 'angular2-ladda';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { BookComponent } from './book/book.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 
 const appRoutes: Routes = [
-  {
-    path: 'books',
-    component: BookComponent,
-    data: { title: 'Book List' }
-  },
   {
     path: 'admin',
     component: AdminComponent,
@@ -45,7 +39,6 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     SignupComponent,
-    BookComponent,
     AdminComponent,
   ],
   imports: [

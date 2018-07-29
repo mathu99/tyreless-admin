@@ -7,7 +7,6 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 var crypto = require('crypto');
 var User = require("../models/user");
-var Book = require("../models/book");
 var Partner = require("../models/partner");
 var Tyre = require("../models/tyre");
 var Inclusion = require("../models/inclusion");
@@ -101,9 +100,9 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
 router.get('/partner', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        Partner.find(function (err, books) {
+        Partner.find(function (err, partner) {
             if (err) return next(err);
-            res.json(books);
+            res.json(partner);
         });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
