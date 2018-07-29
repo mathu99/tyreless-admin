@@ -172,11 +172,58 @@
                     <div class="tab-content p-2" id="pzTabContent">
                       <div class="tab-pane fade show active" id="pzTyres" role="tabpanel" aria-labelledby="pz-tyres-tab">
                           <div class="row p-2">
-                            <div class="col-6"></div>
-                            <div class="col-6 text-right">
+                            <div class="col-8">
+                                <p class="font-italic m-3">Edit existing tyres &amp; inclusions below or <a (click)="openTyreSelectionModal()">add new tyres</a></p>
+                            </div>
+                            <div class="col-4 text-right" style="line-height:51px;">
                                 <button type="button" class="btn btn-secondary" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
                             </div>
                           </div>
+                          <table class="table table-striped text-center table-smaller" id="pzTyresTable">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Vehicle Type</th>
+                                  <th scope="col">Brand</th>
+                                  <th scope="col">Logo</th>
+                                  <th scope="col">Tyre Model</th>
+                                  <th scope="col">Tyre Image</th>
+                                  <th scope="col">Tyre Width</th>
+                                  <th scope="col">Tyre Profile</th>
+                                  <th scope="col">Wheel Size</th>
+                                  <th scope="col">Speed Rating</th>
+                                  <th scope="col">Inclusions</th>
+                                  <th scope="col">Price</th>
+                                  <th scope="col"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let tyre of data.tyreList">
+                                  <td>{{ tyre.vehicleType }}</td>
+                                  <td>{{ tyre.brand }}</td>
+                                  <td>{{ tyre.logo }}</td>
+                                  <td>{{ tyre.tyreModel }}</td>
+                                  <td>{{ tyre.tyreImage }}</td>
+                                  <td>{{ tyre.width }}</td>
+                                  <td>{{ tyre.profile }}</td>
+                                  <td>{{ tyre.size }}</td>
+                                  <td>{{ tyre.speedRating }}</td>
+                                  <td>Inclusion</td>
+                                  <td>Price</td>
+                                  <td>
+                                    <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
+                                    <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre, $event)" type="button" class="close delete-row"  placement="top" ngbTooltip="Delete">&times;</button>
+                                  </td>
+                                </tr>
+                                <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
+                                  <td colspan="12" class="text-center">No results</td>
+                                </tr>
+                                <tr *ngIf="properties.loadingTyres">
+                                  <td colspan="12" class="text-center">
+                                      <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
                       </div>
                       <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
                         <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>
@@ -308,7 +355,7 @@
                       <td colspan="11" class="text-center">No results</td>
                     </tr>
                     <tr *ngIf="properties.loadingTyres">
-                      <td colspan="2" class="text-center">
+                      <td colspan="11" class="text-center">
                           <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
                       </td>
                     </tr>
@@ -404,7 +451,7 @@
                 <td>{{ tyre.speedRating }}</td>
                 <td>
                   <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif"/>
-                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre)" class="suspend-icon fa fa-plus" placement="top" ngbTooltip="Add this tyre" aria-hidden="true"></i>
+                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre)" class="suspend-icon fa fa-plus" placement="top" ngbTooltip="Add Tyre" aria-hidden="true"></i>
                 </td>
               </tr>
               <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">

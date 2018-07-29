@@ -13,7 +13,7 @@ export class AdminComponent implements OnInit {
 
   data: any = {
     title: 'PartnerZone', //Admin
-    activeTab: 'Manage Partner',  //Manage Partne
+    activeTab: 'My Deals',  //Manage Partne
     activeDealInputTab: 'Tyres & Inclusions',
     partner: {},
     tyre: {},
