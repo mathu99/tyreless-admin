@@ -11,6 +11,7 @@ var Book = require("../models/book");
 var Partner = require("../models/partner");
 var Tyre = require("../models/tyre");
 var Inclusion = require("../models/inclusion");
+var PartnerService = require("../models/partnerService");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -210,6 +211,39 @@ router.delete('/inclusion', passport.authenticate('jwt', { session: false }), fu
             if (err) return res.json({ success: false, msg: 'Delete Inclusion failed - could not find by ID' });
         }).remove().exec();
         res.json({ success: true, msg: 'Inclusion deleted' });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.get('/partnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerService.findOne({ partnerId:req.query.id }, (err, partnerServices) => {
+            if (err) return next(err);
+            else if (partnerServices) res.json(partnerServices)
+            else return res.status(200).send({ success: true, noResults: true, msg: 'No Partner Service found.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.post('/partnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var partnerService = {
+            partnerId: req.body.userInfo._id,
+            wheelAlignmentPrice: req.body.services.wheelAlignmentPrice,
+            wheelBalancingPrice: req.body.services.wheelBalancingPrice,
+        };
+        var query = {'partnerId': partnerService.partnerId};
+        PartnerService.findOneAndUpdate(query, partnerService, {upsert:true}, function(err, doc){
+            if (err) {
+                return res.status(500).send({ success: false, msg: 'Save Serivce failed. ' + err });
+            }
+            res.json({ success: true, msg: 'Successful created/updated Serivce.' });
+        });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }

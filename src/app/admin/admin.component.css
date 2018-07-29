@@ -114,3 +114,9 @@ td{
 .btn{
     font-size:inherit;
 }
+
+@media (min-width: 992px){
+    .modal-lg {
+        max-width:80% !important;
+    }
+}

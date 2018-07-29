@@ -171,43 +171,55 @@
                     </ul>
                     <div class="tab-content p-2" id="pzTabContent">
                       <div class="tab-pane fade show active" id="pzTyres" role="tabpanel" aria-labelledby="pz-tyres-tab">
-                        Tyres
+                          <div class="row p-2">
+                            <div class="col-6"></div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-secondary" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
+                            </div>
+                          </div>
                       </div>
                       <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
-                        <div class="row p-2">
-                          <div class="col-6"></div>
-                          <div class="col-6 text-right">
-                              <button type="button" class="btn btn-secondary" (click)="openServicesModal()">Add Service</button>
-                          </div>
+                        <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>
+                        <div *ngIf="!properties.pz.loadingServices">
+                            <form (ngSubmit)="updatePartnerServices()" #partnerServicesUpdateForm="ngForm">
+                            <div class="row m-1">
+                                <div class="col-3 font-weight-bold" style="line-height: 46px">
+                                  Wheel Alignment
+                                </div>
+                                <div class="col-3">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">R</span>
+                                      </div>
+                                      <input type="text" id="partnerServicesUpdateWheelAlignment" name="partnerServicesUpdateWheelAlignment" [(ngModel)]="data.pzPartner.services.wheelAlignmentPrice" class="form-control" placeholder="" aria-label="Wheel Alignment Price" aria-describedby="basic-addon1" required>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="row m-1">
+                                <div class="col-3 font-weight-bold" style="line-height: 46px">
+                                  Wheel Balancing
+                                </div>
+                                <div class="col-3">
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">R</span>
+                                    </div>
+                                    <input type="text" id="partnerServicesUpdateWheelBalancing" name="partnerServicesUpdateWheelBalancing" [(ngModel)]="data.pzPartner.services.wheelBalancingPrice" class="form-control" placeholder="" aria-label="Wheel Balancing Price" aria-describedby="basic-addon1" required>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row m-1">
+                                <div class="col-3" style="line-height: 46px">
+                                </div>
+                                <div class="col-3">
+                                  <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerServicesUpdateForm.form.valid" [ladda]="properties.pz.updatingService">Update Prices</button>
+                                </div>
+                              </div>
+                              </form>
                         </div>
-                        <table class="table table-striped text-left table-smaller" id="pzMyServicesTable">
-                          <thead>
-                            <tr>
-                              <th scope="col" width="80%">Description</th>
-                              <th scope="col" width="20%">Price</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
-                              <td>{{ inclusion.description }}</td>
-                              <td>
-                                  <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                                  <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row" placement="top" ngbTooltip="Delete" >&times;</button>
-                              </td>
-                            </tr>
-                            <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
-                              <td colspan="2" class="text-center">
-                                No services currently, <a (click)="openServicesModal()">add one</a>
-                              </td>
-
-                            </tr>
-                            <tr *ngIf="properties.loadingInclusions">
-                              <td colspan="2" class="text-center">
-                                  <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <div *ngIf="properties.pz.loadingServices" class="text-center p-3">
+                            <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                        </div>
                       </div>
                     </div>
                 </div>
@@ -343,41 +355,67 @@
     </div>
 </ng-template>
 
-<ng-template #servicesModal let-c="close" let-d="dismiss">
+<ng-template #tyreSelectionModal let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h5 class="modal-title custom">Add Service</h5>
+        <h5 class="modal-title custom">Add Tyres</h5>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <table class="table table-striped text-left table-smaller" id="pzServicesTable">
-          <thead>
-            <tr>
-              <th scope="col" width="80%">Description</th>
-              <th scope="col" width="20%"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
-              <td>{{ inclusion.description }}</td>
-              <td>
-                  <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                  <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row" placement="top" ngbTooltip="Delete" >&times;</button>
-              </td>
-            </tr>
-            <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
-              <td colspan="2" class="text-center">
-                No services
-              </td>
-
-            </tr>
-            <tr *ngIf="properties.loadingInclusions">
-              <td colspan="2" class="text-center">
-                  <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="row">
+          <div class="col-8 p-3"></div>
+          <div class="col-4 p-3">
+              <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search tyres" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" style="border: 1px solid #ced4da">
+                        <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+          </div>
+        </div>
+        <table class="table table-striped text-center table-smaller" id="pzTyreSelectionTable">
+            <thead>
+              <tr>
+                <th scope="col">Vehicle Type</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Logo</th>
+                <th scope="col">Tyre Model</th>
+                <th scope="col">Tyre Image</th>
+                <th scope="col">Tyre Width</th>
+                <th scope="col">Tyre Profile</th>
+                <th scope="col">Wheel Size</th>
+                <th scope="col">Speed Rating</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tyre of data.tyreList">
+                <td>{{ tyre.vehicleType }}</td>
+                <td>{{ tyre.brand }}</td>
+                <td>{{ tyre.logo }}</td>
+                <td>{{ tyre.tyreModel }}</td>
+                <td>{{ tyre.tyreImage }}</td>
+                <td>{{ tyre.width }}</td>
+                <td>{{ tyre.profile }}</td>
+                <td>{{ tyre.size }}</td>
+                <td>{{ tyre.speedRating }}</td>
+                <td>
+                  <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif"/>
+                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre)" class="suspend-icon fa fa-plus" placement="top" ngbTooltip="Add this tyre" aria-hidden="true"></i>
+                </td>
+              </tr>
+              <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
+                <td colspan="10" class="text-center">No results</td>
+              </tr>
+              <tr *ngIf="properties.loadingTyres">
+                <td colspan="10" class="text-center">
+                    <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                </td>
+              </tr>
+            </tbody>
+          </table>
     </div>
 </ng-template>

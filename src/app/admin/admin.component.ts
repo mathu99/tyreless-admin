@@ -12,7 +12,7 @@ import { error } from 'util';
 export class AdminComponent implements OnInit {
 
   data: any = {
-    title: 'Admin', //Admin
+    title: 'PartnerZone', //Admin
     activeTab: 'Manage Partner',  //Manage Partne
     activeDealInputTab: 'Tyres & Inclusions',
     partner: {},
@@ -21,6 +21,7 @@ export class AdminComponent implements OnInit {
     partnerList: [],
     tyreList: [],
     inclusionList: [],
+    pzPartner: {},
   };
   properties: any = {
     loadingPartners: true, /* Service call to retrieve */
@@ -33,11 +34,15 @@ export class AdminComponent implements OnInit {
     tyreSelected: false,
     inclusionSelected: false,
     errorMessage: '', /* Msg that pops up in modal */
-    surpressErrors: true,
+    surpressErrors: false,
+    pz: {
+      loadingServices: true,
+      updatingService: false,
+    },
   };
   userInfo: any = {};
   @ViewChild('errorModal') private errorModal;
-  @ViewChild('servicesModal') private servicesModal;
+  @ViewChild('tyreSelectionModal') private tyreSelectionModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) { }
 
@@ -48,7 +53,11 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/user', httpOptions).subscribe(data => {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
-      this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inlcusions';
+      if (this.userInfo.role !== 'Admin') {
+        this.data.pzPartner.userInfo = this.userInfo;
+        this.getPartnerServices(this.userInfo['_id']);
+      }
+      this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
@@ -72,16 +81,16 @@ export class AdminComponent implements OnInit {
     return errorMessage;
   }
 
-  openServicesModal = ():void => {
-    this.open(this.servicesModal);
+  openTyreSelectionModal = ():void => {
+    this.open(this.tyreSelectionModal, { size: 'lg' });
   }
 
   openErrorModal = ():void => {
     this.open(this.errorModal);
   }
 
-  open(content) {
-    this.modalService.open(content).result.then((result) => {}, (reason) => {});
+  open(content, options?:any) {
+    this.modalService.open(content, options).result.then((result) => {}, (reason) => {});
   }
 
   logout() {
@@ -120,6 +129,37 @@ export class AdminComponent implements OnInit {
     this.data.partner = JSON.parse(JSON.stringify(partner));
     this.data.partner.status = status;
     this.partnerUpdate();
+  }
+
+  getPartnerServices = (id:string) => {
+    this.data.pzPartner.services = {};
+    this.properties.pz.loadingServices = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/partnerServices?id=' + id, httpOptions).subscribe(data => {
+      if (!data['noResults']) {
+        this.data.pzPartner.services = data;
+      }
+      this.properties.pz.loadingServices = false;
+    }, err => {
+      this.properties.pz.loadingServices = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  updatePartnerServices = () => {
+    this.properties.pz.updatingService = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.post('/api/partnerServices', this.data.pzPartner, httpOptions).subscribe(resp => {
+      this.getPartnerServices(this.data.pzPartner.userInfo._id);
+      this.properties.pz.updatingService = false;
+    }, err => {
+      this.properties.pz.updatingService = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
   }
 
   getPartners = () => {
