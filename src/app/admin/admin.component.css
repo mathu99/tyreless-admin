@@ -60,7 +60,7 @@ border-left: 1px solid #dee2e6;
     font-size:inherit;
 }
 
-#myTabContent{
+#myTabContent, #pzTabContent{
     border: 1px solid #dee2e6;
     border-radius: 0pt 5pt 5pt 5pt;
 }
@@ -109,4 +109,8 @@ td{
 }
 .suspend-icon:hover{
     color:rgba(255, 166, 0, 1);
+}
+
+.btn{
+    font-size:inherit;
 }

@@ -17,11 +17,11 @@
   <div class="partner-zone">
       <div class="row">
           <div class="col-12 col-header text-center">
-            <h5 class="m-0">{{ data.activeTab }} <span *ngIf="data.activeTab == 'Deal Input'"> - {{ data.activeDealInputTab }}</span></h5>
+            <h5 class="m-0">{{ data.activeTab }} <span *ngIf="data.activeTab == 'Deal Input' || data.activeTab == 'My Deals'"> - {{ data.activeDealInputTab }}</span></h5>
           </div>
       </div>
       <div class="row admin-body p-3">
-          <div class="col-2 p-2">
+          <div class="col-2 p-2" style="margin-top: 5pt">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Manage Partner')" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
                   <i class="fa fa-user"></i> Partner
@@ -161,7 +161,55 @@
                   <p>Partner deals</p>
                 </div>
                 <div *ngIf="data.title == 'PartnerZone'" class="tab-pane fade active show" id="v-pills-my-deals" role="tabpanel" aria-labelledby="v-pills-my-deals-tab">
-                  <p>My deals</p>
+                    <ul class="nav nav-tabs" id="partnerZoneTab" role="tablist">
+                      <li class="nav-item">
+                        <a (click)="setActiveTab('activeDealInputTab', 'Tyres & Inclusions')" class="nav-link active" id="pz-tyres-tab" data-toggle="tab" href="#pzTyres" role="tab" aria-controls="pzTyres" aria-selected="true">Tyres &amp; Inclusions</a>
+                      </li>
+                      <li class="nav-item">
+                        <a (click)="setActiveTab('activeDealInputTab', 'Services')" class="nav-link" id="pz-services-tab" data-toggle="tab" href="#pzServices" role="tab" aria-controls="pzServices" aria-selected="false">Services</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content p-2" id="pzTabContent">
+                      <div class="tab-pane fade show active" id="pzTyres" role="tabpanel" aria-labelledby="pz-tyres-tab">
+                        Tyres
+                      </div>
+                      <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
+                        <div class="row p-2">
+                          <div class="col-6"></div>
+                          <div class="col-6 text-right">
+                              <button type="button" class="btn btn-secondary" (click)="openServicesModal()">Add Service</button>
+                          </div>
+                        </div>
+                        <table class="table table-striped text-left table-smaller" id="pzMyServicesTable">
+                          <thead>
+                            <tr>
+                              <th scope="col" width="80%">Description</th>
+                              <th scope="col" width="20%">Price</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
+                              <td>{{ inclusion.description }}</td>
+                              <td>
+                                  <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
+                                  <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row" placement="top" ngbTooltip="Delete" >&times;</button>
+                              </td>
+                            </tr>
+                            <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
+                              <td colspan="2" class="text-center">
+                                No services currently, <a (click)="openServicesModal()">add one</a>
+                              </td>
+
+                            </tr>
+                            <tr *ngIf="properties.loadingInclusions">
+                              <td colspan="2" class="text-center">
+                                  <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -285,7 +333,7 @@
 
 <ng-template #errorModal let-c="close" let-d="dismiss">
     <div class="modal-header">
-        <h4 class="modal-title custom">Whoops!</h4>
+        <h5 class="modal-title custom">Whoops!</h5>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -293,7 +341,43 @@
     <div class="modal-body">
         {{ properties.errorMessage }}
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+</ng-template>
+
+<ng-template #servicesModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h5 class="modal-title custom">Add Service</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped text-left table-smaller" id="pzServicesTable">
+          <thead>
+            <tr>
+              <th scope="col" width="80%">Description</th>
+              <th scope="col" width="20%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
+              <td>{{ inclusion.description }}</td>
+              <td>
+                  <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
+                  <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row" placement="top" ngbTooltip="Delete" >&times;</button>
+              </td>
+            </tr>
+            <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
+              <td colspan="2" class="text-center">
+                No services
+              </td>
+
+            </tr>
+            <tr *ngIf="properties.loadingInclusions">
+              <td colspan="2" class="text-center">
+                  <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+              </td>
+            </tr>
+          </tbody>
+        </table>
     </div>
 </ng-template>

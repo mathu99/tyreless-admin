@@ -12,9 +12,9 @@ import { error } from 'util';
 export class AdminComponent implements OnInit {
 
   data: any = {
-    title: 'Admin',
-    activeTab: 'Manage Partner',
-    activeDealInputTab: 'Tyres',
+    title: 'Admin', //Admin
+    activeTab: 'Manage Partner',  //Manage Partne
+    activeDealInputTab: 'Tyres & Inclusions',
     partner: {},
     tyre: {},
     inclusion: {},
@@ -32,10 +32,12 @@ export class AdminComponent implements OnInit {
     partnerSelected: false, /* Is row selected for modification */
     tyreSelected: false,
     inclusionSelected: false,
-    errorMessage: '' /* Msg that pops up in modal */
+    errorMessage: '', /* Msg that pops up in modal */
+    surpressErrors: true,
   };
   userInfo: any = {};
   @ViewChild('errorModal') private errorModal;
+  @ViewChild('servicesModal') private servicesModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) { }
 
@@ -46,9 +48,9 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/user', httpOptions).subscribe(data => {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
+      this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inlcusions';
     }, err => {
-      this.properties.errorMessage = err.error.msg;
-      this.openErrorModal();
+      this.properties.errorMessage = this.extractError(err);
     });
     this.getPartners();
     this.getTyres();
@@ -64,8 +66,14 @@ export class AdminComponent implements OnInit {
     } else {
       errorMessage = 'An unknown error occured';
     }
-    this.openErrorModal();
+    if (!this.properties.surpressErrors)  {
+      this.openErrorModal();
+    }
     return errorMessage;
+  }
+
+  openServicesModal = ():void => {
+    this.open(this.servicesModal);
   }
 
   openErrorModal = ():void => {
