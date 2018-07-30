@@ -120,3 +120,9 @@ td{
         max-width:80% !important;
     }
 }
+
+.login-warning{
+    font-style: italic;
+    font-size:9pt;
+    color:#ffc107;
+  }

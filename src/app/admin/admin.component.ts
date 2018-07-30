@@ -34,10 +34,11 @@ export class AdminComponent implements OnInit {
     tyreSelected: false,
     inclusionSelected: false,
     errorMessage: '', /* Msg that pops up in modal */
-    surpressErrors: false,
+    surpressErrors: true,
     pz: {
       loadingServices: true,
       updatingService: false,
+      passwordUpdateError: '',
     },
   };
   userInfo: any = {};
@@ -79,6 +80,22 @@ export class AdminComponent implements OnInit {
       this.openErrorModal();
     }
     return errorMessage;
+  }
+
+  checkPasswordValidity = (role: string) => {
+    this.properties.pz.passwordUpdateError = '';
+    if (!this.data.pzPartner.newPasswordConfirm || this.data.pzPartner.newPasswordConfirm !== this.data.pzPartner.newPassword) {
+      this.properties.pz.passwordUpdateError = 'Passwords must match';
+    }
+    if (role === 'primary') { /* New Password */
+      if (!this.data.pzPartner.newPassword || this.data.pzPartner.newPassword.length < 8) {
+        this.properties.pz.passwordUpdateError = 'Password must be at least 8 characters';
+      }
+    } 
+  }
+
+  updatePartnerPassword = (): void => {
+
   }
 
   openTyreSelectionModal = ():void => {
