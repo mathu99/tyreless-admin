@@ -30,6 +30,7 @@ export class AdminComponent implements OnInit {
     createPartnerLoading: false, /* Service call to create */
     createTyresLoading: false,
     createInclusionsLoading: false,
+    signupPartnerLoading: true,
     partnerSelected: false, /* Is row selected for modification */
     tyreSelected: false,
     inclusionSelected: false,
@@ -44,6 +45,7 @@ export class AdminComponent implements OnInit {
   userInfo: any = {};
   @ViewChild('errorModal') private errorModal;
   @ViewChild('tyreSelectionModal') private tyreSelectionModal;
+  @ViewChild('partnerCreationModal') private partnerCreationModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) { }
 
@@ -54,6 +56,7 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/user', httpOptions).subscribe(data => {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
+      this.data.activeTab = this.userInfo.role === 'admin' ? 'Manage Partner' : 'My Deals';
       if (this.userInfo.role !== 'Admin') {
         this.data.pzPartner.userInfo = this.userInfo;
         this.getPartnerServices(this.userInfo['_id']);
@@ -82,20 +85,38 @@ export class AdminComponent implements OnInit {
     return errorMessage;
   }
 
-  checkPasswordValidity = (role: string) => {
+  checkPasswordValidity = () => {
     this.properties.pz.passwordUpdateError = '';
     if (!this.data.pzPartner.newPasswordConfirm || this.data.pzPartner.newPasswordConfirm !== this.data.pzPartner.newPassword) {
       this.properties.pz.passwordUpdateError = 'Passwords must match';
     }
-    if (role === 'primary') { /* New Password */
-      if (!this.data.pzPartner.newPassword || this.data.pzPartner.newPassword.length < 8) {
-        this.properties.pz.passwordUpdateError = 'Password must be at least 8 characters';
-      }
-    } 
+    if (!this.data.pzPartner.newPassword || this.data.pzPartner.newPassword.length < 8) {
+      this.properties.pz.passwordUpdateError = 'Password must be at least 8 characters';
+    }
   }
 
   updatePartnerPassword = (): void => {
+    this.properties.pz.updatingPassword = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    let request = {
+      newPassword: this.data.pzPartner.newPassword,
+      username: this.userInfo.username,
+      role: this.userInfo.role,
+    }
+    this.http.post('/api/changePassword', request, httpOptions).subscribe(resp => {
+      console.log(resp)
+      this.properties.pz.updatingPassword = false;
+      localStorage.setItem('jwtToken', resp['token']);  /* Get updated token */
+    }, err => {
+      this.properties.createPartnerLoading = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
 
+  openPartnerCreationModal = ():void => {
+    this.open(this.partnerCreationModal);
   }
 
   openTyreSelectionModal = ():void => {
@@ -132,8 +153,25 @@ export class AdminComponent implements OnInit {
     };
     this.http.post('/api/partner', this.data.partner, httpOptions).subscribe(resp => {
       this.getPartners();
-      this.data.partner = {};
-      this.properties.partnerSelected = false;
+      if (!this.properties.partnerSelected) { /* In case of new partner - register them on site too */
+        let signupData = {
+          username: this.data.partner.partnerZoneEmail,
+          password: this.data.partner.partnerZoneEmail,
+          role: 'partner',
+        }
+        this.openPartnerCreationModal();
+        this.properties.signupPartnerLoading = true;
+        this.properties.signupUserPass = signupData.username;
+        this.http.post('/api/signup', signupData).subscribe(resp => {
+          console.log(resp);
+          this.data.partner = {};
+          this.properties.partnerSelected = false;
+          this.properties.signupPartnerLoading = false;
+        }, err => {
+          this.properties.signupPartnerLoading = false;
+          this.properties.errorMessage = this.extractError(err);
+        });
+      }
       this.properties.createPartnerLoading = false;
     }, err => {
       this.properties.createPartnerLoading = false;

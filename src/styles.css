@@ -959,6 +959,10 @@ li::before {
   background-color:rgb(107,172,70);
 }
 
+.modal-header-error{
+  background-color:#ffc107!important
+}
+
 .close{
   cursor: pointer;
 }

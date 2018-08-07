@@ -80,7 +80,7 @@
                         <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
                     </div>
                     <div class="col-2 p-1">
-                        <button class="btn btn-success p-1 w-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
+                        <button class="btn btn-success p-1 w-100 h-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
                           <span *ngIf="!properties.partnerSelected">Create</span>
                           <span *ngIf="properties.partnerSelected">Update</span>
                         </button>
@@ -135,7 +135,7 @@
                                     <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.tyre.speedRating" placeholder="Speed Rating"/>
                                   </div>
                                   <div class="col-3 p-1">
-                                    <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
+                                    <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
                                         <span *ngIf="!properties.tyreSelected">Create</span>
                                         <span *ngIf="properties.tyreSelected">Update</span>
                                     </button>
@@ -150,7 +150,7 @@
                                       <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.inclusion.description" placeholder="Description" required/>
                                     </div>
                                     <div class="col-3 p-1">
-                                      <button class="btn btn-success p-1 w-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
+                                      <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
                                           <span *ngIf="!properties.inclusionSelected">Add Inclusion</span>
                                           <span *ngIf="properties.inclusionSelected">Update</span>
                                       </button>
@@ -274,16 +274,16 @@
                     </div>
                 </div>
                 <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'Settings'" class="tab-pane fade active show" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                  <p class="font-italic m-3">Change your password below, minimum of 8 characters</p>
+                  <p class="font-italic m-1 p-1">Change your password below, minimum of 8 characters</p>
                   <form (ngSubmit)="updatePartnerPassword()" #partnerPasswordUpdateForm="ngForm">
                   <div class="row m-1">
                     <div class="col-3 p-1">
-                        <input type="password" id="pzNewPassword" name="pzNewPassword" [(ngModel)]="data.pzPartner.newPassword" (ngModelChange)="checkPasswordValidity('primary')" class="form-control" placeholder="New Password" aria-label="New Password" required>
+                        <input type="password" id="pzNewPassword" name="pzNewPassword" [(ngModel)]="data.pzPartner.newPassword" (ngModelChange)="checkPasswordValidity()" class="form-control" placeholder="New Password" aria-label="New Password" required>
                     </div>
                   </div>
                   <div class="row m-1">
                     <div class="col-3 p-1">
-                        <input type="password" id="pzNewPasswordConfirm" name="pzNewPasswordConfirm" [(ngModel)]="data.pzPartner.newPasswordConfirm" (ngModelChange)="checkPasswordValidity('secondary')" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" required>
+                        <input type="password" id="pzNewPasswordConfirm" name="pzNewPasswordConfirm" [(ngModel)]="data.pzPartner.newPasswordConfirm" (ngModelChange)="checkPasswordValidity()" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" required>
                     </div>
                   </div>
                   <div class="row m-1" *ngIf="properties.pz.passwordUpdateError !=''">
@@ -291,7 +291,7 @@
                   </div>
                   <div class="row m-1">
                     <div class="col-3 p-1">
-                        <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerPasswordUpdateForm.form.valid" [ladda]="properties.pz.updatingPassword">Update Password</button>
+                        <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerPasswordUpdateForm.form.valid || properties.pz.passwordUpdateError !=''" [ladda]="properties.pz.updatingPassword">Update Password</button>
                     </div>
                   </div>
                 </form>
@@ -417,7 +417,7 @@
 </div>
 
 <ng-template #errorModal let-c="close" let-d="dismiss">
-    <div class="modal-header">
+    <div class="modal-header modal-header-error">
         <h5 class="modal-title custom">Whoops!</h5>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
             <span aria-hidden="true">&times;</span>
@@ -425,6 +425,36 @@
     </div>
     <div class="modal-body">
         {{ properties.errorMessage }}
+    </div>
+</ng-template>
+
+<ng-template #partnerCreationModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h5 class="modal-title custom">Partner Creation</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="text-center" *ngIf="properties.signupPartnerLoading">
+          <img src="../../assets/spinner.gif" class="search-icon" />
+          <br><br>
+          Creating partner account...
+        </div>
+        <div class="text-center" *ngIf="!properties.signupPartnerLoading">
+          Partner successfully created!<br>
+          They can log in with the below details and reset their details via the 'Settings' tab<br><br>
+          <div class="row">
+            <div class="col-2"></div>
+            <div class="col-3 font-weight-bold">Username:</div>
+            <div class="col-3">{{ properties.signupUserPass }}</div>
+          </div>
+          <div class="row">
+              <div class="col-2"></div>
+              <div class="col-3 font-weight-bold">Password:</div>
+              <div class="col-3">{{ properties.signupUserPass }}</div>
+            </div>
+        </div>
     </div>
 </ng-template>
 
