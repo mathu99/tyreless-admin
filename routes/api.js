@@ -47,7 +47,6 @@ router.post('/changePassword', function (req, res) {
                 password: req.body.newPassword,
                 role: req.body.role,
             };
-            console.log(newUser)
             User.findOne({
                 username: newUser.username
             }, function (err, user) {
@@ -60,7 +59,6 @@ router.post('/changePassword', function (req, res) {
                         if (err) {
                             return res.json({ success: false, msg: err.message });
                         }
-                        // res.json({ success: true, msg: 'Successfully updated user.' });
                         var token = jwt.sign(user.toJSON(), config.secret); // if user is found and password is right create a token
                         res.json({ success: true, token: 'JWT ' + token });  // return the information including token as JSON
                     });
@@ -68,23 +66,6 @@ router.post('/changePassword', function (req, res) {
                 }
             });
 
-            // var query = {'username': newUser.username};
-            // User.findOneAndUpdate(query, newUser, {upsert:true}, function(err, doc) {
-            //     if (err) {
-            //         return res.status(500).send({ success: false, msg: 'Change password failed. ' + err });
-            //     }
-            //     User.findOne({
-            //         username: newUser.username
-            //     }, function (err, user) {
-            //         if (err) throw err;
-            //         if (!user) {
-            //             res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
-            //         } else {
-            //             var token = jwt.sign(user.toJSON(), config.secret); // if user is found and password is right create a token
-            //             res.json({ success: true, token: 'JWT ' + token });  // return the information including token as JSON
-            //         }
-            //     });
-            // });
         } else {
             return res.status(403).send({ success: false, msg: 'Unauthorized.' });
         }
@@ -100,11 +81,8 @@ router.post('/signin', function (req, res) {
         if (!user) {
             res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
         } else {
-            console.log(user)
             // check if password matches
             user.comparePassword(req.body.password, function (err, isMatch) {
-                console.log(err)
-                console.log(isMatch)
                 if (isMatch && !err) {
                     // if user is found and password is right create a token
                     var token = jwt.sign(user.toJSON(), config.secret);

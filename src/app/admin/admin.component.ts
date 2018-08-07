@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { error } from 'util';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin',
@@ -35,7 +36,7 @@ export class AdminComponent implements OnInit {
     tyreSelected: false,
     inclusionSelected: false,
     errorMessage: '', /* Msg that pops up in modal */
-    surpressErrors: true,
+    surpressErrors: false,
     pz: {
       loadingServices: true,
       updatingService: false,
@@ -47,7 +48,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('tyreSelectionModal') private tyreSelectionModal;
   @ViewChild('partnerCreationModal') private partnerCreationModal;
 
-  constructor(private http: HttpClient, private router: Router, private modalService: NgbModal) { }
+  constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService) { }
 
   ngOnInit() {
     let httpOptions = {
@@ -70,19 +71,18 @@ export class AdminComponent implements OnInit {
     this.getInclusions();
   }
 
-  extractError = (err: any):string => {
-    let errorMessage = 'The following error occured: ';
+  extractError = (err: any):void => {
+    let errorMessage = '';
     if (err.error && err.error.msg) {
       errorMessage += err.error.msg;
     } else if (err.message) {
       errorMessage += err.message;
     } else {
-      errorMessage = 'An unknown error occured';
+      errorMessage = 'Unknown error';
     }
     if (!this.properties.surpressErrors)  {
-      this.openErrorModal();
+      this.toastr.warning(errorMessage, 'An error occured');
     }
-    return errorMessage;
   }
 
   checkPasswordValidity = () => {
@@ -106,7 +106,10 @@ export class AdminComponent implements OnInit {
       role: this.userInfo.role,
     }
     this.http.post('/api/changePassword', request, httpOptions).subscribe(resp => {
-      console.log(resp)
+      this.data.pzPartner.newPassword = '';
+      this.data.pzPartner.newPasswordConfirm = '';
+      this.properties.pz.passwordUpdateError = '';
+      this.toastr.success('Your password has successfully been updated', 'Password updated');
       this.properties.pz.updatingPassword = false;
       localStorage.setItem('jwtToken', resp['token']);  /* Get updated token */
     }, err => {
@@ -163,7 +166,6 @@ export class AdminComponent implements OnInit {
         this.properties.signupPartnerLoading = true;
         this.properties.signupUserPass = signupData.username;
         this.http.post('/api/signup', signupData).subscribe(resp => {
-          console.log(resp);
           this.data.partner = {};
           this.properties.partnerSelected = false;
           this.properties.signupPartnerLoading = false;
@@ -171,6 +173,9 @@ export class AdminComponent implements OnInit {
           this.properties.signupPartnerLoading = false;
           this.properties.errorMessage = this.extractError(err);
         });
+      }else {
+        this.data.partner = {};
+        this.properties.partnerSelected = false;
       }
       this.properties.createPartnerLoading = false;
     }, err => {
