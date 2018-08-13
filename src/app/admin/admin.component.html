@@ -200,27 +200,27 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let tyre of data.tyreList">
-                                  <td>{{ tyre.vehicleType }}</td>
-                                  <td>{{ tyre.brand }}</td>
-                                  <td>{{ tyre.logo }}</td>
-                                  <td>{{ tyre.tyreModel }}</td>
-                                  <td>{{ tyre.tyreImage }}</td>
-                                  <td>{{ tyre.width }}</td>
-                                  <td>{{ tyre.profile }}</td>
-                                  <td>{{ tyre.size }}</td>
-                                  <td>{{ tyre.speedRating }}</td>
+                                <tr *ngFor="let tyre of data.pzPartner.tyreList">
+                                  <td>{{ tyre.tyreRef.vehicleType }}</td>
+                                  <td>{{ tyre.tyreRef.brand }}</td>
+                                  <td>{{ tyre.tyreRef.logo }}</td>
+                                  <td>{{ tyre.tyreRef.tyreModel }}</td>
+                                  <td>{{ tyre.tyreRef.tyreImage }}</td>
+                                  <td>{{ tyre.tyreRef.width }}</td>
+                                  <td>{{ tyre.tyreRef.profile }}</td>
+                                  <td>{{ tyre.tyreRef.size }}</td>
+                                  <td>{{ tyre.tyreRef.speedRating }}</td>
                                   <td>Inclusion</td>
                                   <td>Price</td>
                                   <td>
                                     <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                                    <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre, $event)" type="button" class="close delete-row"  placement="top" ngbTooltip="Delete">&times;</button>
+                                    <button *ngIf="!tyre.deleting" (click)="removePartnerTyre(tyre, $event)" type="button" class="close delete-row"  placement="top" ngbTooltip="Delete">&times;</button>
                                   </td>
                                 </tr>
-                                <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
+                                <tr *ngIf="!properties.pz.loadingTyres && (!data.pzPartner.tyreList || data.pzPartner.tyreList.length == 0)">
                                   <td colspan="12" class="text-center">No results</td>
                                 </tr>
-                                <tr *ngIf="properties.loadingTyres">
+                                <tr *ngIf="properties.pz.loadingTyres">
                                   <td colspan="12" class="text-center">
                                       <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
                                   </td>
@@ -507,7 +507,7 @@
                 <td>{{ tyre.speedRating }}</td>
                 <td>
                   <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif"/>
-                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre)" class="suspend-icon fa fa-plus" placement="top" ngbTooltip="Add Tyre" aria-hidden="true"></i>
+                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre); d('Add Tyre')" class="suspend-icon fa fa-plus" placement="top" ngbTooltip="Add Tyre" aria-hidden="true"></i>
                 </td>
               </tr>
               <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">

@@ -38,6 +38,7 @@ export class AdminComponent implements OnInit {
     errorMessage: '', /* Msg that pops up in modal */
     surpressErrors: false,
     pz: {
+      loadingTyres: true,
       loadingServices: true,
       updatingService: false,
       passwordUpdateError: '',
@@ -60,6 +61,7 @@ export class AdminComponent implements OnInit {
       this.data.activeTab = this.userInfo.role === 'admin' ? 'Manage Partner' : 'My Deals';
       if (this.userInfo.role !== 'Admin') {
         this.data.pzPartner.userInfo = this.userInfo;
+        this.getPartnerTyres(this.userInfo['_id']);
         this.getPartnerServices(this.userInfo['_id']);
       }
       this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
@@ -346,11 +348,56 @@ export class AdminComponent implements OnInit {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') }),
       body: inclusion,
     };
-
     this.http.delete('/api/inclusion', httpOptions).subscribe(resp => {
       this.getInclusions();
     }, err => {
       inclusion.deleting = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  getPartnerTyres = (userRef: String) => {
+    this.properties.pz.loadingTyres = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/partnerTyre?userRef=' + userRef, httpOptions).subscribe(data => {
+      this.properties.pz.loadingTyres = false;
+      this.data.pzPartner.tyreList = data;
+    }, err => {
+      this.properties.pz.loadingTyres = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  addTyreToPartner = (tyre:any) => {
+    let partnerTyre = {
+      userRef: this.userInfo._id,
+      tyreRef: tyre._id,
+      price: '0.00'
+    }
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.post('/api/partnerTyre', partnerTyre, httpOptions).subscribe(resp => {
+      this.toastr.success('Don\'t forget to configure tyre price and inclusions', 'Tyre Added', {timeOut:5000});
+      this.getPartnerTyres(this.userInfo._id);
+    }, err => {
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  removePartnerTyre = (tyre:any) => {
+    tyre.deleting = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') }),
+      body: tyre,
+    };
+    this.http.delete('/api/partnerTyre', httpOptions).subscribe(resp => {
+      this.data.pzPartner.tyreList = [];
+      this.getPartnerTyres(this.data.pzPartner.userInfo._id);
+    }, err => {
+      tyre.deleting = false;
       this.properties.errorMessage = this.extractError(err);
     });
   }

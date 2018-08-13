@@ -11,6 +11,7 @@ var Partner = require("../models/partner");
 var Tyre = require("../models/tyre");
 var Inclusion = require("../models/inclusion");
 var PartnerService = require("../models/partnerService");
+var PartnerTyre = require("../models/partnerTyre");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -202,6 +203,53 @@ router.delete('/tyre', passport.authenticate('jwt', { session: false }), functio
             if (err) return res.json({ success: false, msg: 'Delete Tyre failed - could not find by ID' });
         }).remove().exec();
         res.json({ success: true, msg: 'Tyre deleted' });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.get('/partnerTyre', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerTyre.find({ userRef:req.query.userRef }).populate('userRef').populate('tyreRef').exec((err, partnerTyres) => {
+            if (err) return next(err);
+            else if (partnerTyres) res.json(partnerTyres)
+            else return res.status(200).send({ success: true, noResults: true, msg: 'No Tyres found for this Partner.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.delete('/partnerTyre', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerTyre.find({ _id:req.body._id }, err => {
+            if (err) return res.json({ success: false, msg: 'Delete Tyre failed - could not find by ID' });
+        }).remove().exec();
+        res.json({ success: true, msg: 'Tyre deleted' });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.post('/partnerTyre', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var partnerTyre = {
+            id: (req.body.id) ? req.body.id : uuidv4(),
+            userRef: req.body.userRef,
+            tyreRef: req.body.tyreRef,
+            price: req.body.price,
+            inclusion: req.body.inclusion,
+        };
+        var query = {'id': partnerTyre.id};
+        PartnerTyre.findOneAndUpdate(query, partnerTyre, {upsert:true}, function(err, doc){
+            if (err) {
+                return res.status(500).send({ success: false, msg: 'Save Partner Tyre failed. ' + err });
+            }
+            res.json({ success: true, msg: 'Successful created/updated Partner Tyre.' });
+        });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }

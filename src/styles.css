@@ -963,7 +963,7 @@ li::before {
   background-color:#ffc107!important
 }
 
-.close{
+.close, .suspend-icon{
   cursor: pointer;
 }
 
