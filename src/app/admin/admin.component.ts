@@ -69,7 +69,7 @@ export class AdminComponent implements OnInit {
       this.properties.errorMessage = this.extractError(err);
     });
     this.getPartners();
-    this.getTyres();
+    this.getTyres(this.userInfo.role !== 'admin');
     this.getInclusions();
   }
 
@@ -235,7 +235,6 @@ export class AdminComponent implements OnInit {
       this.properties.loadingPartners = false;
     }, err => {
       this.properties.loadingPartners = false;
-      // this.data.partnerList = JSON.parse('[{"_id":"5b466061932d6770183fdc15","customerCode":"be42bc92-30ec-4538-8997-5592c2a0fbba","retailerName":"Tiger Wheel & Tyre","registeredName":"-","province":"Gauteng","suburb":"Sandton","branchName":"Sandton City","branchPin":"test pin","partnerZoneEmail":"admin@twt.co.za","salesEmail":"sales@twt.co.za","status":"Active","__v":0},{"_id":"5b470694824e3e0014b762f1","customerCode":"99b1850d-c6ec-4068-ae77-fcfd66b37548","retailerName":"Supa Quick","registeredName":"ABC (Pty) Ltd","province":"Gauteng","suburb":"Sandton","branchName":"Wynberg","branchPin":"26.109636. 28.083778","partnerZoneEmail":"admin@supaquick.co.za","salesEmail":"sales@supaquick.co.za","status":"Active","__v":0}]');
       this.properties.errorMessage = this.extractError(err);
     });
   }
@@ -274,7 +273,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  getTyres = () => {
+  getTyres = (hidePartnerTyres?:boolean) => {
     this.data.tyreList = [];
     this.properties.loadingTyres = true;
     let httpOptions = {
@@ -282,7 +281,17 @@ export class AdminComponent implements OnInit {
     };
     this.http.get('/api/tyre', httpOptions).subscribe(data => {
       this.properties.loadingTyres = false;
-      this.data.tyreList = data;
+      if (hidePartnerTyres) {
+        this.http.get('/api/partnerTyre?userRef=' + this.data.pzPartner.userInfo._id, httpOptions).subscribe(resp => {
+          let newData = data as any[];
+          let newResp = resp as any[];
+          this.data.tyreList = newData.filter(e => newResp.filter(r => r.tyreRef._id == e._id).length === 0)
+        }, err => {
+            this.properties.errorMessage = this.extractError(err);
+        })
+      } else {
+        this.data.tyreList = data;
+      }
     }, err => {
       this.properties.loadingTyres = false;
       this.properties.errorMessage = this.extractError(err);
@@ -382,6 +391,7 @@ export class AdminComponent implements OnInit {
     this.http.post('/api/partnerTyre', partnerTyre, httpOptions).subscribe(resp => {
       this.toastr.success('Don\'t forget to configure tyre price and inclusions', 'Tyre Added', {timeOut:5000});
       this.getPartnerTyres(this.userInfo._id);
+      this.getTyres(true);
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
@@ -395,6 +405,7 @@ export class AdminComponent implements OnInit {
     };
     this.http.delete('/api/partnerTyre', httpOptions).subscribe(resp => {
       this.data.pzPartner.tyreList = [];
+      this.getTyres(true);
       this.getPartnerTyres(this.data.pzPartner.userInfo._id);
     }, err => {
       tyre.deleting = false;
