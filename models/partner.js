@@ -32,11 +32,13 @@ var PartnerSchema = new Schema({
   },
   partnerZoneEmail: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true,
   },
   salesEmail: {
     type: String,
-    required: true
+    required: true,
+    lowercase: true,
   },
   status: {
     type: String,

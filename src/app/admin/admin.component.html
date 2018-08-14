@@ -20,7 +20,7 @@
             <h5 class="m-0">{{ data.activeTab }} <span *ngIf="data.activeTab == 'Deal Input' || data.activeTab == 'My Deals'"> - {{ data.activeDealInputTab }}</span></h5>
           </div>
       </div>
-      <div class="row admin-body p-3">
+      <div class="row admin-body p-1">
           <div class="col-2 p-2" style="margin-top: 5pt">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
               <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Manage Partner')" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
@@ -179,7 +179,14 @@
                                 <p class="font-italic m-3">Edit existing tyres &amp; inclusions below or <a (click)="openTyreSelectionModal()">add new tyres</a></p>
                             </div>
                             <div class="col-4 text-right" style="line-height:51px;">
-                                <button type="button" class="btn btn-secondary" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
+                              <div class="row">
+                                <div class="col-6">
+                                  <button type="button" class="btn btn-success" *ngIf="properties.pz.changesMade" (click)="savePartnerTyres()">Save Changes <i class="fa fa-check"></i></button>
+                                </div>
+                                <div class="col-6">
+                                  <button type="button" class="btn btn-secondary" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <table class="table table-striped text-center table-smaller" id="pzTyresTable">
@@ -187,9 +194,9 @@
                                 <tr>
                                   <th scope="col">Vehicle Type</th>
                                   <th scope="col">Brand</th>
-                                  <th scope="col">Logo</th>
+                                  <!-- <th scope="col">Logo</th> -->
                                   <th scope="col">Tyre Model</th>
-                                  <th scope="col">Tyre Image</th>
+                                  <!-- <th scope="col">Tyre Image</th> -->
                                   <th scope="col">Tyre Width</th>
                                   <th scope="col">Tyre Profile</th>
                                   <th scope="col">Wheel Size</th>
@@ -203,15 +210,24 @@
                                 <tr *ngFor="let tyre of data.pzPartner.tyreList">
                                   <td>{{ tyre.tyreRef.vehicleType }}</td>
                                   <td>{{ tyre.tyreRef.brand }}</td>
-                                  <td>{{ tyre.tyreRef.logo }}</td>
+                                  <!-- <td>{{ tyre.tyreRef.logo }}</td> -->
                                   <td>{{ tyre.tyreRef.tyreModel }}</td>
-                                  <td>{{ tyre.tyreRef.tyreImage }}</td>
+                                  <!-- <td>{{ tyre.tyreRef.tyreImage }}</td> -->
                                   <td>{{ tyre.tyreRef.width }}</td>
                                   <td>{{ tyre.tyreRef.profile }}</td>
                                   <td>{{ tyre.tyreRef.size }}</td>
                                   <td>{{ tyre.tyreRef.speedRating }}</td>
-                                  <td>Inclusion</td>
-                                  <td>Price</td>
+                                  <td>
+                                    <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inlcusions"></ss-multiselect-dropdown>
+                                  </td>
+                                  <td>
+                                    <div class="input-group" style="width:120px">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">R</span>
+                                      </div>
+                                      <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (change)="updateChangesMade(true)" [(ngModel)]="tyre.price" class="form-control p-2" placeholder="" aria-label="Price per Tyre" aria-describedby="basic-addon1">
+                                    </div>
+                                  </td>
                                   <td>
                                     <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
                                     <button *ngIf="!tyre.deleting" (click)="removePartnerTyre(tyre, $event)" type="button" class="close delete-row"  placement="top" ngbTooltip="Delete">&times;</button>
@@ -507,7 +523,7 @@
                 <td>{{ tyre.speedRating }}</td>
                 <td>
                   <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif"/>
-                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre); d('Add Tyre')" class="suspend-icon fa fa-plus" placement="top" ngbTooltip="Add Tyre" aria-hidden="true"></i>
+                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre); d('Add Tyre')" class="suspend-icon fa fa-plus-circle" placement="top" ngbTooltip="Add Tyre" aria-hidden="true"></i>
                 </td>
               </tr>
               <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">

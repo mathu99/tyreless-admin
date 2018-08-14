@@ -4,6 +4,12 @@ import { Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { error } from 'util';
 import { ToastrService } from 'ngx-toastr';
+import {
+  MultiselectDropdownModule,
+  IMultiSelectSettings,
+  IMultiSelectTexts,
+  IMultiSelectOption
+} from 'angular-2-dropdown-multiselect';
 
 @Component({
   selector: 'app-admin',
@@ -38,6 +44,7 @@ export class AdminComponent implements OnInit {
     errorMessage: '', /* Msg that pops up in modal */
     surpressErrors: false,
     pz: {
+      changesMade: false,
       loadingTyres: true,
       loadingServices: true,
       updatingService: false,
@@ -45,6 +52,26 @@ export class AdminComponent implements OnInit {
     },
   };
   userInfo: any = {};
+
+  // Settings configuration
+  dropdownSettings: IMultiSelectSettings = {
+    enableSearch: false,
+    showCheckAll: false,
+    showUncheckAll: false,
+    checkedStyle: 'fontawesome',
+    buttonClasses: 'btn btn-secondary partner-dropdown',
+    dynamicTitleMaxItems: 1,
+    displayAllSelectedText: true,
+  };
+
+  // Text configuration
+  inclusionTexts: IMultiSelectTexts = {
+    allSelected: 'All Inclusions',
+    defaultTitle: 'None',
+  };
+
+  inclusionOptions: IMultiSelectOption[];
+  
   @ViewChild('errorModal') private errorModal;
   @ViewChild('tyreSelectionModal') private tyreSelectionModal;
   @ViewChild('partnerCreationModal') private partnerCreationModal;
@@ -341,6 +368,12 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/inclusion', httpOptions).subscribe(data => {
       this.properties.loadingInclusions = false;
       this.data.inclusionList = data;
+      this.inclusionOptions = this.data.inclusionList.map((e, i) => {
+        return {
+          id: i,
+          name: e.description
+        };
+      });
     }, err => {
       this.properties.loadingInclusions = false;
       this.properties.errorMessage = this.extractError(err);
@@ -411,6 +444,10 @@ export class AdminComponent implements OnInit {
       tyre.deleting = false;
       this.properties.errorMessage = this.extractError(err);
     });
+  }
+
+  updateChangesMade = (changesMade:boolean) => {
+    this.properties.pz.changesMade = changesMade;
   }
 
 }

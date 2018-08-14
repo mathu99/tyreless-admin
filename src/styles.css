@@ -266,13 +266,12 @@ h5{
 .dd-search-text {
   font-size:14pt;
 }
-.dd-caret{
+/* .dd-caret{
   font-size:15pt;
   padding-right:8pt;
   text-align: center;
-  /* line-height: 35pt; */
   color:rgb(107,172,70);
-}
+} */
 .dd-t-custom::after{
   /* border-top: .5em solid rgb(107,172,70);
     border-right: .4em solid transparent;
@@ -489,10 +488,6 @@ a:hover{
 .btn-secondary:not([disabled]):not(.disabled).active, .btn-secondary:not([disabled]):not(.disabled):active, .show>.btn-secondary.dropdown-toggle{
   background-color: gray;
   border-color: gray;
-}
-
-.dropdown-toggle::after{
-  display:none;
 }
 
 .dropdown-item active{
@@ -1208,6 +1203,25 @@ a:focus, input:focus {
   background-color:rgb(107,172,70);
 }
 
+.partner-dropdown{
+  min-height: 38px;
+  width: 100%;
+  font-size:inherit;
+}
+
+.dropdown-menu {
+  width: inherit;
+  font-size: inherit;
+}
+
+.dropdown-item, .dropdown-item:hover{
+  color:black !important;
+}
+
+.dropdown-item.active, .dropdown-item:active{
+  background-color: white !important;
+}
+
   @media (min-width: 1200px) {
     .container {
         max-width: 960px;
@@ -1335,10 +1349,10 @@ a:focus, input:focus {
       vertical-align: middle;
   }
 
-  .dd-caret {
+  /* .dd-caret {
     padding-left: 5pt;
     line-height: 20pt;
-}
+} */
 
   .dd-col {
     font-size: 12pt;
