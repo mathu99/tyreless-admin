@@ -416,7 +416,6 @@ export class AdminComponent implements OnInit {
     let partnerTyre = {
       userRef: this.userInfo._id,
       tyreRef: tyre._id,
-      price: '0.00'
     }
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })

@@ -240,11 +240,13 @@ router.post('/partnerTyre', passport.authenticate('jwt', { session: false }), fu
             id: (req.body.id) ? req.body.id : uuidv4(),
             userRef: req.body.userRef,
             tyreRef: req.body.tyreRef,
-            price: req.body.price,
             inclusion: req.body.inclusion,
         };
+        if (req.body.price) {
+            partnerTyre.price = req.body.price;
+        }
         var query = {'id': partnerTyre.id};
-        PartnerTyre.findOneAndUpdate(query, partnerTyre, {upsert:true}, function(err, doc){
+        PartnerTyre.findOneAndUpdate(query, partnerTyre, {upsert:true, setDefaultsOnInsert: true}, function(err, doc){
             if (err) {
                 return res.status(500).send({ success: false, msg: 'Save Partner Tyre failed. ' + err });
             }

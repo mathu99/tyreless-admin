@@ -34,6 +34,7 @@ var PartnerSchema = new Schema({
     type: String,
     required: true,
     lowercase: true,
+    unique: true,
   },
   salesEmail: {
     type: String,
