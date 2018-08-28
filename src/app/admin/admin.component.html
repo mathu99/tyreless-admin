@@ -174,7 +174,7 @@
                     </ul>
                     <div class="tab-content p-2" id="pzTabContent">
                       <div class="tab-pane fade show active" id="pzTyres" role="tabpanel" aria-labelledby="pz-tyres-tab">
-                          <div class="row p-2">
+                          <div class="row plr-2">
                             <div class="col-7">
                                 <p class="font-italic m-3">Edit existing tyres &amp; inclusions below or <a (click)="openTyreSelectionModal()">add new tyres</a></p>
                             </div>
@@ -187,7 +187,7 @@
                                 </div>
                             </div>
                           </div>
-                          <table class="table table-striped text-center table-smaller" id="pzTyresTable">
+                          <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
                               <thead>
                                 <tr>
                                   <th scope="col">Vehicle Type</th>
@@ -212,14 +212,14 @@
                                   <td>{{ tyre.tyreRef.size }}</td>
                                   <td>{{ tyre.tyreRef.speedRating }}</td>
                                   <td>
-                                    <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inlcusions" (ngModelChange)="updateChangesMade(true)"></ss-multiselect-dropdown>
+                                    <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inclusionIndex" (ngModelChange)="updateChangesMade(true, tyre)"></ss-multiselect-dropdown>
                                   </td>
                                   <td>
                                     <div class="input-group" style="width:120px">
                                       <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">R</span>
                                       </div>
-                                      <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (change)="updateChangesMade(true)" [(ngModel)]="tyre.price" class="form-control p-2" placeholder="" aria-label="Price per Tyre" aria-describedby="basic-addon1">
+                                      <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (change)="updateChangesMade(true, tyre)" [(ngModel)]="tyre.price" class="form-control p-2" placeholder="" aria-label="Price per Tyre" aria-describedby="basic-addon1">
                                     </div>
                                   </td>
                                   <td>
@@ -237,6 +237,10 @@
                                 </tr>
                               </tbody>
                             </table>
+                            <div class="update-text pull-right font-italic p-1">
+                              <span *ngIf="properties.pz.updatingTyres">Saving changes...</span>
+                            </div>
+                            <br>
                       </div>
                       <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
                         <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>

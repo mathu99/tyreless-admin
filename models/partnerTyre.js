@@ -24,10 +24,10 @@ var PartnerTyreSchema = new Schema({
         default: '0.00',
         required: true,
     },
-    inlcusion: [{
+    inclusion: [{
         type: String
     }],
-    liveInlcusion: [{
+    liveInclusion: [{
         type: String
     }],
     modified: {

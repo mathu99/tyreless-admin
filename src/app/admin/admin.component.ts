@@ -49,6 +49,7 @@ export class AdminComponent implements OnInit {
       loadingServices: true,
       updatingService: false,
       submittingChanges: false,
+      updatingTyres: false,
       passwordUpdateError: '',
     },
   };
@@ -407,6 +408,12 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/partnerTyre?userRef=' + userRef, httpOptions).subscribe(data => {
       this.properties.pz.loadingTyres = false;
       this.data.pzPartner.tyreList = data;
+      this.data.pzPartner.tyreList.forEach(e => {
+        e.inclusionIndex = e.inclusion.map(inc => {
+          let item = this.data.inclusionList.filter(i => i.description === inc)[0];
+          return this.data.inclusionList.indexOf(item);
+        })
+      });
     }, err => {
       this.properties.pz.loadingTyres = false;
       this.properties.errorMessage = this.extractError(err);
@@ -446,8 +453,19 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  updateChangesMade = (changesMade:boolean) => {
+  updateChangesMade = (changesMade:boolean, tyre:any) => {
     this.properties.pz.changesMade = changesMade;
+    this.properties.pz.updatingTyres = true;
+    tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.post('/api/partnerTyre', tyre, httpOptions).subscribe(resp => {
+      this.properties.pz.updatingTyres = false;
+    }, err => {
+      this.properties.errorMessage = this.extractError(err);
+      this.properties.pz.updatingTyres = false;
+    });
   }
 
   submitPartnerChanges = () => {
