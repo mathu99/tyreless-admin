@@ -27,6 +27,9 @@ var PartnerTyreSchema = new Schema({
     inlcusion: [{
         type: String
     }],
+    liveInlcusion: [{
+        type: String
+    }],
     modified: {
         type: Boolean,
         default: false,

@@ -48,6 +48,7 @@ export class AdminComponent implements OnInit {
       loadingTyres: true,
       loadingServices: true,
       updatingService: false,
+      submittingChanges: false,
       passwordUpdateError: '',
     },
   };
@@ -447,6 +448,10 @@ export class AdminComponent implements OnInit {
 
   updateChangesMade = (changesMade:boolean) => {
     this.properties.pz.changesMade = changesMade;
+  }
+
+  submitPartnerChanges = () => {
+    this.properties.pz.submittingChanges = true;
   }
 
 }

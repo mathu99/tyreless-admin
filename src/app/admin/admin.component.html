@@ -179,14 +179,12 @@
                                 <p class="font-italic m-3">Edit existing tyres &amp; inclusions below or <a (click)="openTyreSelectionModal()">add new tyres</a></p>
                             </div>
                             <div class="col-5 text-right" style="line-height:51px;">
-                              <div class="row">
-                                <div class="col-6">
-                                  <button type="button" ngbTooltip="Changes will be reviewed before being published" class="btn btn-success" *ngIf="properties.pz.changesMade" (click)="submitPartnerChanges()">Submit Changes <i class="fa fa-check"></i></button>
+                                <div class="w-50 pull-left p-1">
+                                  <button type="button" ngbTooltip="Changes will be reviewed before being published" class="btn btn-success w-100" *ngIf="properties.pz.changesMade" [ladda]="properties.pz.submittingChanges" (click)="submitPartnerChanges()" >Submit Changes <i class="fa fa-check"></i></button>
                                 </div>
-                                <div class="col-6">
-                                  <button type="button" class="btn btn-secondary" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
+                                <div class="w-50 pull-right p-1">
+                                  <button type="button" class="btn btn-secondary w-100" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
                                 </div>
-                              </div>
                             </div>
                           </div>
                           <table class="table table-striped text-center table-smaller" id="pzTyresTable">
@@ -214,7 +212,7 @@
                                   <td>{{ tyre.tyreRef.size }}</td>
                                   <td>{{ tyre.tyreRef.speedRating }}</td>
                                   <td>
-                                    <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inlcusions"></ss-multiselect-dropdown>
+                                    <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inlcusions" (ngModelChange)="updateChangesMade(true)"></ss-multiselect-dropdown>
                                   </td>
                                   <td>
                                     <div class="input-group" style="width:120px">
