@@ -180,14 +180,14 @@ export class AdminComponent implements OnInit {
     this.properties[type + 'Selected'] = row.selected;
   }
 
-  partnerUpdate = () => {
+  partnerUpdate = (type?: String) => {
     this.properties.createPartnerLoading = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.post('/api/partner', this.data.partner, httpOptions).subscribe(resp => {
       this.getPartners();
-      if (!this.properties.partnerSelected) { /* In case of new partner - register them on site too */
+      if (!this.properties.partnerSelected && type !== 'status') { /* In case of new partner - register them on site too */
         let signupData = {
           username: this.data.partner.partnerZoneEmail,
           password: this.data.partner.partnerZoneEmail,
@@ -219,7 +219,7 @@ export class AdminComponent implements OnInit {
     $event.stopPropagation();
     this.data.partner = JSON.parse(JSON.stringify(partner));
     this.data.partner.status = status;
-    this.partnerUpdate();
+    this.partnerUpdate('status');
   }
 
   getPartnerServices = (id:string) => {
