@@ -76,10 +76,20 @@
                     <div class="col-6 p-1">
                         <input type="text" id="partnerPartnerZoneEmail" name="partnerPartnerZoneEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.partnerZoneEmail" placeholder="Partner Zone Email" required/>
                     </div>
-                    <div class="col-4 p-1">
+                    <div class="col-6 p-1">
                         <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
                     </div>
-                    <div class="col-2 p-1">
+                  </div>
+                  <div class="row m-1">
+                    <div class="col-6 p-1">
+                      <select name="partnerLogo" [(ngModel)]="data.partner.logo" class="custom-select w-100" required>
+                        <option [ngValue]="undefined" disabled>Select Logo</option>
+                        <option *ngFor="let logo of config.logoList" [ngValue]="logo.value">
+                          {{ logo.name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-3 p-1">
                         <button class="btn btn-success p-1 w-100 h-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
                           <span *ngIf="!properties.partnerSelected">Create</span>
                           <span *ngIf="properties.partnerSelected">Update</span>

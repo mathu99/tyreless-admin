@@ -53,6 +53,15 @@ export class AdminComponent implements OnInit {
       passwordUpdateError: '',
     },
   };
+  config: any = {
+    logoList: [{
+      name: 'Supaquick',
+      value: 'supaquick.jpeg',
+    }, {
+      name: 'Tiger Wheel & Tyre',
+      value: 'twt.jpeg',
+    }],
+  };
   userInfo: any = {};
 
   // Settings configuration
@@ -180,7 +189,7 @@ export class AdminComponent implements OnInit {
     this.properties[type + 'Selected'] = row.selected;
   }
 
-  partnerUpdate = (type?: String) => {
+  partnerUpdate = (type?:string) => {
     this.properties.createPartnerLoading = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
