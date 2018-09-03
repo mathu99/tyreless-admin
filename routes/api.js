@@ -110,7 +110,8 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
     var token = getToken(req.headers);
     if (token) {
         var partner = {
-            customerCode: (req.body.customerCode) ? req.body.customerCode : uuidv4(),
+            id: (req.body.id) ? req.body.id : uuidv4(),
+            customerCode: req.body.customerCode,
             retailerName: req.body.retailerName,
             registeredName: req.body.registeredName,
             province: req.body.province,
@@ -121,8 +122,8 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
             salesEmail: req.body.salesEmail,
             status: (req.body.status) ? req.body.status : 'Active',
         };
-        var query = {'customerCode': partner.customerCode};
-        Partner.findOneAndUpdate(query, partner, {upsert:true}, function(err, doc){
+        var query = {'id': partner.id};
+        Partner.findOneAndUpdate(query, partner, {upsert:true, runValidators:true}, function(err, doc){
             if (err) {
                 return res.status(500).send({ success: false, msg: 'Save Partner failed. ' + err });
             }

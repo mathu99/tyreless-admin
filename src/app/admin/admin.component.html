@@ -47,7 +47,9 @@
                   <div class="row m-1">
                     <div class="col-2 p-1">
                       <span class="font-weight-bold">Cust Code:</span>
-                      <br>Pending
+                      <br>
+                      <span *ngIf="!data.partner.customerCode">Pending</span>
+                      <span *ngIf="data.partner.customerCode">{{ data.partner.customerCode }}</span>
                     </div>
                     <div class="col-4 p-1">
                         <input type="text" id="partnerRetailerName" name="partnerRetailerName" class="form-control" [(ngModel)]="data.partner.retailerName" placeholder="Retailer/Franchise Name" required/>
@@ -340,7 +342,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner, 'partner')">
-                    <td>-</td>
+                    <td>{{ partner.customerCode }}</td>
                     <td>{{ partner.retailerName }}</td>
                     <td>{{ partner.registeredName }}</td>
                     <td>{{ partner.province }}</td>
