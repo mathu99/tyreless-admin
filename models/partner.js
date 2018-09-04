@@ -58,7 +58,6 @@ var PartnerSchema = new Schema({
 
 PartnerSchema.pre('findOneAndUpdate', function(next) {
   var partner = this;
-  console.log(partner)
   if (!partner._update.customerCode || partner._update.customerCode == undefined) {
       Counter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }, {upsert: true}).then(function(count, error)   {
         if(error)
@@ -73,13 +72,10 @@ PartnerSchema.pre('findOneAndUpdate', function(next) {
 
 function zeroFill(number, width) {
   width -= number.toString().length;
-  if ( width > 0 )
-  {
+  if ( width > 0 ) {
     return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
   }
   return number + '' ; // always return a string
 }
-
-
 
 module.exports = mongoose.model('Partner', PartnerSchema);

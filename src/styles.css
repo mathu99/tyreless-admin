@@ -1226,6 +1226,10 @@ a:focus, input:focus {
   background-color: white !important;
 }
 
+.light-green-bg{
+  background-color: rgba(107,172,70,0.25);
+}
+
   @media (min-width: 1200px) {
     .container {
         max-width: 960px;

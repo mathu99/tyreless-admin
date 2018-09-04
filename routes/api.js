@@ -120,6 +120,7 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
             branchPin: req.body.branchPin,
             partnerZoneEmail: req.body.partnerZoneEmail,
             salesEmail: req.body.salesEmail,
+            logo: req.body.logo,
             status: (req.body.status) ? req.body.status : 'Active',
         };
         var query = {'id': partner.id};
@@ -321,6 +322,7 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
             partnerId: req.body.userInfo._id,
             wheelAlignmentPrice: req.body.services.wheelAlignmentPrice,
             wheelBalancingPrice: req.body.services.wheelBalancingPrice,
+            reviewPending: true,
         };
         var query = {'partnerId': partnerService.partnerId};
         PartnerService.findOneAndUpdate(query, partnerService, {upsert:true}, function(err, doc){
@@ -328,6 +330,20 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
                 return res.status(500).send({ success: false, msg: 'Save Serivce failed. ' + err });
             }
             res.json({ success: true, msg: 'Successful created/updated Serivce.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+
+router.get('/pendingPartnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerService.find({reviewPending: true}, function(err, partnerServices){
+            if (err) return next(err);
+            else if (partnerServices) res.json(partnerServices)
+            else return res.status(200).send({ success: true, noResults: true, msg: 'No pending partner services found.' });
         });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });

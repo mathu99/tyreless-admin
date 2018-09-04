@@ -101,6 +101,7 @@ export class AdminComponent implements OnInit {
         this.data.pzPartner.userInfo = this.userInfo;
         this.getPartnerTyres(this.userInfo['_id']);
         this.getPartnerServices(this.userInfo['_id']);
+        this.getPendingPartnerServices();
       }
       this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
     }, err => {
@@ -256,6 +257,7 @@ export class AdminComponent implements OnInit {
     this.http.post('/api/partnerServices', this.data.pzPartner, httpOptions).subscribe(resp => {
       this.getPartnerServices(this.data.pzPartner.userInfo._id);
       this.properties.pz.updatingService = false;
+      this.toastr.success('Prices have been submitted for approval', 'Prices submitted');
     }, err => {
       this.properties.pz.updatingService = false;
       this.properties.errorMessage = this.extractError(err);
@@ -479,6 +481,20 @@ export class AdminComponent implements OnInit {
 
   submitPartnerChanges = () => {
     this.properties.pz.submittingChanges = true;
+  }
+
+  getPendingPartnerServices = () => {
+    this.properties.pz.loadingPendingPartnerServices = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/pendingPartnerServices', httpOptions).subscribe(data => {
+      console.log(data)
+      this.properties.loadingPendingPartnerServices = false;
+    }, err => {
+      this.properties.loadingPendingPartnerServices = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
   }
 
 }

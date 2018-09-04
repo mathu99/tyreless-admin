@@ -173,7 +173,19 @@
                       </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
-                  <p>Partner deals</p>
+                  <div class="card">
+                      <div class="card-header light-green-bg">
+                        <h6 class="m-1 mt-2 pull-left">TLP0002: Tiger Wheel &amp; Tyre</h6>
+                        <button type="button" class="btn btn-success pull-right" (click)="approveAll()"  ngbTooltip="Approve all changes">Approve <i class="fa fa-check"></i></button>
+                      </div>
+                      <div class="card-body">
+                        <h6 class="card-title">Services</h6>
+                        <div class="card-text">Nothing to approve</div>
+                        <br>
+                        <h6 class="card-title">Tyres &amp; Inclusions</h6>
+                        <div class="card-text">Nothing to approve</div>
+                      </div>
+                    </div>
                 </div>
                 <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'My Deals'" class="tab-pane fade active show" id="v-pills-my-deals" role="tabpanel" aria-labelledby="v-pills-my-deals-tab">
                     <ul class="nav nav-tabs" id="partnerZoneTab" role="tablist">
@@ -258,16 +270,33 @@
                         <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>
                         <div *ngIf="!properties.pz.loadingServices">
                             <form (ngSubmit)="updatePartnerServices()" #partnerServicesUpdateForm="ngForm">
+                              <div class="row">
+                                  <div class="col-3"></div>
+                                  <div class="col-4 p-2 font-weight-bold text-center" ngbTooltip="Price that is currently configured">
+                                    Current Price
+                                  </div>
+                                  <div class="col-4 p-2 font-weight-bold text-center" ngbTooltip="New proposed price">
+                                    New Price
+                                  </div>
+                              </div>
                             <div class="row m-1">
                                 <div class="col-3 font-weight-bold" style="line-height: 46px">
                                   Wheel Alignment
+                                </div>
+                                <div class="col-4">
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">R</span>
+                                    </div>
+                                    <input type="text" id="partnerServicesUpdateLiveWheelAlignment" name="partnerServicesUpdateLiveWheelAlignment" [(ngModel)]="data.pzPartner.services.liveWheelAlignmentPrice" class="form-control" placeholder="" aria-label="Current Wheel Alignment Price" aria-describedby="basic-addon1" disabled="disabled">
+                                  </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">R</span>
                                       </div>
-                                      <input type="text" id="partnerServicesUpdateWheelAlignment" name="partnerServicesUpdateWheelAlignment" [(ngModel)]="data.pzPartner.services.wheelAlignmentPrice" class="form-control" placeholder="" aria-label="Wheel Alignment Price" aria-describedby="basic-addon1" required>
+                                      <input type="text" id="partnerServicesUpdateWheelAlignment" name="partnerServicesUpdateWheelAlignment" [(ngModel)]="data.pzPartner.services.wheelAlignmentPrice" class="form-control" placeholder="" aria-label="Proposed Wheel Alignment Price" aria-describedby="basic-addon1" required>
                                     </div>
                                 </div>
                               </div>
@@ -280,9 +309,17 @@
                                     <div class="input-group-prepend">
                                       <span class="input-group-text" id="basic-addon1">R</span>
                                     </div>
-                                    <input type="text" id="partnerServicesUpdateWheelBalancing" name="partnerServicesUpdateWheelBalancing" [(ngModel)]="data.pzPartner.services.wheelBalancingPrice" class="form-control" placeholder="" aria-label="Wheel Balancing Price" aria-describedby="basic-addon1" required>
+                                    <input type="text" id="partnerServicesUpdateLiveWheelBalancing" name="partnerServicesUpdateLiveWheelBalancing" [(ngModel)]="data.pzPartner.services.liveWheelBalancingPrice" class="form-control" placeholder="" aria-label="Current Wheel Balancing Price" aria-describedby="basic-addon1" disabled="disabled">
                                   </div>
                                 </div>
+                                <div class="col-4">
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">R</span>
+                                      </div>
+                                      <input type="text" id="partnerServicesUpdateWheelBalancing" name="partnerServicesUpdateWheelBalancing" [(ngModel)]="data.pzPartner.services.wheelBalancingPrice" class="form-control" placeholder="" aria-label="Proposed Wheel Balancing Price" aria-describedby="basic-addon1" required>
+                                    </div>
+                                  </div>
                               </div>
                               <div class="row m-1">
                                 <div class="col-3" style="line-height: 46px">
@@ -336,8 +373,7 @@
                     <th scope="col">Partner Zone Email</th>
                     <th scope="col">Sales Email</th>
                     <th scope="col">Status</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col" colspan="2">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
