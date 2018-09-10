@@ -198,14 +198,16 @@ export class AdminComponent implements OnInit {
     this.http.post('/api/partner', this.data.partner, httpOptions).subscribe(resp => {
       this.getPartners();
       if (!this.properties.partnerSelected && type !== 'status') { /* In case of new partner - register them on site too */
+        let randomPassword = Math.random().toString(36).slice(-8); /* Generate random password string */
         let signupData = {
           username: this.data.partner.partnerZoneEmail,
-          password: this.data.partner.partnerZoneEmail,
+          password: randomPassword,
           role: 'partner',
         }
         this.openPartnerCreationModal();
         this.properties.signupPartnerLoading = true;
-        this.properties.signupUserPass = signupData.username;
+        this.properties.signupUser = signupData.username;
+        this.properties.signupPass = signupData.password;
         this.http.post('/api/signup', signupData).subscribe(resp => {
           this.data.partner = {};
           this.properties.partnerSelected = false;
