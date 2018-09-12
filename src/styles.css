@@ -1230,6 +1230,24 @@ a:focus, input:focus {
   background-color: rgba(107,172,70,0.25);
 }
 
+.nav-link > .notification-count{
+  margin-left: 3pt;
+  background-color: rgb(107,172,70);
+  color: white;
+  border-radius: 5pt;
+  padding-right: 3pt;
+  padding-left: 3pt;
+}
+
+.nav-link.active > .notification-count{
+  margin-left: 3pt;
+  background-color: white;
+  color: rgb(107,172,70);
+  border-radius: 5pt;
+  padding-right: 3pt;
+  padding-left: 3pt;
+}
+
   @media (min-width: 1200px) {
     .container {
         max-width: 960px;

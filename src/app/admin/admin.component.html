@@ -31,6 +31,7 @@
                 </a>
                 <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Partner Deals')" class="nav-link" id="v-pills-partner-deals-tab" data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
                     <i class="fa fa-handshake-o"></i> Partner Deals
+                    <span class="notification-count" *ngIf="data.pendingItems && data.pendingItems.length > 0">2</span>
                 </a>
                 <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('activeTab', 'My Deals')" class="nav-link active show" id="v-pills-my-deals-tab" data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
                   <i class="fa fa-handshake-o"></i> My Deals
@@ -173,19 +174,43 @@
                       </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
-                  <div class="card">
-                      <div class="card-header bg-light">
-                        <h6 class="m-1 mt-2 pull-left">TLP0002: Tiger Wheel &amp; Tyre</h6>
-                        <button type="button" class="btn btn-success pull-right" (click)="approveAll()"  ngbTooltip="Approve all changes">Approve <i class="fa fa-check"></i></button>
-                      </div>
-                      <div class="card-body">
-                        <h6 class="card-title">Services</h6>
-                        <div class="card-text">Nothing to approve</div>
-                        <br>
-                        <h6 class="card-title">Tyres &amp; Inclusions</h6>
-                        <div class="card-text">Nothing to approve</div>
+                  <div class="card" *ngIf="properties.loadingPendingPartnerServices" >
+                    <div class="card-header bg-light">
+                      <h6 class="m-1 mt-2 pull-left">Loading...</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="card-text">
+                        Fetching Pending Services &amp; Tyres...
+                        <img class="row-spinner" src="../../assets/spinner.gif"/>
                       </div>
                     </div>
+                  </div>
+                  <div *ngIf="!properties.loadingPendingPartnerServices">
+                    <div class="card mb-3"  *ngFor="let pendingItem of data.pendingItems">
+                        <div class="card-header bg-light">
+                          <h6 class="m-1 mt-2 pull-left">{{ pendingItem.userDetails.retailerName }} ({{ pendingItem.userDetails.branchName }})</h6>
+                          <button type="button" class="btn btn-success pull-right" (click)="approveAll()"  ngbTooltip="Approve changes">Approve <i class="fa fa-check"></i></button>
+                        </div>
+                        <div class="card-body">
+                          <h6>Services</h6>
+                          <div>
+                            <div class="row" *ngIf="pendingItem.wheelAlignmentPrice || pendingItem.wheelBalancingPrice">
+                              <div class="col-4">
+                                <b>Wheel Alignment Price:</b> R{{pendingItem.wheelAlignmentPrice}}
+                              </div>
+                              <div class="col-4">
+                                <b>Wheel Balancing Price:</b> R{{pendingItem.wheelBalancingPrice}}
+                              </div>
+                            </div>
+                            <div class="row" *ngIf="!pendingItem.wheelAlignmentPrice && !pendingItem.wheelBalancingPrice">
+                              Nothing to approve
+                          </div>
+                          <br>
+                          <h6>Tyres &amp; Inclusions</h6>
+                          <div>Nothing to approve</div>
+                        </div>
+                      </div>
+                  </div>
                 </div>
                 <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'My Deals'" class="tab-pane fade active show" id="v-pills-my-deals" role="tabpanel" aria-labelledby="v-pills-my-deals-tab">
                     <ul class="nav nav-tabs" id="partnerZoneTab" role="tablist">

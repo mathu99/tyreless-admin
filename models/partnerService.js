@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PartnerServiceSchema = new Schema({
-  partnerRef: {
-    type: Schema.Types.ObjectId,
-    ref: 'Partner',
+  userRef: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
   },
   wheelAlignmentPrice: {
     type: String,

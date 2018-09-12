@@ -19,7 +19,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/signup', function (req, res) {
-    console.log(req.body)
     if (!req.body.username || !req.body.password) {
         res.json({ success: false, msg: 'Please pass username and password.' });
     } else {
@@ -130,6 +129,18 @@ router.post('/partner', passport.authenticate('jwt', { session: false }), functi
                 return res.status(500).send({ success: false, msg: 'Save Partner failed. ' + err });
             }
             res.json({ success: true, msg: 'Successful created/updated Partner.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+router.get('/partnerByEmail', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var query = {'partnerZoneEmail': req.query.email};
+        Partner.findOne(query, function (err, partner) {
+            if (err) return next(err);
+            res.json(partner);
         });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
@@ -306,7 +317,7 @@ router.delete('/inclusion', passport.authenticate('jwt', { session: false }), fu
 router.get('/partnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        PartnerService.findOne({ partnerRef:req.query.id }, (err, partnerServices) => {
+        PartnerService.findOne({ userRef:req.query.userRef }).populate('userRef').exec((err, partnerServices) => {
             if (err) return next(err);
             else if (partnerServices) res.json(partnerServices)
             else return res.status(200).send({ success: true, noResults: true, msg: 'No Partner Service found.' });
@@ -320,12 +331,12 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
     var token = getToken(req.headers);
     if (token) {
         var partnerService = {
-            partnerRef: this.data.partnerList.filter(e => e.partnerZoneEmail === this.userInfo.username)[0]._id,
+            userRef: req.body.userInfo._id,
             wheelAlignmentPrice: req.body.services.wheelAlignmentPrice,
             wheelBalancingPrice: req.body.services.wheelBalancingPrice,
             reviewPending: true,
         };
-        var query = {'partnerRef': partnerService.partnerRef};
+        var query = {'userRef': partnerService.userRef};
         PartnerService.findOneAndUpdate(query, partnerService, {upsert:true}, function(err, doc){
             if (err) {
                 return res.status(500).send({ success: false, msg: 'Save Serivce failed. ' + err });
@@ -337,11 +348,10 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
     }
 });
 
-
 router.get('/pendingPartnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        PartnerService.find({reviewPending: true}).populate('partnerRef').exec((err, partnerServices) => {
+        PartnerService.find({reviewPending: true}).populate('userRef').exec((err, partnerServices) => {
             if (err) return next(err);
             else if (partnerServices) res.json(partnerServices)
             else return res.status(200).send({ success: true, noResults: true, msg: 'No pending partner services found.' });

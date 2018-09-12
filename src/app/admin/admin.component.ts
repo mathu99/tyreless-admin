@@ -34,6 +34,7 @@ export class AdminComponent implements OnInit {
     loadingPartners: true, /* Service call to retrieve */
     loadingTyres: true, 
     loadingInclusions: true, 
+    loadingPendingPartnerServices: true,
     createPartnerLoading: false, /* Service call to create */
     createTyresLoading: false,
     createInclusionsLoading: false,
@@ -240,7 +241,7 @@ export class AdminComponent implements OnInit {
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
-    this.http.get('/api/partnerServices?id=' + id, httpOptions).subscribe(data => {
+    this.http.get('/api/partnerServices?userRef=' + id, httpOptions).subscribe(data => {
       if (!data['noResults']) {
         this.data.pzPartner.services = data;
       }
@@ -486,15 +487,39 @@ export class AdminComponent implements OnInit {
   }
 
   getPendingPartnerServices = () => {
-    this.properties.pz.loadingPendingPartnerServices = true;
+    this.properties.loadingPendingPartnerServices = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
+    this.data.pendingItems = [];
     this.http.get('/api/pendingPartnerServices', httpOptions).subscribe(data => {
-      console.log(data)
+      /* TODO - get pending partner tyres */
+      let arr:any = data;
+      arr.forEach(e => {
+        let item = {
+          user: e.userRef,
+          services:{
+            wheelAlignmentPrice: e.wheelAlignmentPrice,
+            wheelBalancingPrice: e.wheelBalancingPrice,
+          }
+        }
+        this.getPartnerByEmail(e.userRef.username, e);
+      });
       this.properties.loadingPendingPartnerServices = false;
     }, err => {
       this.properties.loadingPendingPartnerServices = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  getPartnerByEmail = (email:String, partner:Object) => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/partnerByEmail?email=' + email, httpOptions).subscribe(data => {
+      partner['userDetails'] = data;
+      this.data.pendingItems.push(partner);
+    }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
   }
