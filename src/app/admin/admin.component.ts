@@ -422,12 +422,12 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/partnerTyre?userRef=' + userRef, httpOptions).subscribe(data => {
       this.properties.pz.loadingTyres = false;
       this.data.pzPartner.tyreList = data;
-      this.data.pzPartner.tyreList.forEach(e => {
-        e.inclusionIndex = e.inclusion.map(inc => {
-          let item = this.data.inclusionList.filter(i => i.description === inc)[0];
-          return this.data.inclusionList.indexOf(item);
-        })
-      });
+      // this.data.pzPartner.tyreList.forEach(e => {
+      //   e.inclusionIndex = e.inclusion.map(inc => {
+      //     let item = this.data.inclusionList.filter(i => i.description === inc)[0];
+      //     return this.data.inclusionList.indexOf(item);
+      //   })
+      // });
     }, err => {
       this.properties.pz.loadingTyres = false;
       this.properties.errorMessage = this.extractError(err);
@@ -520,6 +520,28 @@ export class AdminComponent implements OnInit {
       partner['userDetails'] = data;
       this.data.pendingItems.push(partner);
     }, err => {
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  approveAllChanges = (pendingItem: any) => {
+    pendingItem.approving = true;
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    let req = {
+      services: {
+        wheelAlignmentPrice: pendingItem.wheelAlignmentPrice,
+        wheelBalancingPrice: pendingItem.wheelBalancingPrice,
+      },
+      userInfo: pendingItem.userRef,
+    }
+    this.http.post('/api/partnerServices?review=true', req, httpOptions).subscribe(resp => {
+      pendingItem.approving = false;
+      this.toastr.success('Prices have been approved', 'Prices approved');
+      this.getPendingPartnerServices();
+    }, err => {
+      pendingItem.approving = false;
       this.properties.errorMessage = this.extractError(err);
     });
   }

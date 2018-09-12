@@ -2,606 +2,695 @@
   <div class="row">
     <div class="col-3"></div>
     <div class="col-6 p-3 main-logo">
-        <span style="color:black !important">
-            <h1 class="text-center m-0">TyreLess<span class="txt-green">.co.za</span></h1>
-        </span>
-        <h5 class="text-center sub-header">{{data.title}}</h5>
+      <span style="color:black !important">
+        <h1 class="text-center m-0">TyreLess
+          <span class="txt-green">.co.za</span>
+        </h1>
+      </span>
+      <h5 class="text-center sub-header">{{data.title}}</h5>
     </div>
     <div class="col-3 text-right">
-        <br><br>
-        Welcome, <b>{{ userInfo.username }}</b>
-        <br>
-        <a (click)="logout()">Logout</a>
+      <br>
+      <br> Welcome,
+      <b>{{ userInfo.username }}</b>
+      <br>
+      <a (click)="logout()">Logout</a>
     </div>
   </div>
   <div class="partner-zone">
-      <div class="row">
-          <div class="col-12 col-header text-center">
-            <h5 class="m-0">{{ data.activeTab }} <span *ngIf="data.activeTab == 'Deal Input' || data.activeTab == 'My Deals'"> - {{ data.activeDealInputTab }}</span></h5>
-          </div>
+    <div class="row">
+      <div class="col-12 col-header text-center">
+        <h5 class="m-0">{{ data.activeTab }}
+          <span *ngIf="data.activeTab == 'Deal Input' || data.activeTab == 'My Deals'"> - {{ data.activeDealInputTab }}</span>
+        </h5>
       </div>
-      <div class="row admin-body p-1">
-          <div class="col-2 p-2" style="margin-top: 5pt">
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Manage Partner')" class="nav-link active show" id="v-pills-partner-tab" data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
-                  <i class="fa fa-user"></i> Partner
-                </a>
-                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Deal Input')" class="nav-link" id="v-pills-deal-inputs-tab" data-toggle="pill" href="#v-pills-deal-inputs" role="tab" aria-controls="v-pills-deal-inputs" aria-selected="false">
-                    <i class="fa fa-upload"></i> Deal Input
-                </a>
-                <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Partner Deals')" class="nav-link" id="v-pills-partner-deals-tab" data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
-                    <i class="fa fa-handshake-o"></i> Partner Deals
-                    <span class="notification-count" *ngIf="data.pendingItems && data.pendingItems.length > 0">2</span>
-                </a>
-                <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('activeTab', 'My Deals')" class="nav-link active show" id="v-pills-my-deals-tab" data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
-                  <i class="fa fa-handshake-o"></i> My Deals
-                </a> 
-                <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('activeTab', 'Settings')" class="nav-link show" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
-                  <i class="fa fa-cog"></i> Settings
-                </a> 
-            </div>
+    </div>
+    <div class="row admin-body p-1">
+      <div class="col-2 p-2" style="margin-top: 5pt">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Manage Partner')" class="nav-link active show" id="v-pills-partner-tab"
+            data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
+            <i class="fa fa-user"></i> Partner
+          </a>
+          <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Deal Input')" class="nav-link" id="v-pills-deal-inputs-tab"
+            data-toggle="pill" href="#v-pills-deal-inputs" role="tab" aria-controls="v-pills-deal-inputs" aria-selected="false">
+            <i class="fa fa-upload"></i> Deal Input
+          </a>
+          <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Partner Deals')" class="nav-link" id="v-pills-partner-deals-tab"
+            data-toggle="pill" href="#v-pills-partner-deals" role="tab" aria-controls="v-pills-partner-deals" aria-selected="false">
+            <i class="fa fa-handshake-o"></i> Partner Deals
+            <span class="notification-count" *ngIf="data.pendingItems && data.pendingItems.length > 0">{{ data.pendingItems.length }}</span>
+          </a>
+          <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('activeTab', 'My Deals')" class="nav-link active show" id="v-pills-my-deals-tab"
+            data-toggle="pill" href="#v-pills-my-deals" role="tab" aria-controls="v-pills-my-deals" aria-selected="false">
+            <i class="fa fa-handshake-o"></i> My Deals
+          </a>
+          <a *ngIf="data.title == 'PartnerZone'" (click)="setActiveTab('activeTab', 'Settings')" class="nav-link show" id="v-pills-settings-tab"
+            data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+            <i class="fa fa-cog"></i> Settings
+          </a>
+          <a (click)="setActiveTab('activeTab', 'History')" class="nav-link show" id="v-pills-history-tab"
+            data-toggle="pill" href="#v-pills-history" role="tab" aria-controls="v-pills-history" aria-selected="false">
+            <i class="fa fa-history"></i> History
+          </a>
+        </div>
+      </div>
+      <div class="col-10">
+        <div class="tab-content p-3" id="v-pills-tabContent">
+          <div *ngIf="data.title == 'Admin'" class="tab-pane fade active show" id="v-pills-partner" role="tabpanel" aria-labelledby="v-pills-partner-tab">
+            <form (ngSubmit)="partnerUpdate()" #partnerUpdateForm="ngForm">
+              <div class="row m-1">
+                <div class="col-2 p-1">
+                  <span class="font-weight-bold">Cust Code:</span>
+                  <br>
+                  <span *ngIf="!data.partner.customerCode">Pending</span>
+                  <span *ngIf="data.partner.customerCode">{{ data.partner.customerCode }}</span>
+                </div>
+                <div class="col-4 p-1">
+                  <input type="text" id="partnerRetailerName" name="partnerRetailerName" class="form-control" [(ngModel)]="data.partner.retailerName"
+                    placeholder="Retailer/Franchise Name" required/>
+                </div>
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerRegisteredName" name="partnerRegisteredName" class="form-control" [(ngModel)]="data.partner.registeredName"
+                    placeholder="Registered Name" required/>
+                </div>
+              </div>
+              <div class="row m-1">
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerProvince" name="partnerProvince" class="form-control" [(ngModel)]="data.partner.province" placeholder="Province"
+                    required/>
+                </div>
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerSuburb" name="partnerSuburb" class="form-control" [(ngModel)]="data.partner.suburb" placeholder="Suburb"
+                    required/>
+                </div>
+              </div>
+              <div class="row m-1">
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerBranchName" name="partnerBranchName" class="form-control" [(ngModel)]="data.partner.branchName"
+                    placeholder="Branch Name" required/>
+                </div>
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerBranchPin" name="partnerBranchPin" class="form-control" [(ngModel)]="data.partner.branchPin"
+                    placeholder="Branch Pin" required/>
+                </div>
+              </div>
+              <div class="row m-1">
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerPartnerZoneEmail" name="partnerPartnerZoneEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    [email]="true" class="form-control" [(ngModel)]="data.partner.partnerZoneEmail" placeholder="Partner Zone Email"
+                    required/>
+                </div>
+                <div class="col-6 p-1">
+                  <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email"
+                    required/>
+                </div>
+              </div>
+              <div class="row m-1">
+                <div class="col-6 p-1">
+                  <select name="partnerLogo" [(ngModel)]="data.partner.logo" class="custom-select w-100" required>
+                    <option [ngValue]="undefined" disabled>Select Logo</option>
+                    <option *ngFor="let logo of config.logoList" [ngValue]="logo.value">
+                      {{ logo.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-3 p-1">
+                  <button class="btn btn-success p-1 w-100 h-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
+                    <span *ngIf="!properties.partnerSelected">Create</span>
+                    <span *ngIf="properties.partnerSelected">Update</span>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
-          <div class="col-10">
-            <div class="tab-content p-3" id="v-pills-tabContent">
-                <div *ngIf="data.title == 'Admin'" class="tab-pane fade active show" id="v-pills-partner" role="tabpanel" aria-labelledby="v-pills-partner-tab">
-                  <form (ngSubmit)="partnerUpdate()" #partnerUpdateForm="ngForm">
+          <div *ngIf="data.title == 'Admin'" class="tab-pane fade text-center" id="v-pills-deal-inputs" role="tabpanel" aria-labelledby="v-pills-deal-inputs-tab">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a (click)="setActiveTab('activeDealInputTab', 'Tyres')" class="nav-link active" id="tyres-tab" data-toggle="tab" href="#tyres"
+                  role="tab" aria-controls="tyres" aria-selected="true">Tyres</a>
+              </li>
+              <li class="nav-item">
+                <a (click)="setActiveTab('activeDealInputTab', 'Inclusions')" class="nav-link" id="inclusions-tab" data-toggle="tab" href="#inclusions"
+                  role="tab" aria-controls="inclusions" aria-selected="false">Inclusions</a>
+              </li>
+            </ul>
+            <div class="tab-content p-2" id="myTabContent">
+              <div class="tab-pane fade show active" id="tyres" role="tabpanel" aria-labelledby="tyres-tab">
+                <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
                   <div class="row m-1">
+                    <div class="col-6 p-1">
+                      <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.tyre.vehicleType"
+                        placeholder="Vehicle Type" required/>
+                    </div>
+                    <div class="col-6 p-1">
+                      <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.tyre.brand"
+                        placeholder="Brand" required/>
+                    </div>
+                  </div>
+                  <div class="row m-1">
+                    <div class="col-6 p-1">
+                      <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.tyre.logo" placeholder="Logo"
+                        required/>
+                    </div>
+                    <div class="col-6 p-1">
+                      <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.tyre.tyreModel"
+                        placeholder="Tyre Model" required/>
+                    </div>
+                  </div>
+                  <div class="row m-1">
+                    <div class="col-6 p-1">
+                      <input type="text" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.tyre.tyreImage"
+                        placeholder="Tyre Image" required/>
+                    </div>
                     <div class="col-2 p-1">
-                      <span class="font-weight-bold">Cust Code:</span>
-                      <br>
-                      <span *ngIf="!data.partner.customerCode">Pending</span>
-                      <span *ngIf="data.partner.customerCode">{{ data.partner.customerCode }}</span>
+                      <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.tyre.width"
+                        placeholder="Width" required/>
                     </div>
-                    <div class="col-4 p-1">
-                        <input type="text" id="partnerRetailerName" name="partnerRetailerName" class="form-control" [(ngModel)]="data.partner.retailerName" placeholder="Retailer/Franchise Name" required/>
+                    <div class="col-2 p-1">
+                      <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.tyre.profile"
+                        placeholder="Profile" required/>
                     </div>
-                    <div class="col-6 p-1">
-                        <input type="text" id="partnerRegisteredName" name="partnerRegisteredName" class="form-control" [(ngModel)]="data.partner.registeredName" placeholder="Registered Name" required/>
-                    </div>
-                  </div>
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                      <input type="text" id="partnerProvince" name="partnerProvince" class="form-control" [(ngModel)]="data.partner.province" placeholder="Province" required/>
-                    </div>
-                    <div class="col-6 p-1">
-                      <input type="text" id="partnerSuburb" name="partnerSuburb" class="form-control" [(ngModel)]="data.partner.suburb" placeholder="Suburb" required/>
-                    </div>
-                  </div>
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                      <input type="text" id="partnerBranchName" name="partnerBranchName" class="form-control" [(ngModel)]="data.partner.branchName" placeholder="Branch Name" required/>
-                    </div>
-                    <div class="col-6 p-1">
-                      <input type="text" id="partnerBranchPin" name="partnerBranchPin" class="form-control" [(ngModel)]="data.partner.branchPin" placeholder="Branch Pin" required/>
-                    </div>
-                  </div>
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                        <input type="text" id="partnerPartnerZoneEmail" name="partnerPartnerZoneEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.partnerZoneEmail" placeholder="Partner Zone Email" required/>
-                    </div>
-                    <div class="col-6 p-1">
-                        <input type="text" id="partnerSalesEmail" name="partnerSalesEmail" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [email]="true" class="form-control" [(ngModel)]="data.partner.salesEmail" placeholder="Partner Sales Email" required/>
-                    </div>
-                  </div>
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                      <select name="partnerLogo" [(ngModel)]="data.partner.logo" class="custom-select w-100" required>
-                        <option [ngValue]="undefined" disabled>Select Logo</option>
-                        <option *ngFor="let logo of config.logoList" [ngValue]="logo.value">
-                          {{ logo.name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-3 p-1">
-                        <button class="btn btn-success p-1 w-100 h-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
-                          <span *ngIf="!properties.partnerSelected">Create</span>
-                          <span *ngIf="properties.partnerSelected">Update</span>
-                        </button>
-                    </div>
-                  </div>
-                  </form>
-                </div>
-                <div class="tab-pane fade text-center" id="v-pills-deal-inputs" role="tabpanel" aria-labelledby="v-pills-deal-inputs-tab">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                          <a (click)="setActiveTab('activeDealInputTab', 'Tyres')" class="nav-link active" id="tyres-tab" data-toggle="tab" href="#tyres" role="tab" aria-controls="tyres" aria-selected="true">Tyres</a>
-                        </li>
-                        <li class="nav-item">
-                          <a (click)="setActiveTab('activeDealInputTab', 'Inclusions')" class="nav-link" id="inclusions-tab" data-toggle="tab" href="#inclusions" role="tab" aria-controls="inclusions" aria-selected="false">Inclusions</a>
-                        </li>
-                      </ul>
-                      <div class="tab-content p-2" id="myTabContent">
-                        <div class="tab-pane fade show active" id="tyres" role="tabpanel" aria-labelledby="tyres-tab">
-                          <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
-                              <div class="row m-1">
-                                <div class="col-6 p-1">
-                                  <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.tyre.vehicleType" placeholder="Vehicle Type" required/>
-                                </div>
-                                <div class="col-6 p-1">
-                                    <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.tyre.brand" placeholder="Brand" required/>
-                                </div>
-                              </div>
-                              <div class="row m-1">
-                                  <div class="col-6 p-1">
-                                    <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.tyre.logo" placeholder="Logo" required/>
-                                  </div>
-                                  <div class="col-6 p-1">
-                                      <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.tyre.tyreModel" placeholder="Tyre Model" required/>
-                                  </div>
-                                </div>
-                                <div class="row m-1">
-                                  <div class="col-6 p-1">
-                                    <input type="text" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.tyre.tyreImage" placeholder="Tyre Image" required/>
-                                  </div>
-                                  <div class="col-2 p-1">
-                                    <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.tyre.width" placeholder="Width" required/>
-                                  </div>
-                                  <div class="col-2 p-1">
-                                    <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.tyre.profile" placeholder="Profile" required/>
-                                  </div>
-                                  <div class="col-2 p-1">
-                                    <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.tyre.size" placeholder="Size" required/>
-                                  </div>
-                                </div>
-                                <div class="row m-1">
-                                  <div class="col-3 p-1">
-                                    <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.tyre.speedRating" placeholder="Speed Rating"/>
-                                  </div>
-                                  <div class="col-3 p-1">
-                                    <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
-                                        <span *ngIf="!properties.tyreSelected">Create</span>
-                                        <span *ngIf="properties.tyreSelected">Update</span>
-                                    </button>
-                                  </div>
-                                </div>
-                              </form>
-                        </div>
-                        <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">
-                            <form (ngSubmit)="inclusionUpdate()" #dealInputInclusionsForm="ngForm">
-                                <div class="row m-1">
-                                    <div class="col-9 p-1">
-                                      <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.inclusion.description" placeholder="Description" required/>
-                                    </div>
-                                    <div class="col-3 p-1">
-                                      <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
-                                          <span *ngIf="!properties.inclusionSelected">Add Inclusion</span>
-                                          <span *ngIf="properties.inclusionSelected">Update</span>
-                                      </button>
-                                    </div>
-                                  </div>
-                            </form>
-                          </div>
-                      </div>
-                </div>
-                <div class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
-                  <div class="card" *ngIf="properties.loadingPendingPartnerServices" >
-                    <div class="card-header bg-light">
-                      <h6 class="m-1 mt-2 pull-left">Loading...</h6>
-                    </div>
-                    <div class="card-body">
-                      <div class="card-text">
-                        Fetching Pending Services &amp; Tyres...
-                        <img class="row-spinner" src="../../assets/spinner.gif"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div *ngIf="!properties.loadingPendingPartnerServices">
-                    <div class="card mb-3"  *ngFor="let pendingItem of data.pendingItems">
-                        <div class="card-header bg-light">
-                          <h6 class="m-1 mt-2 pull-left">{{ pendingItem.userDetails.retailerName }} ({{ pendingItem.userDetails.branchName }})</h6>
-                          <button type="button" class="btn btn-success pull-right" (click)="approveAll()"  ngbTooltip="Approve changes">Approve <i class="fa fa-check"></i></button>
-                        </div>
-                        <div class="card-body">
-                          <h6>Services</h6>
-                          <div>
-                            <div class="row" *ngIf="pendingItem.wheelAlignmentPrice || pendingItem.wheelBalancingPrice">
-                              <div class="col-4">
-                                <b>Wheel Alignment Price:</b> R{{pendingItem.wheelAlignmentPrice}}
-                              </div>
-                              <div class="col-4">
-                                <b>Wheel Balancing Price:</b> R{{pendingItem.wheelBalancingPrice}}
-                              </div>
-                            </div>
-                            <div class="row" *ngIf="!pendingItem.wheelAlignmentPrice && !pendingItem.wheelBalancingPrice">
-                              Nothing to approve
-                          </div>
-                          <br>
-                          <h6>Tyres &amp; Inclusions</h6>
-                          <div>Nothing to approve</div>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'My Deals'" class="tab-pane fade active show" id="v-pills-my-deals" role="tabpanel" aria-labelledby="v-pills-my-deals-tab">
-                    <ul class="nav nav-tabs" id="partnerZoneTab" role="tablist">
-                      <li class="nav-item">
-                        <a (click)="setActiveTab('activeDealInputTab', 'Tyres & Inclusions')" class="nav-link active" id="pz-tyres-tab" data-toggle="tab" href="#pzTyres" role="tab" aria-controls="pzTyres" aria-selected="true">Tyres &amp; Inclusions</a>
-                      </li>
-                      <li class="nav-item">
-                        <a (click)="setActiveTab('activeDealInputTab', 'Services')" class="nav-link" id="pz-services-tab" data-toggle="tab" href="#pzServices" role="tab" aria-controls="pzServices" aria-selected="false">Services</a>
-                      </li>
-                    </ul>
-                    <div class="tab-content p-2" id="pzTabContent">
-                      <div class="tab-pane fade show active" id="pzTyres" role="tabpanel" aria-labelledby="pz-tyres-tab">
-                          <div class="row plr-2">
-                            <div class="col-7">
-                                <p class="font-italic m-3">Edit existing tyres &amp; inclusions below or <a (click)="openTyreSelectionModal()">add new tyres</a></p>
-                            </div>
-                            <div class="col-5 text-right" style="line-height:51px;">
-                                <div class="w-50 pull-left p-1">
-                                  <button type="button" ngbTooltip="Changes will be reviewed before being published" class="btn btn-success w-100" *ngIf="properties.pz.changesMade" [ladda]="properties.pz.submittingChanges" (click)="submitPartnerChanges()" >Submit Changes <i class="fa fa-check"></i></button>
-                                </div>
-                                <div class="w-50 pull-right p-1">
-                                  <button type="button" class="btn btn-secondary w-100" (click)="openTyreSelectionModal()">Add Tyres <i class="fa fa-plus"></i></button>
-                                </div>
-                            </div>
-                          </div>
-                          <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
-                              <thead>
-                                <tr>
-                                  <th scope="col">Vehicle Type</th>
-                                  <th scope="col">Brand</th>
-                                  <th scope="col">Tyre Model</th>
-                                  <th scope="col">Tyre Width</th>
-                                  <th scope="col">Tyre Profile</th>
-                                  <th scope="col">Wheel Size</th>
-                                  <th scope="col">Speed Rating</th>
-                                  <th scope="col">Inclusions</th>
-                                  <th scope="col">Price</th>
-                                  <th scope="col"></th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let tyre of data.pzPartner.tyreList">
-                                  <td>{{ tyre.tyreRef.vehicleType }}</td>
-                                  <td>{{ tyre.tyreRef.brand }}</td>
-                                  <td>{{ tyre.tyreRef.tyreModel }}</td>
-                                  <td>{{ tyre.tyreRef.width }}</td>
-                                  <td>{{ tyre.tyreRef.profile }}</td>
-                                  <td>{{ tyre.tyreRef.size }}</td>
-                                  <td>{{ tyre.tyreRef.speedRating }}</td>
-                                  <td>
-                                    <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inclusionIndex" (ngModelChange)="updateChangesMade(true, tyre)"></ss-multiselect-dropdown>
-                                  </td>
-                                  <td>
-                                    <div class="input-group" style="width:120px">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">R</span>
-                                      </div>
-                                      <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (change)="updateChangesMade(true, tyre)" [(ngModel)]="tyre.price" class="form-control p-2" placeholder="" aria-label="Price per Tyre" aria-describedby="basic-addon1">
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                                    <button *ngIf="!tyre.deleting" (click)="removePartnerTyre(tyre, $event)" type="button" class="close delete-row"  placement="top" ngbTooltip="Delete">&times;</button>
-                                  </td>
-                                </tr>
-                                <tr *ngIf="!properties.pz.loadingTyres && (!data.pzPartner.tyreList || data.pzPartner.tyreList.length == 0)">
-                                  <td colspan="12" class="text-center">No results</td>
-                                </tr>
-                                <tr *ngIf="properties.pz.loadingTyres">
-                                  <td colspan="12" class="text-center">
-                                      <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <div class="update-text pull-right font-italic p-1">
-                              <span *ngIf="properties.pz.updatingTyres">Saving changes...</span>
-                            </div>
-                            <br>
-                      </div>
-                      <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
-                        <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>
-                        <div *ngIf="!properties.pz.loadingServices">
-                            <form (ngSubmit)="updatePartnerServices()" #partnerServicesUpdateForm="ngForm">
-                              <div class="row">
-                                  <div class="col-3"></div>
-                                  <div class="col-4 p-2 font-weight-bold text-center" ngbTooltip="Price that is currently configured">
-                                    Current Price
-                                  </div>
-                                  <div class="col-4 p-2 font-weight-bold text-center" ngbTooltip="New proposed price">
-                                    New Price
-                                  </div>
-                              </div>
-                            <div class="row m-1">
-                                <div class="col-3 font-weight-bold" style="line-height: 46px">
-                                  Wheel Alignment
-                                </div>
-                                <div class="col-4">
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1">R</span>
-                                    </div>
-                                    <input type="text" id="partnerServicesUpdateLiveWheelAlignment" name="partnerServicesUpdateLiveWheelAlignment" [(ngModel)]="data.pzPartner.services.liveWheelAlignmentPrice" class="form-control" placeholder="" aria-label="Current Wheel Alignment Price" aria-describedby="basic-addon1" disabled="disabled">
-                                  </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">R</span>
-                                      </div>
-                                      <input type="text" id="partnerServicesUpdateWheelAlignment" name="partnerServicesUpdateWheelAlignment" [(ngModel)]="data.pzPartner.services.wheelAlignmentPrice" class="form-control" placeholder="" aria-label="Proposed Wheel Alignment Price" aria-describedby="basic-addon1" required>
-                                    </div>
-                                </div>
-                              </div>
-                              <div class="row m-1">
-                                <div class="col-3 font-weight-bold" style="line-height: 46px">
-                                  Wheel Balancing
-                                </div>
-                                <div class="col-4">
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1">R</span>
-                                    </div>
-                                    <input type="text" id="partnerServicesUpdateLiveWheelBalancing" name="partnerServicesUpdateLiveWheelBalancing" [(ngModel)]="data.pzPartner.services.liveWheelBalancingPrice" class="form-control" placeholder="" aria-label="Current Wheel Balancing Price" aria-describedby="basic-addon1" disabled="disabled">
-                                  </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon1">R</span>
-                                      </div>
-                                      <input type="text" id="partnerServicesUpdateWheelBalancing" name="partnerServicesUpdateWheelBalancing" [(ngModel)]="data.pzPartner.services.wheelBalancingPrice" class="form-control" placeholder="" aria-label="Proposed Wheel Balancing Price" aria-describedby="basic-addon1" required>
-                                    </div>
-                                  </div>
-                              </div>
-                              <div class="row m-1">
-                                <div class="col-3" style="line-height: 46px">
-                                </div>
-                                <div class="col-3">
-                                  <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerServicesUpdateForm.form.valid" [ladda]="properties.pz.updatingService">Update Prices</button>
-                                </div>
-                              </div>
-                              </form>
-                        </div>
-                        <div *ngIf="properties.pz.loadingServices" class="text-center p-3">
-                            <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'Settings'" class="tab-pane fade active show" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                  <p class="font-italic m-1 p-1">Change your password below, minimum of 8 characters</p>
-                  <form (ngSubmit)="updatePartnerPassword()" #partnerPasswordUpdateForm="ngForm">
-                  <div class="row m-1">
-                    <div class="col-3 p-1">
-                        <input type="password" id="pzNewPassword" name="pzNewPassword" [(ngModel)]="data.pzPartner.newPassword" (ngModelChange)="checkPasswordValidity()" class="form-control" placeholder="New Password" aria-label="New Password" required>
+                    <div class="col-2 p-1">
+                      <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.tyre.size"
+                        placeholder="Size" required/>
                     </div>
                   </div>
                   <div class="row m-1">
                     <div class="col-3 p-1">
-                        <input type="password" id="pzNewPasswordConfirm" name="pzNewPasswordConfirm" [(ngModel)]="data.pzPartner.newPasswordConfirm" (ngModelChange)="checkPasswordValidity()" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" required>
+                      <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.tyre.speedRating"
+                        placeholder="Speed Rating" />
                     </div>
-                  </div>
-                  <div class="row m-1" *ngIf="properties.pz.passwordUpdateError !=''">
-                      <span class="p-1 login-warning">{{ properties.pz.passwordUpdateError }}</span>
-                  </div>
-                  <div class="row m-1">
                     <div class="col-3 p-1">
-                        <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerPasswordUpdateForm.form.valid || properties.pz.passwordUpdateError !=''" [ladda]="properties.pz.updatingPassword">Update Password</button>
+                      <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
+                        <span *ngIf="!properties.tyreSelected">Create</span>
+                        <span *ngIf="properties.tyreSelected">Update</span>
+                      </button>
                     </div>
                   </div>
                 </form>
+              </div>
+              <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">
+                <form (ngSubmit)="inclusionUpdate()" #dealInputInclusionsForm="ngForm">
+                  <div class="row m-1">
+                    <div class="col-9 p-1">
+                      <input type="text" id="dealInputInclusionsDescription" name="dealInputInclusionsDescription" class="form-control" [(ngModel)]="data.inclusion.description"
+                        placeholder="Description" required/>
+                    </div>
+                    <div class="col-3 p-1">
+                      <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createInclusionsLoading" [disabled]="!dealInputInclusionsForm.form.valid">
+                        <span *ngIf="!properties.inclusionSelected">Add Inclusion</span>
+                        <span *ngIf="properties.inclusionSelected">Update</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="data.title == 'Admin'" class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
+            <div class="card" *ngIf="properties.loadingPendingPartnerServices">
+              <div class="card-header bg-light">
+                <h6 class="m-1 mt-2 pull-left">Loading...</h6>
+              </div>
+              <div class="card-body">
+                <div class="card-text">
+                  Fetching Pending Services &amp; Tyres...
+                  <img class="row-spinner" src="../../assets/spinner.gif" />
                 </div>
+              </div>
             </div>
+            <div *ngIf="!properties.loadingPendingPartnerServices">
+              <div class="card mb-3" *ngFor="let pendingItem of data.pendingItems">
+                <div class="card-header bg-light">
+                  <h6 class="m-1 mt-2 pull-left">{{ pendingItem.userDetails.retailerName }} ({{ pendingItem.userDetails.branchName }})</h6>
+                  <button type="button" class="btn btn-success pull-right" (click)="approveAllChanges(pendingItem)" [ladda]="pendingItem.approving"
+                    ngbTooltip="Approve all changes">Approve
+                    <i class="fa fa-check"></i>
+                  </button>
+                </div>
+                <div class="card-body">
+                  <h6>Services</h6>
+                  <div>
+                    <div class="row" *ngIf="pendingItem.wheelAlignmentPrice || pendingItem.wheelBalancingPrice">
+                      <div class="col-4">
+                        <b>Wheel Alignment Price:</b> R{{pendingItem.wheelAlignmentPrice}}
+                      </div>
+                      <div class="col-4">
+                        <b>Wheel Balancing Price:</b> R{{pendingItem.wheelBalancingPrice}}
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="!pendingItem.wheelAlignmentPrice && !pendingItem.wheelBalancingPrice">
+                      Nothing to approve
+                    </div>
+                    <br>
+                    <h6>Tyres &amp; Inclusions</h6>
+                    <div>Nothing to approve</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card" *ngIf="!data.pendingItems || data.pendingItems.length == 0">
+                <div class="card-header bg-light">
+                  <h6 class="m-1 mt-2 pull-left">Nothing pending</h6>
+                </div>
+                <div class="card-body">
+                  <div class="card-text">
+                    No deals to approve currently
+                  </div>
+                </div>
+              </div>
             </div>
-            <table *ngIf="data.title == 'Admin' && data.activeTab == 'Manage Partner'" class="table table-striped text-center table-smaller" id="partnerTable">
-                <thead>
-                  <tr>
-                    <th scope="col">Cust_Code</th>
-                    <th scope="col">Retailer / Franchise</th>
-                    <th scope="col">Registered Name</th>
-                    <th scope="col">Province</th>
-                    <th scope="col">Suburb</th>
-                    <th scope="col">Branch</th>
-                    <th scope="col">Partner Zone Email</th>
-                    <th scope="col">Sales Email</th>
-                    <th scope="col">Status</th>
-                    <th scope="col" colspan="2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner, 'partner')">
-                    <td>{{ partner.customerCode }}</td>
-                    <td>{{ partner.retailerName }}</td>
-                    <td>{{ partner.registeredName }}</td>
-                    <td>{{ partner.province }}</td>
-                    <td>{{ partner.suburb }}</td>
-                    <td>{{ partner.branchName }}</td>
-                    <td>{{ partner.partnerZoneEmail }}</td>
-                    <td>{{ partner.salesEmail }}</td>
-                    <td>{{ partner.status }}</td>
-                    <td>
-                      <i *ngIf="partner.status == 'Active'" (click)="updateStatus(partner, $event, 'Suspended')" class="suspend-icon fa fa-pause-circle-o" placement="top" ngbTooltip="Suspend" aria-hidden="true"></i>
-                      <i *ngIf="partner.status == 'Suspended'" (click)="updateStatus(partner, $event, 'Active')" class="suspend-icon fa fa-play-circle-o" placement="top" ngbTooltip="Activate" aria-hidden="true"></i>
-                    </td>
-                    <td>
-                      <img *ngIf="partner.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                      <button *ngIf="!partner.deleting" (click)="removePartner(partner, $event)" type="button" class="close delete-row" placement="top" ngbTooltip="Delete">&times;</button>
-                    </td>
-                  </tr>
-                  <tr *ngIf="!properties.loadingPartners && (!data.partnerList || data.partnerList.length == 0)">
-                    <td colspan="12" class="text-center">No results</td>
-                  </tr>
-                  <tr *ngIf="properties.loadingPartners">
-                    <td colspan="12" class="text-center">
-                        <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Tyres'" class="table table-striped text-center table-smaller" id="dealInputTyresTable">
+          </div>
+          <div class="tab-pane fade" id="v-pills-history" role="tabpanel" aria-labelledby="v-pills-history-tab">
+            Coming Soon...
+          </div>
+          <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'My Deals'" class="tab-pane fade active show" id="v-pills-my-deals"
+            role="tabpanel" aria-labelledby="v-pills-my-deals-tab">
+            <ul class="nav nav-tabs" id="partnerZoneTab" role="tablist">
+              <li class="nav-item">
+                <a (click)="setActiveTab('activeDealInputTab', 'Tyres & Inclusions')" class="nav-link active" id="pz-tyres-tab" data-toggle="tab"
+                  href="#pzTyres" role="tab" aria-controls="pzTyres" aria-selected="true">Tyres &amp; Inclusions</a>
+              </li>
+              <li class="nav-item">
+                <a (click)="setActiveTab('activeDealInputTab', 'Services')" class="nav-link" id="pz-services-tab" data-toggle="tab" href="#pzServices"
+                  role="tab" aria-controls="pzServices" aria-selected="false">Services</a>
+              </li>
+            </ul>
+            <div class="tab-content p-2" id="pzTabContent">
+              <div class="tab-pane fade show active" id="pzTyres" role="tabpanel" aria-labelledby="pz-tyres-tab">
+                <div class="row plr-2">
+                  <div class="col-7">
+                    <p class="font-italic m-3">Edit existing tyres &amp; inclusions below or
+                      <a (click)="openTyreSelectionModal()">add new tyres</a>
+                    </p>
+                  </div>
+                  <div class="col-5 text-right" style="line-height:51px;">
+                    <div class="w-50 pull-left p-1">
+                      <button type="button" ngbTooltip="Changes will be reviewed before being published" class="btn btn-success w-100" *ngIf="properties.pz.changesMade"
+                        [ladda]="properties.pz.submittingChanges" (click)="submitPartnerChanges()">Submit Changes
+                        <i class="fa fa-check"></i>
+                      </button>
+                    </div>
+                    <div class="w-50 pull-right p-1">
+                      <button type="button" class="btn btn-secondary w-100" (click)="openTyreSelectionModal()">Add Tyres
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
                   <thead>
                     <tr>
-                      <th scope="col"></th>
                       <th scope="col">Vehicle Type</th>
                       <th scope="col">Brand</th>
-                      <th scope="col">Logo</th>
                       <th scope="col">Tyre Model</th>
-                      <th scope="col">Tyre Image</th>
                       <th scope="col">Tyre Width</th>
                       <th scope="col">Tyre Profile</th>
                       <th scope="col">Wheel Size</th>
                       <th scope="col">Speed Rating</th>
+                      <th scope="col">Inclusions</th>
+                      <th scope="col">Price</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let tyre of data.tyreList" class="clickable-row" [ngClass]="{'selected-row':tyre.selected}" (click)="setActiveRow(tyre, 'tyre')">
-                      <td></td>
-                      <td>{{ tyre.vehicleType }}</td>
-                      <td>{{ tyre.brand }}</td>
-                      <td>{{ tyre.logo }}</td>
-                      <td>{{ tyre.tyreModel }}</td>
-                      <td>{{ tyre.tyreImage }}</td>
-                      <td>{{ tyre.width }}</td>
-                      <td>{{ tyre.profile }}</td>
-                      <td>{{ tyre.size }}</td>
-                      <td>{{ tyre.speedRating }}</td>
+                    <tr *ngFor="let tyre of data.pzPartner.tyreList">
+                      <td>{{ tyre.tyreRef.vehicleType }}</td>
+                      <td>{{ tyre.tyreRef.brand }}</td>
+                      <td>{{ tyre.tyreRef.tyreModel }}</td>
+                      <td>{{ tyre.tyreRef.width }}</td>
+                      <td>{{ tyre.tyreRef.profile }}</td>
+                      <td>{{ tyre.tyreRef.size }}</td>
+                      <td>{{ tyre.tyreRef.speedRating }}</td>
                       <td>
-                        <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                        <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre, $event)" type="button" class="close delete-row"  placement="top" ngbTooltip="Delete">&times;</button>
+                        <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inclusionIndex"
+                          (ngModelChange)="updateChangesMade(true, tyre)"></ss-multiselect-dropdown>
+                      </td>
+                      <td>
+                        <div class="input-group" style="width:120px">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">R</span>
+                          </div>
+                          <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (change)="updateChangesMade(true, tyre)" [(ngModel)]="tyre.price"
+                            class="form-control p-2" placeholder="" aria-label="Price per Tyre" aria-describedby="basic-addon1">
+                        </div>
+                      </td>
+                      <td>
+                        <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif" />
+                        <button *ngIf="!tyre.deleting" (click)="removePartnerTyre(tyre, $event)" type="button" class="close delete-row" placement="top"
+                          ngbTooltip="Delete">&times;</button>
                       </td>
                     </tr>
-                    <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
-                      <td colspan="11" class="text-center">No results</td>
+                    <tr *ngIf="!properties.pz.loadingTyres && (!data.pzPartner.tyreList || data.pzPartner.tyreList.length == 0)">
+                      <td colspan="12" class="text-center">No results</td>
                     </tr>
-                    <tr *ngIf="properties.loadingTyres">
-                      <td colspan="11" class="text-center">
-                          <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
+                    <tr *ngIf="properties.pz.loadingTyres">
+                      <td colspan="12" class="text-center">
+                        <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
                       </td>
                     </tr>
                   </tbody>
                 </table>
-                <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Inclusions'" class="table table-striped text-center table-smaller" id="dealInputTyresTable">
-                    <thead>
-                      <tr>
-                        <th scope="col" width="90%">Description</th>
-                        <th scope="col" width="10%"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
-                        <td>{{ inclusion.description }}</td>
-                        <td>
-                            <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif"/>
-                            <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row" placement="top" ngbTooltip="Delete" >&times;</button>
-                        </td>
-                      </tr>
-                      <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
-                        <td colspan="2" class="text-center">No results</td>
-                      </tr>
-                      <tr *ngIf="properties.loadingInclusions">
-                        <td colspan="2" class="text-center">
-                            <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-        </div>
-  </div>
-</div>
-
-<ng-template #errorModal let-c="close" let-d="dismiss">
-    <div class="modal-header modal-header-error">
-        <h5 class="modal-title custom">Whoops!</h5>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        {{ properties.errorMessage }}
-    </div>
-</ng-template>
-
-<ng-template #partnerCreationModal let-c="close" let-d="dismiss">
-    <div class="modal-header">
-        <h5 class="modal-title custom">Partner Creation</h5>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="text-center" *ngIf="properties.signupPartnerLoading">
-          <img src="../../assets/spinner.gif" class="search-icon" />
-          <br><br>
-          Creating partner account...
-        </div>
-        <div class="text-center" *ngIf="!properties.signupPartnerLoading">
-          Partner successfully created!<br>
-          They can log in with the below details and reset their details via the 'Settings' tab<br><br>
-          <div class="row text-left">
-            <div class="col-2"></div>
-            <div class="col-3 font-weight-bold">Username:</div>
-            <div class="col-3">{{ properties.signupUser }}</div>
-          </div>
-          <div class="row text-left">
-              <div class="col-2"></div>
-              <div class="col-3 font-weight-bold">Password:</div>
-              <div class="col-3">{{ properties.signupPass }}</div>
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-<ng-template #tyreSelectionModal let-c="close" let-d="dismiss">
-    <div class="modal-header">
-        <h5 class="modal-title custom">Add Tyres</h5>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-          <div class="col-8 pb-3"></div>
-          <div class="col-4 pb-3">
-              <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search tyres" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" style="border: 1px solid #ced4da">
-                        <i class="fa fa-search"></i>
-                    </button>
-                  </div>
+                <div class="update-text pull-right font-italic p-1">
+                  <span *ngIf="properties.pz.updatingTyres">Saving changes...</span>
                 </div>
+                <br>
+              </div>
+              <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
+                <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>
+                <div *ngIf="!properties.pz.loadingServices">
+                  <form (ngSubmit)="updatePartnerServices()" #partnerServicesUpdateForm="ngForm">
+                    <div class="row">
+                      <div class="col-3"></div>
+                      <div class="col-4 p-2 font-weight-bold text-center" ngbTooltip="Price that is currently configured">
+                        Current Price
+                      </div>
+                      <div class="col-4 p-2 font-weight-bold text-center" ngbTooltip="New proposed price">
+                        New Price
+                      </div>
+                    </div>
+                    <div class="row m-1">
+                      <div class="col-3 font-weight-bold" style="line-height: 46px">
+                        Wheel Alignment
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">R</span>
+                          </div>
+                          <input type="text" id="partnerServicesUpdateLiveWheelAlignment" name="partnerServicesUpdateLiveWheelAlignment" [(ngModel)]="data.pzPartner.services.liveWheelAlignmentPrice"
+                            class="form-control" placeholder="" aria-label="Current Wheel Alignment Price" aria-describedby="basic-addon1"
+                            disabled="disabled">
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">R</span>
+                          </div>
+                          <input type="text" id="partnerServicesUpdateWheelAlignment" name="partnerServicesUpdateWheelAlignment" [(ngModel)]="data.pzPartner.services.wheelAlignmentPrice"
+                            class="form-control" placeholder="" aria-label="Proposed Wheel Alignment Price" aria-describedby="basic-addon1"
+                            required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row m-1">
+                      <div class="col-3 font-weight-bold" style="line-height: 46px">
+                        Wheel Balancing
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">R</span>
+                          </div>
+                          <input type="text" id="partnerServicesUpdateLiveWheelBalancing" name="partnerServicesUpdateLiveWheelBalancing" [(ngModel)]="data.pzPartner.services.liveWheelBalancingPrice"
+                            class="form-control" placeholder="" aria-label="Current Wheel Balancing Price" aria-describedby="basic-addon1"
+                            disabled="disabled">
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">R</span>
+                          </div>
+                          <input type="text" id="partnerServicesUpdateWheelBalancing" name="partnerServicesUpdateWheelBalancing" [(ngModel)]="data.pzPartner.services.wheelBalancingPrice"
+                            class="form-control" placeholder="" aria-label="Proposed Wheel Balancing Price" aria-describedby="basic-addon1"
+                            required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row m-1">
+                      <div class="col-3" style="line-height: 46px">
+                      </div>
+                      <div class="col-3">
+                        <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerServicesUpdateForm.form.valid" [ladda]="properties.pz.updatingService">Update Prices</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div *ngIf="properties.pz.loadingServices" class="text-center p-3">
+                  <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'Settings'" class="tab-pane fade active show" id="v-pills-settings"
+            role="tabpanel" aria-labelledby="v-pills-settings-tab">
+            <p class="font-italic m-1 p-1">Change your password below, minimum of 8 characters</p>
+            <form (ngSubmit)="updatePartnerPassword()" #partnerPasswordUpdateForm="ngForm">
+              <div class="row m-1">
+                <div class="col-3 p-1">
+                  <input type="password" id="pzNewPassword" name="pzNewPassword" [(ngModel)]="data.pzPartner.newPassword" (ngModelChange)="checkPasswordValidity()"
+                    class="form-control" placeholder="New Password" aria-label="New Password" required>
+                </div>
+              </div>
+              <div class="row m-1">
+                <div class="col-3 p-1">
+                  <input type="password" id="pzNewPasswordConfirm" name="pzNewPasswordConfirm" [(ngModel)]="data.pzPartner.newPasswordConfirm"
+                    (ngModelChange)="checkPasswordValidity()" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password"
+                    required>
+                </div>
+              </div>
+              <div class="row m-1" *ngIf="properties.pz.passwordUpdateError !=''">
+                <span class="p-1 login-warning">{{ properties.pz.passwordUpdateError }}</span>
+              </div>
+              <div class="row m-1">
+                <div class="col-3 p-1">
+                  <button class="btn btn-success p-2 w-100" type="submit" [disabled]="!partnerPasswordUpdateForm.form.valid || properties.pz.passwordUpdateError !=''"
+                    [ladda]="properties.pz.updatingPassword">Update Password</button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
-        <table class="table table-striped text-center table-smaller" id="pzTyreSelectionTable">
-            <thead>
-              <tr>
-                <th scope="col">Vehicle Type</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Tyre Model</th>
-                <th scope="col">Tyre Width</th>
-                <th scope="col">Tyre Profile</th>
-                <th scope="col">Wheel Size</th>
-                <th scope="col">Speed Rating</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let tyre of data.tyreList">
-                <td>{{ tyre.vehicleType }}</td>
-                <td>{{ tyre.brand }}</td>
-                <td>{{ tyre.tyreModel }}</td>
-                <td>{{ tyre.width }}</td>
-                <td>{{ tyre.profile }}</td>
-                <td>{{ tyre.size }}</td>
-                <td>{{ tyre.speedRating }}</td>
-                <td>
-                  <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif"/>
-                  <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre); d('Add Tyre')" class="suspend-icon fa fa-plus-circle" placement="top" ngbTooltip="Add Tyre" aria-hidden="true"></i>
-                </td>
-              </tr>
-              <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
-                <td colspan="10" class="text-center">No results</td>
-              </tr>
-              <tr *ngIf="properties.loadingTyres">
-                <td colspan="10" class="text-center">
-                    <img class="row-spinner" src="../../assets/spinner.gif"/> Loading... 
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <table *ngIf="data.title == 'Admin' && data.activeTab == 'Manage Partner'" class="table table-striped text-center table-smaller"
+          id="partnerTable">
+          <thead>
+            <tr>
+              <th scope="col">Cust_Code</th>
+              <th scope="col">Retailer / Franchise</th>
+              <th scope="col">Registered Name</th>
+              <th scope="col">Province</th>
+              <th scope="col">Suburb</th>
+              <th scope="col">Branch</th>
+              <th scope="col">Partner Zone Email</th>
+              <th scope="col">Sales Email</th>
+              <th scope="col">Status</th>
+              <th scope="col" colspan="2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner, 'partner')">
+              <td>{{ partner.customerCode }}</td>
+              <td>{{ partner.retailerName }}</td>
+              <td>{{ partner.registeredName }}</td>
+              <td>{{ partner.province }}</td>
+              <td>{{ partner.suburb }}</td>
+              <td>{{ partner.branchName }}</td>
+              <td>{{ partner.partnerZoneEmail }}</td>
+              <td>{{ partner.salesEmail }}</td>
+              <td>{{ partner.status }}</td>
+              <td>
+                <i *ngIf="partner.status == 'Active'" (click)="updateStatus(partner, $event, 'Suspended')" class="suspend-icon fa fa-pause-circle-o"
+                  placement="top" ngbTooltip="Suspend" aria-hidden="true"></i>
+                <i *ngIf="partner.status == 'Suspended'" (click)="updateStatus(partner, $event, 'Active')" class="suspend-icon fa fa-play-circle-o"
+                  placement="top" ngbTooltip="Activate" aria-hidden="true"></i>
+              </td>
+              <td>
+                <img *ngIf="partner.deleting" class="row-spinner" src="../../assets/spinner.gif" />
+                <button *ngIf="!partner.deleting" (click)="removePartner(partner, $event)" type="button" class="close delete-row" placement="top"
+                  ngbTooltip="Delete">&times;</button>
+              </td>
+            </tr>
+            <tr *ngIf="!properties.loadingPartners && (!data.partnerList || data.partnerList.length == 0)">
+              <td colspan="12" class="text-center">No results</td>
+            </tr>
+            <tr *ngIf="properties.loadingPartners">
+              <td colspan="12" class="text-center">
+                <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Tyres'" class="table table-striped text-center table-smaller"
+          id="dealInputTyresTable">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Vehicle Type</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Logo</th>
+              <th scope="col">Tyre Model</th>
+              <th scope="col">Tyre Image</th>
+              <th scope="col">Tyre Width</th>
+              <th scope="col">Tyre Profile</th>
+              <th scope="col">Wheel Size</th>
+              <th scope="col">Speed Rating</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tyre of data.tyreList" class="clickable-row" [ngClass]="{'selected-row':tyre.selected}" (click)="setActiveRow(tyre, 'tyre')">
+              <td></td>
+              <td>{{ tyre.vehicleType }}</td>
+              <td>{{ tyre.brand }}</td>
+              <td>{{ tyre.logo }}</td>
+              <td>{{ tyre.tyreModel }}</td>
+              <td>{{ tyre.tyreImage }}</td>
+              <td>{{ tyre.width }}</td>
+              <td>{{ tyre.profile }}</td>
+              <td>{{ tyre.size }}</td>
+              <td>{{ tyre.speedRating }}</td>
+              <td>
+                <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif" />
+                <button *ngIf="!tyre.deleting" (click)="removeTyre(tyre, $event)" type="button" class="close delete-row" placement="top"
+                  ngbTooltip="Delete">&times;</button>
+              </td>
+            </tr>
+            <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
+              <td colspan="11" class="text-center">No results</td>
+            </tr>
+            <tr *ngIf="properties.loadingTyres">
+              <td colspan="11" class="text-center">
+                <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="data.activeTab == 'Deal Input' && data.activeDealInputTab == 'Inclusions'" class="table table-striped text-center table-smaller"
+          id="dealInputTyresTable">
+          <thead>
+            <tr>
+              <th scope="col" width="90%">Description</th>
+              <th scope="col" width="10%"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
+              <td>{{ inclusion.description }}</td>
+              <td>
+                <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif" />
+                <button *ngIf="!inclusion.deleting" (click)="removeInclusion(inclusion, $event)" type="button" class="close delete-row" placement="top"
+                  ngbTooltip="Delete">&times;</button>
+              </td>
+            </tr>
+            <tr *ngIf="!properties.loadingInclusions && (!data.inclusionList || data.inclusionList.length == 0)">
+              <td colspan="2" class="text-center">No results</td>
+            </tr>
+            <tr *ngIf="properties.loadingInclusions">
+              <td colspan="2" class="text-center">
+                <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-</ng-template>
+  </div>
+
+  <ng-template #errorModal let-c="close" let-d="dismiss">
+    <div class="modal-header modal-header-error">
+      <h5 class="modal-title custom">Whoops!</h5>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      {{ properties.errorMessage }}
+    </div>
+  </ng-template>
+
+  <ng-template #partnerCreationModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title custom">Partner Creation</h5>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="text-center" *ngIf="properties.signupPartnerLoading">
+        <img src="../../assets/spinner.gif" class="search-icon" />
+        <br>
+        <br> Creating partner account...
+      </div>
+      <div class="text-center" *ngIf="!properties.signupPartnerLoading">
+        Partner successfully created!
+        <br> They can log in with the below details and reset their details via the 'Settings' tab
+        <br>
+        <br>
+        <div class="row text-left">
+          <div class="col-2"></div>
+          <div class="col-3 font-weight-bold">Username:</div>
+          <div class="col-3">{{ properties.signupUser }}</div>
+        </div>
+        <div class="row text-left">
+          <div class="col-2"></div>
+          <div class="col-3 font-weight-bold">Password:</div>
+          <div class="col-3">{{ properties.signupPass }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #tyreSelectionModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h5 class="modal-title custom">Add Tyres</h5>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-8 pb-3"></div>
+        <div class="col-4 pb-3">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search tyres" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" style="border: 1px solid #ced4da">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped text-center table-smaller" id="pzTyreSelectionTable">
+        <thead>
+          <tr>
+            <th scope="col">Vehicle Type</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Tyre Model</th>
+            <th scope="col">Tyre Width</th>
+            <th scope="col">Tyre Profile</th>
+            <th scope="col">Wheel Size</th>
+            <th scope="col">Speed Rating</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tyre of data.tyreList">
+            <td>{{ tyre.vehicleType }}</td>
+            <td>{{ tyre.brand }}</td>
+            <td>{{ tyre.tyreModel }}</td>
+            <td>{{ tyre.width }}</td>
+            <td>{{ tyre.profile }}</td>
+            <td>{{ tyre.size }}</td>
+            <td>{{ tyre.speedRating }}</td>
+            <td>
+              <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif" />
+              <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre); d('Add Tyre')" class="suspend-icon fa fa-plus-circle" placement="top"
+                ngbTooltip="Add Tyre" aria-hidden="true"></i>
+            </td>
+          </tr>
+          <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
+            <td colspan="10" class="text-center">No results</td>
+          </tr>
+          <tr *ngIf="properties.loadingTyres">
+            <td colspan="10" class="text-center">
+              <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>

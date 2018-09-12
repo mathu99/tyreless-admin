@@ -332,10 +332,18 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
     if (token) {
         var partnerService = {
             userRef: req.body.userInfo._id,
-            wheelAlignmentPrice: req.body.services.wheelAlignmentPrice,
-            wheelBalancingPrice: req.body.services.wheelBalancingPrice,
-            reviewPending: true,
         };
+        if (req.query.review != 'true') { /* Submit for review */
+            partnerService.wheelAlignmentPrice = req.body.services.wheelAlignmentPrice;
+            partnerService.wheelBalancingPrice = req.body.services.wheelBalancingPrice;
+            partnerService.reviewPending = true;
+        } else {
+            partnerService.liveWheelAlignmentPrice = '' + req.body.services.wheelAlignmentPrice;
+            partnerService.liveWheelBalancingPrice = '' + req.body.services.wheelBalancingPrice;
+            partnerService.wheelAlignmentPrice = null;
+            partnerService.wheelBalancingPrice = null;
+            partnerService.reviewPending = false;
+        }
         var query = {'userRef': partnerService.userRef};
         PartnerService.findOneAndUpdate(query, partnerService, {upsert:true}, function(err, doc){
             if (err) {
