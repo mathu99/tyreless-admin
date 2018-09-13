@@ -258,6 +258,7 @@ export class AdminComponent implements OnInit {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.post('/api/partnerServices', this.data.pzPartner, httpOptions).subscribe(resp => {
+      this.addToHistory('Updated service prices');
       this.getPartnerServices(this.data.pzPartner.userInfo._id);
       this.properties.pz.updatingService = false;
       this.toastr.success('Prices have been submitted for approval', 'Prices submitted');
@@ -542,6 +543,31 @@ export class AdminComponent implements OnInit {
       this.getPendingPartnerServices();
     }, err => {
       pendingItem.approving = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  addToHistory = (description: String, affectedId?: String) => {
+    let auditItem = {
+      description,
+      userRef: this.userInfo['_id'],
+    }, httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.post('/api/auditItem', auditItem, httpOptions).subscribe(resp => {
+
+    }, err => {
+      this.properties.errorMessage = this.extractError(err);
+    });
+  }
+
+  getHistory = () => {
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+    };
+    this.http.get('/api/auditItem', httpOptions).subscribe(resp => {
+
+    }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
   }

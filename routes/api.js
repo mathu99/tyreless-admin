@@ -12,6 +12,7 @@ var Tyre = require("../models/tyre");
 var Inclusion = require("../models/inclusion");
 var PartnerService = require("../models/partnerService");
 var PartnerTyre = require("../models/partnerTyre");
+var AuditItem = require("../models/auditItem");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -363,6 +364,25 @@ router.get('/pendingPartnerServices', passport.authenticate('jwt', { session: fa
             if (err) return next(err);
             else if (partnerServices) res.json(partnerServices)
             else return res.status(200).send({ success: true, noResults: true, msg: 'No pending partner services found.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
+router.post('/auditItem', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        var auditItem = new AuditItem({
+            description: req.body.description,
+            userRef: req.body.userRef,
+        });
+        console.log(auditItem)
+        auditItem.save(function (err) {
+            if (err) {
+                return res.status(500).send({ success: false, msg: err.message });
+            }
+            res.json({ success: true, msg: 'Successfully created audit item' });
         });
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
