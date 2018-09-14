@@ -276,7 +276,7 @@
                       <td>{{ historyItem.date }}</td>
                       <td>{{ historyItem.description }}</td>
                       <td>{{ historyItem.userRef.username }}</td>
-                      <td><a href="">View Detail</a></td>
+                      <td><a (click)="viewHistoryDetail(historyItem)">View Detail</a></td>
                     </tr>
                     <tr *ngIf="!properties.loadingHistory && (!data.history || data.history.length == 0)">
                         <td colspan="4" class="text-center">No results</td>
@@ -718,3 +718,37 @@
       </table>
     </div>
   </ng-template>
+
+  
+  <ng-template #historyDetailModal let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title custom">View Detail</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped text-left table-smaller m-0" id="pzTyresTable">
+          <tbody>
+            <tr>
+                <th scope="col">Date</th>
+                <td>{{ properties.historyItem.date }}</td>
+            </tr>
+            <tr>
+                <th scope="col">Action</th>
+                <td>{{ properties.historyItem.description }}</td>
+            </tr>
+            <tr>
+                <th scope="col">Done By</th>
+                <td>{{ properties.historyItem.username }}</td>
+            </tr>
+            <tr>
+                <th scope="col">Detail</th>
+                <td>
+                    <pre>{{properties.historyItem.payload |json}}</pre>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>

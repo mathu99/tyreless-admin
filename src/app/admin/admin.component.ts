@@ -58,6 +58,7 @@ export class AdminComponent implements OnInit {
       updatingTyres: false,
       passwordUpdateError: '',
     },
+    historyItem: {},
   };
   config: any = {
     logoList: [{
@@ -92,6 +93,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('errorModal') private errorModal;
   @ViewChild('tyreSelectionModal') private tyreSelectionModal;
   @ViewChild('partnerCreationModal') private partnerCreationModal;
+  @ViewChild('historyDetailModal') private historyDetailModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService) { }
 
@@ -584,6 +586,7 @@ export class AdminComponent implements OnInit {
       if (resp['length'] > 0) {
         this.data.history = resp;
         this.data.history = this.data.history.map(e => {
+          e.payload = JSON.parse(e.payload);
           e.date = moment(e.date).format('YYYY-MM-DD HH:mm:ss');
           return e;
         })
@@ -592,6 +595,11 @@ export class AdminComponent implements OnInit {
       this.properties.loadingHistory = false;
       this.properties.errorMessage = this.extractError(err);
     });
+  }
+
+  viewHistoryDetail = (historyItem:any) => {
+    this.properties.historyItem = historyItem;
+    this.open(this.historyDetailModal);
   }
 
 }
