@@ -370,14 +370,33 @@ router.get('/pendingPartnerServices', passport.authenticate('jwt', { session: fa
     }
 });
 
+// User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}, 
+//   function(err,docs){
+//     if(!err) res.send(docs);
+// });
+
+router.get('/auditItem', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        AuditItem.find( { $or:[ {'userRef':req.query.userRef}, {'affectedRef':req.query.userRef} ]}).populate('userRef').populate('affectedRef').exec((err, auditItems) => {
+                if (err) return next(err);
+                else if (auditItems) res.json(auditItems)
+                else return res.status(200).send({ success: true, noResults: true, msg: 'No Audit Items found.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.post('/auditItem', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
+        console.log(req.body)
         var auditItem = new AuditItem({
             description: req.body.description,
+            payload: req.body.payload,
             userRef: req.body.userRef,
         });
-        console.log(auditItem)
         auditItem.save(function (err) {
             if (err) {
                 return res.status(500).send({ success: false, msg: err.message });

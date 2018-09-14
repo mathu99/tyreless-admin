@@ -10,6 +10,9 @@ import {
   IMultiSelectTexts,
   IMultiSelectOption
 } from 'angular-2-dropdown-multiselect';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-admin',
@@ -28,6 +31,7 @@ export class AdminComponent implements OnInit {
     partnerList: [],
     tyreList: [],
     inclusionList: [],
+    history: [],
     pzPartner: {},
   };
   properties: any = {
@@ -44,6 +48,7 @@ export class AdminComponent implements OnInit {
     inclusionSelected: false,
     errorMessage: '', /* Msg that pops up in modal */
     surpressErrors: false,
+    loadingHistory: true,
     pz: {
       changesMade: false,
       loadingTyres: true,
@@ -105,6 +110,7 @@ export class AdminComponent implements OnInit {
         this.getPendingPartnerServices();
       }
       this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
+      this.getHistory();
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
@@ -258,7 +264,13 @@ export class AdminComponent implements OnInit {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.post('/api/partnerServices', this.data.pzPartner, httpOptions).subscribe(resp => {
-      this.addToHistory('Updated service prices');
+      let auditPayload = {
+        'Live Wheel Alignment Price': _.get(this.data, 'pzPartner.services.liveWheelAlignmentPrice', ''),
+        'Live Wheel Balancing Price': _.get(this.data, 'pzPartner.services.liveWheelBalancingPrice', ''),
+        'New Wheel Alignment Price': _.get(this.data, 'pzPartner.services.wheelAlignmentPrice', ''),
+        'New Wheel Balancing Price': _.get(this.data, 'pzPartner.services.wheelBalancingPrice', ''),
+    };
+      this.addToHistory('Service prices submitted for approval', JSON.stringify(auditPayload));
       this.getPartnerServices(this.data.pzPartner.userInfo._id);
       this.properties.pz.updatingService = false;
       this.toastr.success('Prices have been submitted for approval', 'Prices submitted');
@@ -547,27 +559,37 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  addToHistory = (description: String, affectedId?: String) => {
+  addToHistory = (description: String, payload: String, affectedId?: String) => {
     let auditItem = {
       description,
+      payload,
       userRef: this.userInfo['_id'],
     }, httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     this.http.post('/api/auditItem', auditItem, httpOptions).subscribe(resp => {
-
+      this.getHistory();
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
   }
 
   getHistory = () => {
+    this.properties.loadingHistory = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
-    this.http.get('/api/auditItem', httpOptions).subscribe(resp => {
-
+    this.http.get('/api/auditItem?userRef=' + this.userInfo['_id'], httpOptions).subscribe(resp => {
+      this.properties.loadingHistory = false;
+      if (resp['length'] > 0) {
+        this.data.history = resp;
+        this.data.history = this.data.history.map(e => {
+          e.date = moment(e.date).format('YYYY-MM-DD HH:mm:ss');
+          return e;
+        })
+      }
     }, err => {
+      this.properties.loadingHistory = false;
       this.properties.errorMessage = this.extractError(err);
     });
   }

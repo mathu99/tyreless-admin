@@ -3,8 +3,7 @@
     <div class="col-3"></div>
     <div class="col-6 p-3 main-logo">
       <span style="color:black !important">
-        <h1 class="text-center m-0">TyreLess
-          <span class="txt-green">.co.za</span>
+        <h1 class="text-center m-0">TyreLess<span class="txt-green">.co.za</span>
         </h1>
       </span>
       <h5 class="text-center sub-header">{{data.title}}</h5>
@@ -161,8 +160,8 @@
                   </div>
                   <div class="row m-1">
                     <div class="col-6 p-1">
-                      <input type="text" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.tyre.tyreImage"
-                        placeholder="Tyre Image" required/>
+                      <input type="file" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.tyre.tyreImage"
+                        placeholder="Tyre Image" accept="image/*"required/>
                     </div>
                     <div class="col-2 p-1">
                       <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.tyre.width"
@@ -263,7 +262,32 @@
             </div>
           </div>
           <div class="tab-pane fade" id="v-pills-history" role="tabpanel" aria-labelledby="v-pills-history-tab">
-            Coming Soon...
+              <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Action</th>
+                      <th scope="col">Done By</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let historyItem of data.history">
+                      <td>{{ historyItem.date }}</td>
+                      <td>{{ historyItem.description }}</td>
+                      <td>{{ historyItem.userRef.username }}</td>
+                      <td><a href="">View Detail</a></td>
+                    </tr>
+                    <tr *ngIf="!properties.loadingHistory && (!data.history || data.history.length == 0)">
+                        <td colspan="4" class="text-center">No results</td>
+                      </tr>
+                      <tr *ngIf="properties.loadingHistory">
+                      <td colspan="4" class="text-center">
+                        <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
           </div>
           <div *ngIf="data.title == 'PartnerZone' && data.activeTab == 'My Deals'" class="tab-pane fade active show" id="v-pills-my-deals"
             role="tabpanel" aria-labelledby="v-pills-my-deals-tab">

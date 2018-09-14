@@ -6,6 +6,10 @@ var AuditItemSchema = new Schema({
         type: String,
         required: true
     },
+    payload: {
+        type: String,
+        required: true,
+    },
     date: {
         type: Date,
         default: Date.now,
