@@ -399,12 +399,14 @@ router.get('/auditItem', passport.authenticate('jwt', { session: false }), funct
 router.post('/auditItem', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        console.log(req.body)
         var auditItem = new AuditItem({
             description: req.body.description,
             payload: req.body.payload,
             userRef: req.body.userRef,
         });
+        if (req.body.affectedRef) {
+            auditItem.affectedRef = req.body.affectedRef;
+        }
         auditItem.save(function (err) {
             if (err) {
                 return res.status(500).send({ success: false, msg: err.message });

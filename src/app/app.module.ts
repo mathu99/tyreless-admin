@@ -31,7 +31,8 @@ const appRoutes: Routes = [
     component: SignupComponent,
     data: { title: 'Sign Up' }
   },
-  { path: '',
+  { 
+    path: '',
     redirectTo: '/login',
     pathMatch: 'full'
   }
@@ -56,10 +57,10 @@ const appRoutes: Routes = [
     MultiselectDropdownModule,
     NgbModule.forRoot(),
     LaddaModule.forRoot({
-      style: "zoom-in",
+      style: "zoom-out",
     }),
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-left',
       preventDuplicates: true,
     }),
   ],

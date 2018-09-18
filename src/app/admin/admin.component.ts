@@ -98,6 +98,10 @@ export class AdminComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService) { }
 
   ngOnInit() {
+    if (!localStorage.getItem('jwtToken')) {
+      this.router.navigate(['login']);
+      return;
+    }
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
@@ -105,15 +109,14 @@ export class AdminComponent implements OnInit {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
       this.data.activeTab = this.userInfo.role === 'admin' ? 'Manage Partner' : 'My Deals';
-      if (this.userInfo.role !== 'Admin') {
+      if (this.userInfo.role !== 'admin') {
         this.data.pzPartner.userInfo = this.userInfo;
         this.getPartnerTyres(this.userInfo['_id']);
         this.getPartnerServices(this.userInfo['_id']);
-        this.getPendingPartnerServices();
-        this.getHistory(true);
       } else {
-        this.getHistory();
+        this.getPendingPartnerServices();
       }
+      this.getHistory();
       this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
     }, err => {
       this.properties.errorMessage = this.extractError(err);
@@ -557,6 +560,7 @@ export class AdminComponent implements OnInit {
       pendingItem.approving = false;
       this.toastr.success('Prices have been approved', 'Prices approved');
       this.getPendingPartnerServices();
+      this.addToHistory('Prices approved', JSON.stringify(req.services), pendingItem.userRef);
     }, err => {
       pendingItem.approving = false;
       this.properties.errorMessage = this.extractError(err);
@@ -571,6 +575,9 @@ export class AdminComponent implements OnInit {
     }, httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
+    if (affectedId) {
+      auditItem['affectedRef'] = affectedId;
+    }
     this.http.post('/api/auditItem', auditItem, httpOptions).subscribe(resp => {
       this.getHistory();
     }, err => {
@@ -578,13 +585,13 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  getHistory = (allHistory?:Boolean) => {
+  getHistory = () => {
     this.properties.loadingHistory = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
     let url = '/api/auditItem';
-    url += (!allHistory) ? '?userRef=' + this.userInfo['_id'] : '';
+    url += (this.userInfo.role === 'admin') ? '' : '?userRef=' + this.userInfo['_id'];
     this.http.get(url, httpOptions).subscribe(resp => {
       this.properties.loadingHistory = false;
       if (resp['length'] > 0) {

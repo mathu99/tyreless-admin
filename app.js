@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/login', express.static(path.join(__dirname, 'dist')));
+app.use('/admin', express.static(path.join(__dirname, 'dist')));
 app.use(passport.initialize());
 app.use('/api', api);
 

@@ -18,6 +18,9 @@ export class LoginComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
+    if (localStorage.getItem('jwtToken')) {
+      this.router.navigate(['admin']);
+    }
   }
 
   login() {
