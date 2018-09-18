@@ -742,6 +742,10 @@
               <th scope="col">Done By</th>
               <td>{{ properties.historyItem.userRef.username }}</td>
             </tr>
+            <tr *ngIf="properties.historyItem.affectedRef">
+              <th scope="col">Affected User</th>
+              <td>{{ properties.historyItem.affectedRef.username }}</td>
+            </tr>
             <tr>
               <th scope="col">Detail</th>
               <td>
