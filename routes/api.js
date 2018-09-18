@@ -378,11 +378,19 @@ router.get('/pendingPartnerServices', passport.authenticate('jwt', { session: fa
 router.get('/auditItem', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        AuditItem.find( { $or:[ {'userRef':req.query.userRef}, {'affectedRef':req.query.userRef} ]}).populate('userRef').populate('affectedRef').exec((err, auditItems) => {
+        if (req.query.userRef && req.query.userRef !== undefined) {
+            AuditItem.find( { $or:[ {'userRef':req.query.userRef}, {'affectedRef':req.query.userRef} ]}).populate('userRef').populate('affectedRef').exec((err, auditItems) => {
                 if (err) return next(err);
                 else if (auditItems) res.json(auditItems)
                 else return res.status(200).send({ success: true, noResults: true, msg: 'No Audit Items found.' });
-        });
+            });
+        } else {
+            AuditItem.find().populate('userRef').populate('affectedRef').exec((err, auditItems) => {
+                if (err) return next(err);
+                else if (auditItems) res.json(auditItems)
+                else return res.status(200).send({ success: true, noResults: true, msg: 'No Audit Items found.' });
+            });
+        }
     } else {
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }

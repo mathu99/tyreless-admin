@@ -731,22 +731,22 @@
         <table class="table table-striped text-left table-smaller m-0" id="pzTyresTable">
           <tbody>
             <tr>
-                <th scope="col">Date</th>
-                <td>{{ properties.historyItem.date }}</td>
+              <th scope="col">Date</th>
+              <td>{{ properties.historyItem.date }}</td>
             </tr>
             <tr>
-                <th scope="col">Action</th>
-                <td>{{ properties.historyItem.description }}</td>
+              <th scope="col">Action</th>
+              <td>{{ properties.historyItem.description }}</td>
             </tr>
             <tr>
-                <th scope="col">Done By</th>
-                <td>{{ properties.historyItem.username }}</td>
+              <th scope="col">Done By</th>
+              <td>{{ properties.historyItem.userRef.username }}</td>
             </tr>
             <tr>
-                <th scope="col">Detail</th>
-                <td>
-                    <pre>{{properties.historyItem.payload |json}}</pre>
-                </td>
+              <th scope="col">Detail</th>
+              <td>
+                  <pre>{{properties.historyItem.payload |json}}</pre>
+              </td>
             </tr>
           </tbody>
         </table>

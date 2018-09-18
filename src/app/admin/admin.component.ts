@@ -110,9 +110,11 @@ export class AdminComponent implements OnInit {
         this.getPartnerTyres(this.userInfo['_id']);
         this.getPartnerServices(this.userInfo['_id']);
         this.getPendingPartnerServices();
+        this.getHistory(true);
+      } else {
+        this.getHistory();
       }
       this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
-      this.getHistory();
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
@@ -576,12 +578,14 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  getHistory = () => {
+  getHistory = (allHistory?:Boolean) => {
     this.properties.loadingHistory = true;
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
-    this.http.get('/api/auditItem?userRef=' + this.userInfo['_id'], httpOptions).subscribe(resp => {
+    let url = '/api/auditItem';
+    url += (!allHistory) ? '?userRef=' + this.userInfo['_id'] : '';
+    this.http.get(url, httpOptions).subscribe(resp => {
       this.properties.loadingHistory = false;
       if (resp['length'] > 0) {
         this.data.history = resp;
