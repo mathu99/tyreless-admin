@@ -6,6 +6,7 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 var crypto = require('crypto');
+const fs = require('fs');
 var User = require("../models/user");
 var Partner = require("../models/partner");
 var Tyre = require("../models/tyre");
@@ -181,7 +182,10 @@ router.post('/tyre', passport.authenticate('jwt', { session: false }), function 
             brand: req.body.brand,
             logo: req.body.logo,
             tyreModel: req.body.tyreModel,
-            tyreImage: req.body.tyreImage,
+            tyreImage: {
+                data: req.body.binData.data,
+                contentType: 'img/jpeg',
+            },
             width: req.body.width,
             profile: req.body.profile,
             size: req.body.size,

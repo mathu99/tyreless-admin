@@ -22,9 +22,9 @@ var TyreSchema = new Schema({
     type: String,
     required: true
   },
-  tyreImage: {
-    type: String,
-    required: true
+  tyreImage: { 
+    data: Buffer, 
+    contentType: String,
   },
   width: {
     type: String,

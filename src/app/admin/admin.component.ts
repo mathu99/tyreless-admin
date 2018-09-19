@@ -12,7 +12,7 @@ import {
 } from 'angular-2-dropdown-multiselect';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-admin',
@@ -125,6 +125,16 @@ export class AdminComponent implements OnInit {
     this.getPartners();
     this.getInclusions();
   }
+
+  onSelectFile(event, tyre) { // called each time file input changes
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.data.tyre.url = event.target['result'];
+      }
+    }
+}
 
   extractError = (err: any):void => {
     let errorMessage = '';
@@ -331,7 +341,11 @@ export class AdminComponent implements OnInit {
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
-    this.http.post('/api/tyre', this.data.tyre, httpOptions).subscribe(resp => {
+    this.data.tyre.binData = new Buffer(this.data.tyre.url.split(',')[1],'base64');
+    this.data.tyre.contentType = this.data.tyre.url.split('data:')[1].split(';base64')[0];
+    let req = JSON.parse(JSON.stringify(this.data.tyre));
+    req['url'] = null;
+    this.http.post('/api/tyre', req, httpOptions).subscribe(resp => {
       this.getTyres();
       this.data.tyre = {};
       this.properties.createTyresLoading = false;

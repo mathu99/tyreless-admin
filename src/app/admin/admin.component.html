@@ -137,58 +137,66 @@
             </ul>
             <div class="tab-content p-2" id="myTabContent">
               <div class="tab-pane fade show active" id="tyres" role="tabpanel" aria-labelledby="tyres-tab">
-                <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                      <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.tyre.vehicleType"
-                        placeholder="Vehicle Type" required/>
-                    </div>
-                    <div class="col-6 p-1">
-                      <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.tyre.brand"
-                        placeholder="Brand" required/>
-                    </div>
+                <div class="row">
+                  <div class="col-2 p-3">
+                      <img *ngIf="data.tyre.url" [src]="data.tyre.url" class="m-1" style="max-width: 120px; max-height: 120px">
+                      <img *ngIf="!data.tyre.url" src="../../assets/default_tyre.jpg" class="m-1" style="max-width: 120px; max-height: 120px">
                   </div>
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                      <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.tyre.logo" placeholder="Logo"
-                        required/>
-                    </div>
-                    <div class="col-6 p-1">
-                      <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.tyre.tyreModel"
-                        placeholder="Tyre Model" required/>
-                    </div>
+                  <div class="col-10">
+                      <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
+                          <div class="row m-1">
+                            <div class="col-6 p-1">
+                              <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.tyre.vehicleType"
+                                placeholder="Vehicle Type" required/>
+                            </div>
+                            <div class="col-6 p-1">
+                              <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.tyre.brand"
+                                placeholder="Brand" required/>
+                            </div>
+                          </div>
+                          <div class="row m-1">
+                            <div class="col-6 p-1">
+                              <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.tyre.logo" placeholder="Logo"
+                                required/>
+                            </div>
+                            <div class="col-6 p-1">
+                              <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.tyre.tyreModel"
+                                placeholder="Tyre Model" required/>
+                            </div>
+                          </div>
+                          <div class="row m-1">
+                            <div class="col-6 p-1">
+                              <input type="file" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" (change)="onSelectFile($event)"
+                                placeholder="Tyre Image" accept="image/*"/>
+                            </div>
+                            <div class="col-2 p-1">
+                              <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.tyre.width"
+                                placeholder="Width" required/>
+                            </div>
+                            <div class="col-2 p-1">
+                              <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.tyre.profile"
+                                placeholder="Profile" required/>
+                            </div>
+                            <div class="col-2 p-1">
+                              <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.tyre.size"
+                                placeholder="Size" required/>
+                            </div>
+                          </div>
+                          <div class="row m-1">
+                            <div class="col-3 p-1">
+                              <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.tyre.speedRating"
+                                placeholder="Speed Rating" />
+                            </div>
+                            <div class="col-3 p-1">
+                              <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
+                                <span *ngIf="!properties.tyreSelected">Create</span>
+                                <span *ngIf="properties.tyreSelected">Update</span>
+                              </button>
+                            </div>
+                          </div>
+                        </form>
                   </div>
-                  <div class="row m-1">
-                    <div class="col-6 p-1">
-                      <input type="file" id="dealInputTyresTyreImage" name="dealInputTyresTyreImage" class="form-control" [(ngModel)]="data.tyre.tyreImage"
-                        placeholder="Tyre Image" accept="image/*"required/>
-                    </div>
-                    <div class="col-2 p-1">
-                      <input type="text" id="dealInputTyresTyreWidth" name="dealInputTyresTyreWidth" class="form-control" [(ngModel)]="data.tyre.width"
-                        placeholder="Width" required/>
-                    </div>
-                    <div class="col-2 p-1">
-                      <input type="text" id="dealInputTyresTyreProfile" name="dealInputTyresTyreProfile" class="form-control" [(ngModel)]="data.tyre.profile"
-                        placeholder="Profile" required/>
-                    </div>
-                    <div class="col-2 p-1">
-                      <input type="text" id="dealInputTyresTyreSize" name="dealInputTyresTyreSize" class="form-control" [(ngModel)]="data.tyre.size"
-                        placeholder="Size" required/>
-                    </div>
-                  </div>
-                  <div class="row m-1">
-                    <div class="col-3 p-1">
-                      <input type="text" id="dealInputTyresSpeedRating" name="dealInputTyresSpeedRating" class="form-control" [(ngModel)]="data.tyre.speedRating"
-                        placeholder="Speed Rating" />
-                    </div>
-                    <div class="col-3 p-1">
-                      <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
-                        <span *ngIf="!properties.tyreSelected">Create</span>
-                        <span *ngIf="properties.tyreSelected">Update</span>
-                      </button>
-                    </div>
-                  </div>
-                </form>
+                </div>
               </div>
               <div class="tab-pane fade" id="inclusions" role="tabpanel" aria-labelledby="inclusions-tab">
                 <form (ngSubmit)="inclusionUpdate()" #dealInputInclusionsForm="ngForm">
@@ -546,7 +554,6 @@
               <th scope="col">Brand</th>
               <th scope="col">Logo</th>
               <th scope="col">Tyre Model</th>
-              <th scope="col">Tyre Image</th>
               <th scope="col">Tyre Width</th>
               <th scope="col">Tyre Profile</th>
               <th scope="col">Wheel Size</th>
@@ -561,7 +568,6 @@
               <td>{{ tyre.brand }}</td>
               <td>{{ tyre.logo }}</td>
               <td>{{ tyre.tyreModel }}</td>
-              <td>{{ tyre.tyreImage }}</td>
               <td>{{ tyre.width }}</td>
               <td>{{ tyre.profile }}</td>
               <td>{{ tyre.size }}</td>
@@ -573,10 +579,10 @@
               </td>
             </tr>
             <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
-              <td colspan="11" class="text-center">No results</td>
+              <td colspan="10" class="text-center">No results</td>
             </tr>
             <tr *ngIf="properties.loadingTyres">
-              <td colspan="11" class="text-center">
+              <td colspan="10" class="text-center">
                 <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
               </td>
             </tr>
