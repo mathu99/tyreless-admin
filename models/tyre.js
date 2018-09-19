@@ -14,10 +14,6 @@ var TyreSchema = new Schema({
     type: String,
     required: true
   },
-  logo: {
-    type: String,
-    required: true
-  },
   tyreModel: {
     type: String,
     required: true
@@ -37,6 +33,10 @@ var TyreSchema = new Schema({
   size: {
     type: String,
     required: true
+  },
+  runFlat: {
+    type: String,
+    required: true,
   },
   speedRating: {
     type: String,

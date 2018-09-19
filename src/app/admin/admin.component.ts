@@ -68,6 +68,13 @@ export class AdminComponent implements OnInit {
       name: 'Tiger Wheel & Tyre',
       value: 'twt.jpeg',
     }],
+    tyreOptionList: [{
+      name: 'Run Flat',
+      value: 'Run Flat',
+    },{
+      name: 'Regular',
+      value: 'Regular',
+    }]
   };
   userInfo: any = {};
 

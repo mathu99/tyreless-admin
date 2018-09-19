@@ -180,7 +180,7 @@ router.post('/tyre', passport.authenticate('jwt', { session: false }), function 
             id: (req.body.id) ? req.body.id : uuidv4(),
             vehicleType: req.body.vehicleType,
             brand: req.body.brand,
-            logo: req.body.logo,
+            runFlat: req.body.runFlat,
             tyreModel: req.body.tyreModel,
             tyreImage: {
                 data: req.body.binData.data,

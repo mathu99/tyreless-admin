@@ -156,8 +156,12 @@
                           </div>
                           <div class="row m-1">
                             <div class="col-6 p-1">
-                              <input type="text" id="dealInputTyresLogo" name="dealInputTyresLogo" class="form-control" [(ngModel)]="data.tyre.logo" placeholder="Logo"
-                                required/>
+                                <select name="dealInputTyresRunFlat" [(ngModel)]="data.tyre.runFlat" class="custom-select w-100" required>
+                                  <option [ngValue]="undefined" disabled>Select Tyre Type</option>
+                                  <option *ngFor="let type of config.tyreOptionList" [ngValue]="type.value">
+                                    {{ type.name }}
+                                  </option>
+                                </select>
                             </div>
                             <div class="col-6 p-1">
                               <input type="text" id="dealInputTyresTyreModel" name="dealInputTyresTyreModel" class="form-control" [(ngModel)]="data.tyre.tyreModel"
@@ -552,11 +556,11 @@
               <th scope="col"></th>
               <th scope="col">Vehicle Type</th>
               <th scope="col">Brand</th>
-              <th scope="col">Logo</th>
               <th scope="col">Tyre Model</th>
               <th scope="col">Tyre Width</th>
               <th scope="col">Tyre Profile</th>
               <th scope="col">Wheel Size</th>
+              <th scope="col">Type</th>
               <th scope="col">Speed Rating</th>
               <th scope="col"></th>
             </tr>
@@ -566,11 +570,11 @@
               <td></td>
               <td>{{ tyre.vehicleType }}</td>
               <td>{{ tyre.brand }}</td>
-              <td>{{ tyre.logo }}</td>
               <td>{{ tyre.tyreModel }}</td>
               <td>{{ tyre.width }}</td>
               <td>{{ tyre.profile }}</td>
               <td>{{ tyre.size }}</td>
+              <td>{{ tyre.runFlat }}</td>
               <td>{{ tyre.speedRating }}</td>
               <td>
                 <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif" />
