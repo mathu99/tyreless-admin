@@ -116,13 +116,13 @@ export class AdminComponent implements OnInit {
       } else {
         this.getPendingPartnerServices();
       }
+      this.getTyres(this.userInfo.role !== 'admin');
       this.getHistory();
       this.data.activeDealInputTab = this.userInfo.role === 'admin' ? 'Tyres' : 'Tyres & Inclusions';
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });
     this.getPartners();
-    this.getTyres(this.userInfo.role !== 'admin');
     this.getInclusions();
   }
 
