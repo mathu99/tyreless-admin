@@ -165,6 +165,7 @@ export class AdminComponent implements OnInit {
       this.data.pzPartner.newPasswordConfirm = '';
       this.properties.pz.passwordUpdateError = '';
       this.toastr.success('Your password has successfully been updated', 'Password updated');
+      this.addToHistory('Password updated', JSON.stringify({'Action':'Password updated'}));
       this.properties.pz.updatingPassword = false;
       localStorage.setItem('jwtToken', resp['token']);  /* Get updated token */
     }, err => {
@@ -233,7 +234,7 @@ export class AdminComponent implements OnInit {
       }else {
         this.addToHistory(
           _.get(this.data, 'partner.partnerZoneEmail') + ' is now ' + _.get(this.data, 'partner.status'), 
-          JSON.stringify({'partner' : _.get(this.data, 'partner.partnerZoneEmail'), 'status' : _.get(this.data, 'partner.status') }));
+          JSON.stringify({'partner': _.get(this.data, 'partner.partnerZoneEmail'), 'status': _.get(this.data, 'partner.status') }));
         this.data.partner = {};
         this.properties.partnerSelected = false;
       }
@@ -317,6 +318,7 @@ export class AdminComponent implements OnInit {
     };
 
     this.http.delete('/api/partner', httpOptions).subscribe(resp => {
+      this.addToHistory(partner.partnerZoneEmail + ' deleted', JSON.stringify({'Action': partner.partnerZoneEmail + ' deleted'}));
       this.getPartners();
     }, err => {
       partner.deleting = false;
