@@ -184,7 +184,7 @@ router.post('/tyre', passport.authenticate('jwt', { session: false }), function 
             tyreModel: req.body.tyreModel,
             tyreImage: {
                 data: req.body.binData.data,
-                contentType: 'img/jpeg',
+                contentType: req.body.contentType,
             },
             width: req.body.width,
             profile: req.body.profile,

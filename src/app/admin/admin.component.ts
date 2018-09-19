@@ -373,6 +373,10 @@ export class AdminComponent implements OnInit {
         })
       } else {
         this.data.tyreList = data;
+        this.data.tyreList = this.data.tyreList.map(t => {
+            t.url = 'data:' + t.tyreImage.contentType + ';base64,' + new Buffer(t.tyreImage.data.data).toString('base64');
+            return t;
+        })
       }
     }, err => {
       this.properties.loadingTyres = false;
