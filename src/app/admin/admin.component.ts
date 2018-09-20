@@ -62,11 +62,29 @@ export class AdminComponent implements OnInit {
   };
   config: any = {
     logoList: [{
+      name: 'Best Drive',
+      value: 'Best Drive.jpg',
+    }, {
+      name: 'Dunlop Zone',
+      value: 'Dunlop Zone.jpg',
+    },{
+      name: 'Hi-Q',
+      value: 'Hi-Q.jpg',
+    }, {
+      name: 'Speedy',
+      value: 'Speedy.jpg',
+    },{
       name: 'Supaquick',
-      value: 'supaquick.jpeg',
+      value: 'Supaquick.jpg',
     }, {
       name: 'Tiger Wheel & Tyre',
-      value: 'twt.jpeg',
+      value: 'Tiger Wheel & Tyre.jpg',
+    },{
+      name: 'Tyremart',
+      value: 'Tyremart.jpg',
+    }, {
+      name: 'Tyres & More',
+      value: 'Tyres & More.jpg',
     }],
     tyreOptionList: [{
       name: 'Run Flat',

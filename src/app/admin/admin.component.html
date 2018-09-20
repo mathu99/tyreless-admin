@@ -115,6 +115,11 @@
                     </option>
                   </select>
                 </div>
+                <div class="col-6 p-1">
+                  <img *ngIf="data.partner.logo" src="../../assets/Partners/{{ data.partner.logo }}" class="m-1" style="max-height: 35px">
+                </div>
+              </div>
+              <div class="row m-1">
                 <div class="col-3 p-1">
                   <button class="btn btn-success p-1 w-100 h-100" type="submit" [disabled]="!partnerUpdateForm.form.valid" [ladda]="properties.createPartnerLoading">
                     <span *ngIf="!properties.partnerSelected">Create</span>
@@ -504,7 +509,7 @@
           id="partnerTable">
           <thead>
             <tr>
-              <th scope="col">Cust_Code</th>
+              <th scope="col">Cust Code</th>
               <th scope="col">Retailer / Franchise</th>
               <th scope="col">Registered Name</th>
               <th scope="col">Province</th>
