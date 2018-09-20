@@ -1429,6 +1429,12 @@ section.information{
     }
   }
 
+  .partner-logo{
+    width:100%;
+    margin-bottom: 10pt;
+    padding: 5pt;
+  }
+
   @media (min-width:768px) {
     .site-footer h5{
       text-align:left;

@@ -334,6 +334,11 @@ export class AdminComponent implements OnInit {
     };
     this.http.get('/api/partner', httpOptions).subscribe(data => {
       this.data.partnerList = data;
+      if (this.userInfo.role !== 'admin') { /* Get the logged in partners full details */
+        this.data.partnerDetails = this.data.partnerList.filter(p => {
+          return p.partnerZoneEmail === this.userInfo.username;
+        })[0];
+      }
       this.properties.loadingPartners = false;
     }, err => {
       this.properties.loadingPartners = false;

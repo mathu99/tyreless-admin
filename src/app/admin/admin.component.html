@@ -26,6 +26,7 @@
     </div>
     <div class="row admin-body p-1">
       <div class="col-2 p-2" style="margin-top: 5pt">
+        <img *ngIf="data.partnerDetails.logo" src="../../assets/Partners/{{ this.data.partnerDetails.logo }}" class="partner-logo">
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a *ngIf="data.title == 'Admin'" (click)="setActiveTab('activeTab', 'Manage Partner')" class="nav-link active show" id="v-pills-partner-tab"
             data-toggle="pill" href="#v-pills-partner" role="tab" aria-controls="v-pills-partner" aria-selected="false">
@@ -116,7 +117,7 @@
                   </select>
                 </div>
                 <div class="col-6 p-1">
-                  <img *ngIf="data.partner.logo" src="../../assets/Partners/{{ data.partner.logo }}" class="m-1" style="max-height: 35px">
+                  <img *ngIf="data.partner.logo" src="../../assets/Partners/{{ data.partner.logo }}" style="max-height: 35px">
                 </div>
               </div>
               <div class="row m-1">
