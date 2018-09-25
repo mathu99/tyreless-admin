@@ -267,9 +267,11 @@ export class AdminComponent implements OnInit {
           this.properties.errorMessage = this.extractError(err);
         });
       }else {
-        this.addToHistory(
-          _.get(this.data, 'partner.partnerZoneEmail') + ' is now ' + _.get(this.data, 'partner.status'), 
-          JSON.stringify({'partner': _.get(this.data, 'partner.partnerZoneEmail'), 'status': _.get(this.data, 'partner.status') }));
+        if (type === 'status') {
+          this.addToHistory(
+            _.get(this.data, 'partner.partnerZoneEmail') + ' is now ' + _.get(this.data, 'partner.status'), 
+            JSON.stringify({'partner': _.get(this.data, 'partner.partnerZoneEmail'), 'status': _.get(this.data, 'partner.status') }));
+        }
         this.data.partner = {};
         this.properties.partnerSelected = false;
       }
