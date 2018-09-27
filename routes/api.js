@@ -261,6 +261,9 @@ router.post('/partnerTyre', passport.authenticate('jwt', { session: false }), fu
             tyreRef: req.body.tyreRef,
             inclusion: req.body.inclusion,
         };
+        if (req.body.modified) {
+            partnerTyre.modified = req.body.modified;
+        }
         if (req.body.price) {
             partnerTyre.price = req.body.price;
         }

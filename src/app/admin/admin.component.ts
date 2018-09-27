@@ -114,6 +114,10 @@ export class AdminComponent implements OnInit {
   };
 
   inclusionOptions: IMultiSelectOption[];
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
+  };
   
   @ViewChild('errorModal') private errorModal;
   @ViewChild('tyreSelectionModal') private tyreSelectionModal;
@@ -128,10 +132,7 @@ export class AdminComponent implements OnInit {
       this.router.navigate(['login']);
       return;
     }
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/user', httpOptions).subscribe(data => {
+    this.http.get('/api/user', this.httpOptions).subscribe(data => {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
       this.data.activeTab = this.userInfo.role === 'admin' ? 'Manage Partner' : 'My Deals';
@@ -188,15 +189,12 @@ export class AdminComponent implements OnInit {
 
   updatePartnerPassword = (): void => {
     this.properties.pz.updatingPassword = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
     let request = {
       newPassword: this.data.pzPartner.newPassword,
       username: this.userInfo.username,
       role: this.userInfo.role,
     }
-    this.http.post('/api/changePassword', request, httpOptions).subscribe(resp => {
+    this.http.post('/api/changePassword', request, this.httpOptions).subscribe(resp => {
       this.data.pzPartner.newPassword = '';
       this.data.pzPartner.newPasswordConfirm = '';
       this.properties.pz.passwordUpdateError = '';
@@ -243,10 +241,7 @@ export class AdminComponent implements OnInit {
 
   partnerUpdate = (type?:string) => {
     this.properties.createPartnerLoading = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.post('/api/partner', this.data.partner, httpOptions).subscribe(resp => {
+    this.http.post('/api/partner', this.data.partner, this.httpOptions).subscribe(resp => {
       this.getPartners();
       if (!this.properties.partnerSelected && type !== 'status') { /* In case of new partner - register them on site too */
         let randomPassword = Math.random().toString(36).slice(-8); /* Generate random password string */
@@ -293,10 +288,7 @@ export class AdminComponent implements OnInit {
   getPartnerServices = (id:string) => {
     this.data.pzPartner.services = {};
     this.properties.pz.loadingServices = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/partnerServices?userRef=' + id, httpOptions).subscribe(data => {
+    this.http.get('/api/partnerServices?userRef=' + id, this.httpOptions).subscribe(data => {
       if (!data['noResults']) {
         this.data.pzPartner.services = data;
       }
@@ -309,10 +301,7 @@ export class AdminComponent implements OnInit {
 
   updatePartnerServices = () => {
     this.properties.pz.updatingService = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.post('/api/partnerServices', this.data.pzPartner, httpOptions).subscribe(resp => {
+    this.http.post('/api/partnerServices', this.data.pzPartner, this.httpOptions).subscribe(resp => {
       let auditPayload = {
         'Live Wheel Alignment Price': _.get(this.data, 'pzPartner.services.liveWheelAlignmentPrice', ''),
         'Live Wheel Balancing Price': _.get(this.data, 'pzPartner.services.liveWheelBalancingPrice', ''),
@@ -332,10 +321,7 @@ export class AdminComponent implements OnInit {
   getPartners = () => {
     this.data.partnerList = [];
     this.properties.loadingPartners = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/partner', httpOptions).subscribe(data => {
+    this.http.get('/api/partner', this.httpOptions).subscribe(data => {
       this.data.partnerList = data;
       if (this.userInfo.role !== 'admin') { /* Get the logged in partners full details */
         this.data.partnerDetails = this.data.partnerList.filter(p => {
@@ -371,14 +357,11 @@ export class AdminComponent implements OnInit {
 
   tyreUpdate = () => {
     this.properties.createTyresLoading = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
     this.data.tyre.binData = new Buffer(this.data.tyre.url.split(',')[1],'base64');
     this.data.tyre.contentType = this.data.tyre.url.split('data:')[1].split(';base64')[0];
     let req = JSON.parse(JSON.stringify(this.data.tyre));
     req['url'] = null;
-    this.http.post('/api/tyre', req, httpOptions).subscribe(resp => {
+    this.http.post('/api/tyre', req, this.httpOptions).subscribe(resp => {
       this.getTyres();
       this.data.tyre = {};
       this.properties.createTyresLoading = false;
@@ -391,13 +374,10 @@ export class AdminComponent implements OnInit {
   getTyres = (hidePartnerTyres?:boolean) => {
     this.data.tyreList = [];
     this.properties.loadingTyres = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/tyre', httpOptions).subscribe(data => {
+    this.http.get('/api/tyre', this.httpOptions).subscribe(data => {
       this.properties.loadingTyres = false;
       if (hidePartnerTyres) {
-        this.http.get('/api/partnerTyre?userRef=' + this.data.pzPartner.userInfo._id, httpOptions).subscribe(resp => {
+        this.http.get('/api/partnerTyre?userRef=' + this.data.pzPartner.userInfo._id, this.httpOptions).subscribe(resp => {
           let newData = data as any[];
           let newResp = resp as any[];
           this.data.tyreList = newData.filter(e => newResp.filter(r => r.tyreRef._id == e._id).length === 0)
@@ -438,10 +418,7 @@ export class AdminComponent implements OnInit {
 
   inclusionUpdate = () => {
     this.properties.createInclusionsLoading = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.post('/api/inclusion', this.data.inclusion, httpOptions).subscribe(resp => {
+    this.http.post('/api/inclusion', this.data.inclusion, this.httpOptions).subscribe(resp => {
       this.getInclusions();
       this.data.inclusion = {};
       this.properties.createInclusionsLoading = false;
@@ -454,10 +431,7 @@ export class AdminComponent implements OnInit {
   getInclusions = () => {
     this.data.inclusionList = [];
     this.properties.loadingInclusions = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/inclusion', httpOptions).subscribe(data => {
+    this.http.get('/api/inclusion', this.httpOptions).subscribe(data => {
       this.properties.loadingInclusions = false;
       this.data.inclusionList = data;
       this.inclusionOptions = this.data.inclusionList.map((e, i) => {
@@ -492,10 +466,7 @@ export class AdminComponent implements OnInit {
 
   getPartnerTyres = (userRef: String) => {
     this.properties.pz.loadingTyres = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/partnerTyre?userRef=' + userRef, httpOptions).subscribe(data => {
+    this.http.get('/api/partnerTyre?userRef=' + userRef, this.httpOptions).subscribe(data => {
       this.properties.pz.loadingTyres = false;
       this.data.pzPartner.tyreList = data;
       this.data.pzPartner.tyreList.forEach(e => {
@@ -517,10 +488,7 @@ export class AdminComponent implements OnInit {
       userRef: this.userInfo._id,
       tyreRef: tyre._id,
     }
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.post('/api/partnerTyre', partnerTyre, httpOptions).subscribe(resp => {
+    this.http.post('/api/partnerTyre', partnerTyre, this.httpOptions).subscribe(resp => {
       this.toastr.success('Don\'t forget to configure tyre price and inclusions', 'Tyre Added', {timeOut:5000});
       this.getPartnerTyres(this.userInfo._id);
       this.getTyres(true);
@@ -551,10 +519,8 @@ export class AdminComponent implements OnInit {
     if (tyre.inclusionIndex) {
       tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
     }
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.post('/api/partnerTyre', tyre, httpOptions).subscribe(resp => {
+    tyre.changesMade = true;
+    this.http.post('/api/partnerTyre', tyre, this.httpOptions).subscribe(resp => {
       this.properties.pz.updatingTyres = false;
     }, err => {
       this.properties.errorMessage = this.extractError(err);
@@ -563,16 +529,32 @@ export class AdminComponent implements OnInit {
   }
 
   submitPartnerChanges = () => {
-    this.properties.pz.submittingChanges = true;
+    this.data.pzPartner.tyreList.forEach(e => {
+      this.properties.pz.submittingChanges = true;
+      if (e.changesMade) {
+        e.modified = true;
+        this.http.post('/api/partnerTyre', e, this.httpOptions).subscribe(resp => {
+          this.properties.pz.submittingChanges = false;
+          let historyObject = {
+            'Tyre': e.tyreRef.brand + ' ' + e.tyreRef.tyreModel + ' (' + e.tyreRef.runFlat + ') ' + e.tyreRef.width + '/' + e.tyreRef.profile + '/' + e.tyreRef.size,
+            'Live Price': e.livePrice,
+            'Live Inclusion': e.liveInclusion,
+            'Proposed Price': e.price,
+            'Proposed Inlcusion': e.inclusion,
+          }
+          this.addToHistory('Tyre submitted for approval', JSON.stringify(historyObject), e.userRef);
+        }, err => {
+          this.properties.errorMessage = this.extractError(err);
+          this.properties.pz.submittingChanges = false;
+        });
+      }
+    });
   }
 
   getPendingPartnerServices = () => {
     this.properties.loadingPendingPartnerServices = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
     this.data.pendingItems = [];
-    this.http.get('/api/pendingPartnerServices', httpOptions).subscribe(data => {
+    this.http.get('/api/pendingPartnerServices', this.httpOptions).subscribe(data => {
       /* TODO - get pending partner tyres */
       let arr:any = data;
       arr.forEach(e => {
@@ -593,10 +575,7 @@ export class AdminComponent implements OnInit {
   }
 
   getPartnerByEmail = (email:String, partner:Object) => {
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
-    this.http.get('/api/partnerByEmail?email=' + email, httpOptions).subscribe(data => {
+    this.http.get('/api/partnerByEmail?email=' + email, this.httpOptions).subscribe(data => {
       partner['userDetails'] = data;
       this.data.pendingItems.push(partner);
     }, err => {
@@ -606,9 +585,6 @@ export class AdminComponent implements OnInit {
 
   approveAllChanges = (pendingItem: any) => {
     pendingItem.approving = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
     let req = {
       services: {
         wheelAlignmentPrice: pendingItem.wheelAlignmentPrice,
@@ -616,7 +592,7 @@ export class AdminComponent implements OnInit {
       },
       userInfo: pendingItem.userRef,
     }
-    this.http.post('/api/partnerServices?review=true', req, httpOptions).subscribe(resp => {
+    this.http.post('/api/partnerServices?review=true', req, this.httpOptions).subscribe(resp => {
       pendingItem.approving = false;
       this.toastr.success('Prices have been approved', 'Prices approved');
       this.getPendingPartnerServices();
@@ -632,13 +608,11 @@ export class AdminComponent implements OnInit {
       description,
       payload,
       userRef: this.userInfo['_id'],
-    }, httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
+    }
     if (affectedId) {
       auditItem['affectedRef'] = affectedId;
     }
-    this.http.post('/api/auditItem', auditItem, httpOptions).subscribe(resp => {
+    this.http.post('/api/auditItem', auditItem, this.httpOptions).subscribe(resp => {
       this.getHistory();
     }, err => {
       this.properties.errorMessage = this.extractError(err);
@@ -647,12 +621,9 @@ export class AdminComponent implements OnInit {
 
   getHistory = () => {
     this.properties.loadingHistory = true;
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
-    };
     let url = '/api/auditItem';
     url += (this.userInfo.role === 'admin') ? '' : '?userRef=' + this.userInfo['_id'];
-    this.http.get(url, httpOptions).subscribe(resp => {
+    this.http.get(url, this.httpOptions).subscribe(resp => {
       this.properties.loadingHistory = false;
       if (resp['length'] > 0) {
         this.data.history = resp;
