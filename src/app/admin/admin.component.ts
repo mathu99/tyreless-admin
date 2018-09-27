@@ -119,6 +119,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('tyreSelectionModal') private tyreSelectionModal;
   @ViewChild('partnerCreationModal') private partnerCreationModal;
   @ViewChild('historyDetailModal') private historyDetailModal;
+  @ViewChild('partnerTyreDetailModal') private partnerTyreDetailModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService) { }
 
@@ -497,12 +498,14 @@ export class AdminComponent implements OnInit {
     this.http.get('/api/partnerTyre?userRef=' + userRef, httpOptions).subscribe(data => {
       this.properties.pz.loadingTyres = false;
       this.data.pzPartner.tyreList = data;
-      // this.data.pzPartner.tyreList.forEach(e => {
-      //   e.inclusionIndex = e.inclusion.map(inc => {
-      //     let item = this.data.inclusionList.filter(i => i.description === inc)[0];
-      //     return this.data.inclusionList.indexOf(item);
-      //   })
-      // });
+      this.data.pzPartner.tyreList.forEach(e => {
+        if (e.inclusion) {
+          e.inclusionIndex = e.inclusion.map(inc => {
+            let item = this.data.inclusionList.filter(i => i.description === inc)[0];
+            return this.data.inclusionList.indexOf(item);
+          })
+        }
+      });
     }, err => {
       this.properties.pz.loadingTyres = false;
       this.properties.errorMessage = this.extractError(err);
@@ -545,7 +548,9 @@ export class AdminComponent implements OnInit {
   updateChangesMade = (changesMade:boolean, tyre:any) => {
     this.properties.pz.changesMade = changesMade;
     this.properties.pz.updatingTyres = true;
-    tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
+    if (tyre.inclusionIndex) {
+      tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
+    }
     let httpOptions = {
       headers: new HttpHeaders({ 'Authorization': localStorage.getItem('jwtToken') })
     };
@@ -666,6 +671,12 @@ export class AdminComponent implements OnInit {
   viewHistoryDetail = (historyItem:any) => {
     this.properties.historyItem = historyItem;
     this.open(this.historyDetailModal);
+  }
+
+  viewPartnerTyreDetail = (partnerTyre:any) => {
+    this.properties.partnerTyreItem = partnerTyre;
+    this.properties.partnerTyreItem.url = 'data:' + _.get(this.properties, 'partnerTyreItem.tyreRef.tyreImage.contentType', '') + ';base64,' + new Buffer(_.get(this.properties, 'partnerTyreItem.tyreRef.tyreImage.data.data', '')).toString('base64');
+    this.open(this.partnerTyreDetailModal);
   }
 
 }

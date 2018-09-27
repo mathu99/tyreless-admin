@@ -344,6 +344,7 @@
                 <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
                   <thead>
                     <tr>
+                      <th scope="col"></th>
                       <th scope="col">Vehicle Type</th>
                       <th scope="col">Brand</th>
                       <th scope="col">Tyre Model</th>
@@ -358,6 +359,7 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let tyre of data.pzPartner.tyreList">
+                      <td><a ngbTooltip="View more detail" (click)="viewPartnerTyreDetail(tyre, $event)">Detail</a></td>
                       <td>{{ tyre.tyreRef.vehicleType }}</td>
                       <td>{{ tyre.tyreRef.brand }}</td>
                       <td>{{ tyre.tyreRef.tyreModel }}</td>
@@ -772,3 +774,59 @@
         </table>
       </div>
     </ng-template>
+
+    <ng-template #partnerTyreDetailModal let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <table>
+            <tr>
+              <td>
+                <h5 class="modal-title custom">{{ properties.partnerTyreItem.tyreRef.brand }} {{ properties.partnerTyreItem.tyreRef.tyreModel }} <span *ngIf="properties.partnerTyreItem.tyreRef.runFlat == 'Run Flat'">(Run Flat)</span></h5>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>{{ properties.partnerTyreItem.tyreRef.width }}/{{ properties.partnerTyreItem.tyreRef.profile }}/{{ properties.partnerTyreItem.tyreRef.size }}</div>
+              </td>
+            </tr>
+          </table>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+                <img *ngIf="properties.partnerTyreItem.url" [src]="properties.partnerTyreItem.url" class="m-1" style="max-width: 120px; max-height: 120px">
+                <img *ngIf="!properties.partnerTyreItem.url" src="../../assets/default_tyre.jpg" class="m-1" style="max-width: 120px; max-height: 120px">
+            </div>
+            <div class="col-9">
+                <table class="table table-striped text-left table-smaller m-0" id="pzTyreDetailTable">
+                    <tbody>
+                      <tr>
+                        <th scope="col">Live Price</th>
+                        <td *ngIf="properties.partnerTyreItem.livePrice == 0.00">Tyre is not live yet</td>
+                        <td *ngIf="properties.partnerTyreItem.livePrice != 0.00">{{ properties.partnerTyreItem.livePrice | currency:'R' }}</td>
+                      </tr>
+                      <tr>
+                          <th scope="col">Live Inclusions</th>
+                          <td *ngIf="properties.partnerTyreItem.livePrice == 0.00">Tyre is not live yet</td>
+                          <td *ngIf="properties.partnerTyreItem.livePrice != 0.00">{{ properties.partnerTyreItem.liveInclusion }}</td>
+                        </tr>
+                      <tr>
+                        <th scope="col">Proposed Price</th>
+                        <td>{{ properties.partnerTyreItem.price | currency:'R' }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="col">Proposed Inclusions</th>
+                        <td>
+                          <div *ngFor="let inclusion of properties.partnerTyreItem.inclusion">
+                            - {{ inclusion }}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+        </div>
+      </ng-template>
