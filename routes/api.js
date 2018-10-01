@@ -274,11 +274,18 @@ router.post('/partnerTyre', passport.authenticate('jwt', { session: false }), fu
             tyreRef: req.body.tyreRef,
             inclusion: req.body.inclusion,
         };
-        if (req.body.modified) {
-            partnerTyre.modified = req.body.modified;
-        }
-        if (req.body.price) {
-            partnerTyre.price = req.body.price;
+        if (req.query && req.query.review == 'true') { /* Review deal */
+            partnerTyre = req.body;
+            partnerTyre.modified = false;
+            partnerTyre.status = 'Live';
+        } else {
+            if (req.body.modified) {
+                partnerTyre.modified = req.body.modified;
+                partnerTyre.status = 'Pending';
+            }
+            if (req.body.price) {
+                partnerTyre.price = req.body.price;
+            }
         }
         var query = {'id': partnerTyre.id};
         PartnerTyre.findOneAndUpdate(query, partnerTyre, {upsert:true, setDefaultsOnInsert: true}, function(err, doc){
@@ -358,7 +365,7 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
             partnerService.wheelAlignmentPrice = req.body.services.wheelAlignmentPrice;
             partnerService.wheelBalancingPrice = req.body.services.wheelBalancingPrice;
             partnerService.reviewPending = true;
-        } else {
+        } else {    /* Changes have been reviewed */
             partnerService.liveWheelAlignmentPrice = '' + req.body.services.wheelAlignmentPrice;
             partnerService.liveWheelBalancingPrice = '' + req.body.services.wheelBalancingPrice;
             partnerService.wheelAlignmentPrice = null;

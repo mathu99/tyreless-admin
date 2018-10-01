@@ -444,7 +444,29 @@ h5{
 
 .container-increased{
   margin:0 auto;
-  width:1025.25px;
+  width: 85%;
+}
+
+.tyre-status{
+  cursor: pointer;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.tyre-status:hover{
+  text-decoration: underline;
+}
+
+.New{
+  color: rgb(107,172,70);
+}
+
+.Live{
+  color:gray;
+}
+
+.Pending{
+  color: rgb(250, 168, 15);
 }
 
 .search-icon{

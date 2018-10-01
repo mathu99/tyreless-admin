@@ -515,22 +515,25 @@ export class AdminComponent implements OnInit {
 
   updateChangesMade = (changesMade:boolean, tyre:any) => {
     this.properties.pz.changesMade = changesMade;
-    this.properties.pz.updatingTyres = true;
+    tyre.changesMade = changesMade;
     if (tyre.inclusionIndex) {
       tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
     }
-    tyre.changesMade = true;
-    this.http.post('/api/partnerTyre', tyre, this.httpOptions).subscribe(resp => {
-      this.properties.pz.updatingTyres = false;
-    }, err => {
-      this.properties.errorMessage = this.extractError(err);
-      this.properties.pz.updatingTyres = false;
-    });
+    // 
+    // this.properties.pz.updatingTyres = true;
+    // tyre.changesMade = true;
+    // this.http.post('/api/partnerTyre', tyre, this.httpOptions).subscribe(resp => {
+    //   this.properties.pz.updatingTyres = false;
+    // }, err => {
+    //   this.properties.errorMessage = this.extractError(err);
+    //   this.properties.pz.updatingTyres = false;
+    // });
   }
 
   submitPartnerChanges = () => {
     this.data.pzPartner.tyreList.forEach(e => {
       this.properties.pz.submittingChanges = true;
+      this.properties.pz.changesMade = true;
       if (e.changesMade) {
         e.modified = true;
         this.http.post('/api/partnerTyre', e, this.httpOptions).subscribe(resp => {
@@ -542,6 +545,7 @@ export class AdminComponent implements OnInit {
             'Proposed Price': e.price,
             'Proposed Inlcusion': e.inclusion,
           }
+          this.properties.pz.changesMade = false;
           this.toastr.success('Changes have been submitted for approval', 'Prices submitted');
           this.addToHistory('Tyre submitted for approval', JSON.stringify(historyObject), e.userRef);
         }, err => {
@@ -557,6 +561,7 @@ export class AdminComponent implements OnInit {
       let pendingTyres:any = data;
       pendingTyres.forEach(t => {
         let pendingTyre = {
+          obj: t,
           tyre: t.tyreRef.brand + ' ' + t.tyreRef.tyreModel + ' (' + t.tyreRef.runFlat + ') ' + t.tyreRef.width + '/' + t.tyreRef.profile + '/' + t.tyreRef.size,
           price: t.price,
           inclusion: t.inclusion,
@@ -619,22 +624,47 @@ export class AdminComponent implements OnInit {
 
   approveAllChanges = (pendingItem: any) => {
     pendingItem.approving = true;
-    let req = {
-      services: {
-        wheelAlignmentPrice: pendingItem.wheelAlignmentPrice,
-        wheelBalancingPrice: pendingItem.wheelBalancingPrice,
-      },
-      userInfo: pendingItem.userRef,
+    if (pendingItem.wheelAlignmentPrice || pendingItem.wheelBalancingPrice) { /* Review service prices */
+      let req = {
+        services: {
+          wheelAlignmentPrice: pendingItem.wheelAlignmentPrice,
+          wheelBalancingPrice: pendingItem.wheelBalancingPrice,
+        },
+        userInfo: pendingItem.userRef,
+      }
+      this.http.post('/api/partnerServices?review=true', req, this.httpOptions).subscribe(resp => {
+        pendingItem.approving = false;
+        this.toastr.success('Prices have been approved', 'Prices approved');
+        this.getPendingPartnerServices();
+        this.addToHistory('Prices approved', JSON.stringify(req.services), pendingItem.userRef);
+      }, err => {
+        pendingItem.approving = false;
+        this.properties.errorMessage = this.extractError(err);
+      });
     }
-    this.http.post('/api/partnerServices?review=true', req, this.httpOptions).subscribe(resp => {
-      pendingItem.approving = false;
-      this.toastr.success('Prices have been approved', 'Prices approved');
-      this.getPendingPartnerServices();
-      this.addToHistory('Prices approved', JSON.stringify(req.services), pendingItem.userRef);
-    }, err => {
-      pendingItem.approving = false;
-      this.properties.errorMessage = this.extractError(err);
-    });
+
+    if (pendingItem.pendingTyres && pendingItem.pendingTyres.length > 0) {  /* Review tyre prices */
+      pendingItem.pendingTyres.forEach(t => {
+        pendingItem.approving = true;
+        if (t.obj.price && t.obj.price != t.obj.livePrice) {
+          t.obj.livePrice = '' + t.obj.price;
+        }
+        t.obj.liveInclusion = JSON.parse(JSON.stringify(t.obj.inclusion));
+        this.http.post('/api/partnerTyre?review=true', t.obj, this.httpOptions).subscribe(resp => {
+          pendingItem.approving = false;
+          let historyObject = {
+            'Tyre': t.obj.tyreRef.brand + ' ' + t.obj.tyreRef.tyreModel + ' (' + t.obj.tyreRef.runFlat + ') ' + t.obj.tyreRef.width + '/' + t.obj.tyreRef.profile + '/' + t.obj.tyreRef.size,
+            'Live Price': t.obj.livePrice,
+            'Live Inclusion': t.obj.liveInclusion,
+          }
+          this.addToHistory('Tyre approved', JSON.stringify(historyObject), pendingItem.userRef);
+          this.toastr.success('Changes have been approved', 'Tyre approved');
+        }, err => {
+            pendingItem.approving = false;
+            this.properties.errorMessage = this.extractError(err);
+        });
+      });
+    }
   }
 
   addToHistory = (description: String, payload: String, affectedId?: String) => {

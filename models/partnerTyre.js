@@ -30,6 +30,11 @@ var PartnerTyreSchema = new Schema({
     liveInclusion: [{
         type: String
     }],
+    status: {
+        type: String,
+        required: true,
+        default: 'New',
+    },
     modified: {
         type: Boolean,
         default: false,

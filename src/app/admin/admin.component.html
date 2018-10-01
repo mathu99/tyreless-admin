@@ -374,7 +374,8 @@
                 <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
                   <thead>
                     <tr>
-                      <th scope="col"></th>
+                      <!-- <th scope="col"></th> -->
+                      <th scope="col">Status</th>
                       <th scope="col">Vehicle Type</th>
                       <th scope="col">Brand</th>
                       <th scope="col">Tyre Model</th>
@@ -389,7 +390,8 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let tyre of data.pzPartner.tyreList">
-                      <td><a ngbTooltip="View more detail" (click)="viewPartnerTyreDetail(tyre, $event)">Detail</a></td>
+                      <!-- <td><a ngbTooltip="View more detail" (click)="viewPartnerTyreDetail(tyre, $event)">Detail</a></td> -->
+                      <td [ngClass]="tyre.status" class="tyre-status" (click)="viewPartnerTyreDetail(tyre, $event)" style="max-width:50pt"><span ngbTooltip="View Detail" placement="left">{{ tyre.status }}</span></td>
                       <td>{{ tyre.tyreRef.vehicleType }}</td>
                       <td>{{ tyre.tyreRef.brand }}</td>
                       <td>{{ tyre.tyreRef.tyreModel }}</td>
@@ -840,18 +842,24 @@
                       <tr>
                           <th scope="col">Live Inclusions</th>
                           <td *ngIf="properties.partnerTyreItem.livePrice == 0.00">Tyre is not live yet</td>
-                          <td *ngIf="properties.partnerTyreItem.livePrice != 0.00">{{ properties.partnerTyreItem.liveInclusion }}</td>
+                          <td *ngIf="properties.partnerTyreItem.livePrice != 0.00">
+                            <div *ngFor="let inclusion of properties.partnerTyreItem.liveInclusion">
+                            - {{ inclusion }}
+                            </div>
+                            <div *ngIf="!properties.partnerTyreItem.liveInclusion || properties.partnerTyreItem.liveInclusion.length == 0">None</div>
+                          </td>
                         </tr>
-                      <tr>
+                      <tr *ngIf="properties.partnerTyreItem.changesMade || properties.partnerTyreItem.status == 'Pending'">
                         <th scope="col">Proposed Price</th>
                         <td>{{ properties.partnerTyreItem.price | currency:'R' }}</td>
                       </tr>
-                      <tr>
+                      <tr *ngIf="properties.partnerTyreItem.changesMade || properties.partnerTyreItem.status == 'Pending'">
                         <th scope="col">Proposed Inclusions</th>
                         <td>
                           <div *ngFor="let inclusion of properties.partnerTyreItem.inclusion">
                             - {{ inclusion }}
                           </div>
+                          <div *ngIf="!properties.partnerTyreItem.inclusion || properties.partnerTyreItem.inclusion.length == 0">None</div>
                         </td>
                       </tr>
                     </tbody>
