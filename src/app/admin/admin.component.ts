@@ -542,12 +542,46 @@ export class AdminComponent implements OnInit {
             'Proposed Price': e.price,
             'Proposed Inlcusion': e.inclusion,
           }
+          this.toastr.success('Changes have been submitted for approval', 'Prices submitted');
           this.addToHistory('Tyre submitted for approval', JSON.stringify(historyObject), e.userRef);
         }, err => {
           this.properties.errorMessage = this.extractError(err);
           this.properties.pz.submittingChanges = false;
         });
       }
+    });
+  }
+
+  getPendingPartnerTyres = (currentList: any) => {
+    this.http.get('/api/pendingPartnerTyres', this.httpOptions).subscribe(data => {
+      let pendingTyres:any = data;
+      pendingTyres.forEach(t => {
+        let pendingTyre = {
+          tyre: t.tyreRef.brand + ' ' + t.tyreRef.tyreModel + ' (' + t.tyreRef.runFlat + ') ' + t.tyreRef.width + '/' + t.tyreRef.profile + '/' + t.tyreRef.size,
+          price: t.price,
+          inclusion: t.inclusion,
+          livePrice: t.livePrice,
+          liveInclusion: t.liveInclusion,
+        };
+        let currentItem = currentList.filter(cl => cl.userRef.username === t.userRef.username);
+        if (currentItem && currentItem[0]) {
+          if (!currentItem[0].pendingTyres || currentItem[0].pendingTyres.length == 0) {
+            currentItem[0].pendingTyres = [];
+          }
+          currentItem[0].pendingTyres.push(pendingTyre);
+        } else {
+          let item = {
+            userRef: t.userRef,
+            pendingTyres: [pendingTyre],
+          }
+          currentList.push(item);
+        }
+      });
+      currentList.forEach(listItem => {
+        this.getPartnerByEmail(listItem.userRef.username, listItem);      
+      });
+    }, err => {
+      this.properties.errorMessage = this.extractError(err);
     });
   }
 
@@ -565,8 +599,8 @@ export class AdminComponent implements OnInit {
             wheelBalancingPrice: e.wheelBalancingPrice,
           }
         }
-        this.getPartnerByEmail(e.userRef.username, e);
       });
+      this.getPendingPartnerTyres(arr);
       this.properties.loadingPendingPartnerServices = false;
     }, err => {
       this.properties.loadingPendingPartnerServices = false;

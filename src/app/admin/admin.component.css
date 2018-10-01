@@ -11,9 +11,13 @@
     color:white !important;
 }
 
+.table-striped tbody tr:nth-of-type(odd){
+    background-color: #f8f9fa;
+}
+
 .main-logo > span{
     text-decoration: none;
-    text-shadow: 2px 2px 2px rgba(0,0,0,0.6);
+    /* text-shadow: 2px 2px 2px rgba(0,0,0,0.6); */
   }
   .main-logo > span > h1{
     font-size: 32pt;

@@ -249,7 +249,6 @@
                 </div>
                 <div class="card-body">
                   <h6>Services</h6>
-                  <div>
                     <div class="row" *ngIf="pendingItem.wheelAlignmentPrice || pendingItem.wheelBalancingPrice">
                       <div class="col-4">
                         <b>Wheel Alignment Price:</b> R{{pendingItem.wheelAlignmentPrice}}
@@ -259,12 +258,43 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="!pendingItem.wheelAlignmentPrice && !pendingItem.wheelBalancingPrice">
-                      Nothing to approve
+                      <div class="col-12">
+                        Nothing to approve
+                      </div>
                     </div>
                     <br>
                     <h6>Tyres &amp; Inclusions</h6>
-                    <div>Nothing to approve</div>
-                  </div>
+                    <div class="row" *ngIf="pendingItem.pendingTyres && pendingItem.pendingTyres.length > 0">
+                      <div class="col-12">
+                          <table class="table table-striped text-center table-bordered table-smaller m-0">
+                              <tr>
+                                <th width="40%">Tyre</th>
+                                <th width="15%">Current Price</th>
+                                <th width="15%">Current Inclusions</th>
+                                <th width="15%">New Price</th>
+                                <th width="15%">New Inclusions</th>
+                              </tr>
+                              <tr *ngFor="let pendingTyre of pendingItem.pendingTyres">
+                                <td>{{ pendingTyre.tyre }}</td>
+                                <td>{{ pendingTyre.livePrice | currency:'R' }}</td>
+                                <td>
+                                  <span *ngIf="!pendingTyre.liveInclusion || pendingTyre.liveInclusion.length == 0">None</span>
+                                  {{ pendingTyre.liveInclusion }}
+                                </td>
+                                <td>{{ pendingTyre.price | currency:'R' }}</td>
+                                <td>
+                                  <span *ngIf="!pendingTyre.inclusion || pendingTyre.inclusion.length == 0">None</span>
+                                  {{ pendingTyre.inclusion }}
+                                </td>
+                              </tr>
+                            </table>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="!pendingItem.pendingTyres || pendingItem.pendingTyres.length == 0">
+                        <div class="col-12">
+                            Nothing to approve
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="card" *ngIf="!data.pendingItems || data.pendingItems.length == 0">

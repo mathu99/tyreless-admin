@@ -227,6 +227,19 @@ router.delete('/tyre', passport.authenticate('jwt', { session: false }), functio
     }
 });
 
+router.get('/pendingPartnerTyres', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerTyre.find({modified: true}).populate('userRef').populate('tyreRef').exec((err, partnerTyres) => {
+            if (err) return next(err);
+            else if (partnerTyres) res.json(partnerTyres)
+            else return res.status(200).send({ success: true, noResults: true, msg: 'No pending partner tyres found.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.get('/partnerTyre', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
@@ -376,11 +389,6 @@ router.get('/pendingPartnerServices', passport.authenticate('jwt', { session: fa
         return res.status(403).send({ success: false, msg: 'Unauthorized.' });
     }
 });
-
-// User.find( { $or:[ {'_id':objId}, {'name':param}, {'nickname':param} ]}, 
-//   function(err,docs){
-//     if(!err) res.send(docs);
-// });
 
 router.get('/auditItem', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
