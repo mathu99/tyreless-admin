@@ -719,11 +719,11 @@
         <div class="col-8 pb-3"></div>
         <div class="col-4 pb-3">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search tyres" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input type="text" class="form-control" [(ngModel)]="properties.tyreSearch" placeholder="Search tyres" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" style="border: 1px solid #ced4da">
+              <div class="p-2 text-secondary" style="border: 1px solid #ced4da; border-radius: 0 .25rem .25rem 0">
                 <i class="fa fa-search"></i>
-              </button>
+              </div>
             </div>
           </div>
         </div>
@@ -742,7 +742,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let tyre of data.tyreList">
+          <tr *ngFor="let tyre of data.tyreList | filter : properties.tyreSearch">
             <td>{{ tyre.vehicleType }}</td>
             <td>{{ tyre.brand }}</td>
             <td>{{ tyre.tyreModel }}</td>

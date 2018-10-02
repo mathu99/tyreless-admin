@@ -15,6 +15,8 @@ import { SignupComponent } from './signup/signup.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 
+import { FilterPipe }from './filter.pipe';
+
 const appRoutes: Routes = [
   {
     path: 'admin',
@@ -44,6 +46,7 @@ const appRoutes: Routes = [
     LoginComponent,
     SignupComponent,
     AdminComponent,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
