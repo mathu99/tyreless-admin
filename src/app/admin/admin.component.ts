@@ -59,7 +59,27 @@ export class AdminComponent implements OnInit {
       passwordUpdateError: '',
     },
     partnerTable: {
-      key: 'cust_code',
+      key: 'customerCode',
+      reverse: false,
+    },
+    dealInputTable: {
+      key: 'vehicleType',
+      reverse: false,
+    },
+    inclusionTable: {
+      key: 'description',
+      reverse: false,
+    },
+    historyTable: {
+      key: 'date',
+      reverse: false,
+    },
+    searchTyreTable: {
+      key: 'vehicleType',
+      reverse: false,
+    },
+    partnerTyreTable: {
+      key: 'status',
       reverse: false,
     },
     historyItem: {},

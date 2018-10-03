@@ -313,14 +313,14 @@
               <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
                   <thead>
                     <tr>
-                      <th scope="col">Date</th>
-                      <th scope="col">Action</th>
-                      <th scope="col">Done By</th>
+                      <th scope="col" (click)="sort('historyTable','date')">Date<i class="fa sort-icon" *ngIf="properties.historyTable.key =='date'" [ngClass]="{'fa-chevron-up':properties.historyTable.reverse,'fa-chevron-down':!properties.historyTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('historyTable','description')">Action<i class="fa sort-icon" *ngIf="properties.historyTable.key =='description'" [ngClass]="{'fa-chevron-up':properties.historyTable.reverse,'fa-chevron-down':!properties.historyTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('historyTable','userRef.username')">Done By<i class="fa sort-icon" *ngIf="properties.historyTable.key =='userRef.username'" [ngClass]="{'fa-chevron-up':properties.historyTable.reverse,'fa-chevron-down':!properties.historyTable.reverse}"></i></th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let historyItem of data.history">
+                    <tr *ngFor="let historyItem of data.history | orderBy: properties.historyTable.key : properties.historyTable.reverse :'case-insensitive'; let i = index">
                       <td>{{ historyItem.date }}</td>
                       <td>{{ historyItem.description }}</td>
                       <td>{{ historyItem.userRef.username }}</td>
@@ -374,23 +374,21 @@
                 <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
                   <thead>
                     <tr>
-                      <!-- <th scope="col"></th> -->
-                      <th scope="col">Status</th>
-                      <th scope="col">Vehicle Type</th>
-                      <th scope="col">Brand</th>
-                      <th scope="col">Tyre Model</th>
-                      <th scope="col">Tyre Width</th>
-                      <th scope="col">Tyre Profile</th>
-                      <th scope="col">Wheel Size</th>
-                      <th scope="col">Speed Rating</th>
+                      <th scope="col" (click)="sort('partnerTyreTable','status')">Status<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='status'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','vehicleType')">Vehicle Type<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='vehicleType'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','brand')">Brand<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='brand'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','tyreModel')">Tyre Model<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='tyreModel'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','width')">Tyre Width<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='width'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','profile')">Tyre Profile<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='profile'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','size')">Wheel Size<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='size'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','speedRating')">Speed Rating<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='speedRating'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
                       <th scope="col">Inclusions</th>
                       <th scope="col">Price</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let tyre of data.pzPartner.tyreList">
-                      <!-- <td><a ngbTooltip="View more detail" (click)="viewPartnerTyreDetail(tyre, $event)">Detail</a></td> -->
+                    <tr *ngFor="let tyre of data.pzPartner.tyreList | orderBy: properties.partnerTyreTable.key : properties.partnerTyreTable.reverse :'case-insensitive'; let i = index">
                       <td [ngClass]="tyre.status" class="tyre-status" (click)="viewPartnerTyreDetail(tyre, $event)" style="max-width:50pt"><span ngbTooltip="View Detail" placement="left">{{ tyre.status }}</span></td>
                       <td>{{ tyre.tyreRef.vehicleType }}</td>
                       <td>{{ tyre.tyreRef.brand }}</td>
@@ -544,14 +542,14 @@
           id="partnerTable">
           <thead>
             <tr>
-              <th scope="col" (click)="sort('partnerTable','cust_code')">Cust Code<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='cust_code'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
-              <th scope="col" (click)="sort('partnerTable','retailer')">Retailer / Franchise<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='retailer'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
-              <th scope="col" (click)="sort('partnerTable','registered_name')">Registered Name<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='registered_name'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','customerCode')">Cust Code<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='customerCode'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','retailerName')">Retailer / Franchise<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='retailerName'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','registeredName')">Registered Name<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='registeredName'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
               <th scope="col" (click)="sort('partnerTable','province')">Province<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='province'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
               <th scope="col" (click)="sort('partnerTable','subrub')">Suburb<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='subrub'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
-              <th scope="col" (click)="sort('partnerTable','branch')">Branch<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='branch'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
-              <th scope="col" (click)="sort('partnerTable','partner_zone_email')">Partner Zone Email<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='partner_zone_email'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
-              <th scope="col" (click)="sort('partnerTable','sales_email')">Sales Email<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='sales_email'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','branchName')">Branch<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='branchName'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','partnerZoneEmail')">Partner Zone Email<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='partnerZoneEmail'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','salesEmail')">Sales Email<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='salesEmail'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
               <th scope="col" (click)="sort('partnerTable','status')">Status<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='status'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
               <th scope="col" colspan="2">Actions</th>
             </tr>
@@ -594,26 +592,26 @@
           <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">Vehicle Type</th>
-              <th scope="col">Brand</th>
-              <th scope="col">Tyre Model</th>
-              <th scope="col">Tyre Width</th>
-              <th scope="col">Tyre Profile</th>
-              <th scope="col">Wheel Size</th>
-              <th scope="col">Type</th>
-              <th scope="col">Speed Rating</th>
+              <th scope="col" (click)="sort('dealInputTable','vehicleType')">Vehicle Type<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='vehicleType'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','brand')">Brand<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='brand'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','tyreModel')">Tyre Model<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='tyreModel'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','width')">Tyre Width<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='width'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','profile')">Tyre Profile<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='profile'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','size')">Wheel Size<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='size'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','runFlat')">Type<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='runFlat'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('dealInputTable','speedRating')">Speed Rating<i class="fa sort-icon" *ngIf="properties.dealInputTable.key =='speedRating'" [ngClass]="{'fa-chevron-up':properties.dealInputTable.reverse,'fa-chevron-down':!properties.dealInputTable.reverse}"></i></th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let tyre of data.tyreList" class="clickable-row" [ngClass]="{'selected-row':tyre.selected}" (click)="setActiveRow(tyre, 'tyre')">
+            <tr *ngFor="let tyre of data.tyreList | orderBy: properties.dealInputTable.key : properties.dealInputTable.reverse :'case-insensitive'; let i = index" class="clickable-row" [ngClass]="{'selected-row':tyre.selected}" (click)="setActiveRow(tyre, 'tyre')">
               <td></td>
               <td>{{ tyre.vehicleType }}</td>
               <td>{{ tyre.brand }}</td>
               <td>{{ tyre.tyreModel }}</td>
               <td>{{ tyre.width }}</td>
               <td>{{ tyre.profile }}</td>
-              <td>{{ tyre.size }}</td>
+              <td>{{ tyre.size | number }}</td>
               <td>{{ tyre.runFlat }}</td>
               <td>{{ tyre.speedRating }}</td>
               <td>
@@ -636,12 +634,12 @@
           id="dealInputTyresTable">
           <thead>
             <tr>
-              <th scope="col" width="90%">Description</th>
+              <th scope="col" width="90%"  (click)="sort('inclusionTable','description')">Description<i class="fa sort-icon" *ngIf="properties.inclusionTable.key =='description'" [ngClass]="{'fa-chevron-up':properties.inclusionTable.reverse,'fa-chevron-down':!properties.inclusionTable.reverse}"></i></th>
               <th scope="col" width="10%"></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let inclusion of data.inclusionList" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
+            <tr *ngFor="let inclusion of data.inclusionList | orderBy: properties.inclusionTable.key : properties.inclusionTable.reverse :'case-insensitive'; let i = index" class="clickable-row" [ngClass]="{'selected-row':inclusion.selected}" (click)="setActiveRow(inclusion, 'inclusion')">
               <td>{{ inclusion.description }}</td>
               <td>
                 <img *ngIf="inclusion.deleting" class="row-spinner" src="../../assets/spinner.gif" />
@@ -731,18 +729,18 @@
       <table class="table table-striped text-center table-smaller" id="pzTyreSelectionTable">
         <thead>
           <tr>
-            <th scope="col">Vehicle Type</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Tyre Model</th>
-            <th scope="col">Tyre Width</th>
-            <th scope="col">Tyre Profile</th>
-            <th scope="col">Wheel Size</th>
-            <th scope="col">Speed Rating</th>
+            <th scope="col" (click)="sort('searchTyreTable','vehicleType')">Vehicle Type<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='vehicleType'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','brand')">Brand<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='brand'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','tyreModel')">Tyre Model<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='tyreModel'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','width')">Tyre Width<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='width'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','profile')">Tyre Profile<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='profile'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','size')">Wheel Size<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='size'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','speedRating')">Speed Rating<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='speedRating'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let tyre of data.tyreList | filter : properties.tyreSearch">
+          <tr *ngFor="let tyre of data.tyreList | filter : properties.tyreSearch | orderBy: properties.searchTyreTable.key : properties.searchTyreTable.reverse :'case-insensitive'; let i = index">
             <td>{{ tyre.vehicleType }}</td>
             <td>{{ tyre.brand }}</td>
             <td>{{ tyre.tyreModel }}</td>
