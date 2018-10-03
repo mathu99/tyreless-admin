@@ -58,6 +58,10 @@ export class AdminComponent implements OnInit {
       updatingTyres: false,
       passwordUpdateError: '',
     },
+    partnerTable: {
+      key: 'cust_code',
+      reverse: false,
+    },
     historyItem: {},
   };
   config: any = {
@@ -151,6 +155,11 @@ export class AdminComponent implements OnInit {
     });
     this.getPartners();
     this.getInclusions();
+  }
+
+  sort(tableName: string, key:string) {
+    this.properties[tableName].key = key;
+    this.properties[tableName].reverse = !this.properties[tableName].reverse;
   }
 
   onSelectFile(event, tyre) { // called each time file input changes

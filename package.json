@@ -38,6 +38,7 @@
     "moment": "^2.20.1",
     "mongoose": "^5.2.1",
     "morgan": "^1.9.0",
+    "ngx-order-pipe": "^2.0.1",
     "ngx-toastr": "^8.10.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",

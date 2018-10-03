@@ -469,6 +469,14 @@ h5{
   color: rgb(250, 168, 15);
 }
 
+.table-smaller>thead>tr>th{
+  cursor: pointer;
+}
+
+.sort-icon{
+  padding-left:2pt;
+}
+
 .search-icon{
   height: 100pt;
 }

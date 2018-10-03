@@ -544,20 +544,20 @@
           id="partnerTable">
           <thead>
             <tr>
-              <th scope="col">Cust Code</th>
-              <th scope="col">Retailer / Franchise</th>
-              <th scope="col">Registered Name</th>
-              <th scope="col">Province</th>
-              <th scope="col">Suburb</th>
-              <th scope="col">Branch</th>
-              <th scope="col">Partner Zone Email</th>
-              <th scope="col">Sales Email</th>
-              <th scope="col">Status</th>
+              <th scope="col" (click)="sort('partnerTable','cust_code')">Cust Code<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='cust_code'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','retailer')">Retailer / Franchise<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='retailer'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','registered_name')">Registered Name<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='registered_name'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','province')">Province<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='province'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','subrub')">Suburb<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='subrub'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','branch')">Branch<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='branch'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','partner_zone_email')">Partner Zone Email<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='partner_zone_email'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','sales_email')">Sales Email<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='sales_email'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
+              <th scope="col" (click)="sort('partnerTable','status')">Status<i class="fa sort-icon" *ngIf="properties.partnerTable.key =='status'" [ngClass]="{'fa-chevron-up':properties.partnerTable.reverse,'fa-chevron-down':!properties.partnerTable.reverse}"></i></th>
               <th scope="col" colspan="2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let partner of data.partnerList" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner, 'partner')">
+            <tr *ngFor="let partner of data.partnerList | orderBy: properties.partnerTable.key : properties.partnerTable.reverse; let i = index" class="clickable-row" [ngClass]="{'selected-row':partner.selected}" (click)="setActiveRow(partner, 'partner')">
               <td>{{ partner.customerCode }}</td>
               <td>{{ partner.retailerName }}</td>
               <td>{{ partner.registeredName }}</td>
@@ -757,10 +757,10 @@
             </td>
           </tr>
           <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
-            <td colspan="10" class="text-center">No results</td>
+            <td colspan="8" class="text-center">No results</td>
           </tr>
           <tr *ngIf="properties.loadingTyres">
-            <td colspan="10" class="text-center">
+            <td colspan="8" class="text-center">
               <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
             </td>
           </tr>

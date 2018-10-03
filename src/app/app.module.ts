@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LaddaModule } from 'angular2-ladda';
 import { ToastrModule } from 'ngx-toastr';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+import { OrderModule } from 'ngx-order-pipe';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
       { enableTracing: true } // <-- debugging purposes only
     ),
     MultiselectDropdownModule,
+    OrderModule,
     NgbModule.forRoot(),
     LaddaModule.forRoot({
       style: "zoom-out",
