@@ -473,6 +473,15 @@ h5{
   cursor: pointer;
 }
 
+.ngx-pagination{
+  padding-left: 0;
+  text-align: center;
+}
+
+.ngx-pagination .current{
+  background:rgb(107,172,70) !important;
+}
+
 .sort-icon{
   padding-left:2pt;
 }

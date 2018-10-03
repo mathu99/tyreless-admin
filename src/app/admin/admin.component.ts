@@ -61,26 +61,32 @@ export class AdminComponent implements OnInit {
     partnerTable: {
       key: 'customerCode',
       reverse: false,
+      page: 1,
     },
     dealInputTable: {
       key: 'vehicleType',
       reverse: false,
+      page: 1,
     },
     inclusionTable: {
       key: 'description',
       reverse: false,
+      page: 1,
     },
     historyTable: {
       key: 'date',
       reverse: false,
+      page: 1,
     },
     searchTyreTable: {
       key: 'vehicleType',
       reverse: false,
+      page: 1,
     },
     partnerTyreTable: {
       key: 'status',
       reverse: false,
+      page: 1,
     },
     historyItem: {},
   };
