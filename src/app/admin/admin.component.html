@@ -372,7 +372,7 @@
                     </div>
                   </div>
                 </div>
-                <table class="table table-striped text-center table-smaller m-0" id="pzTyresTable">
+                <table class="table table-striped text-center table-smaller" id="pzTyresTable">
                   <thead>
                     <tr>
                       <th scope="col" (click)="sort('partnerTyreTable','status')">Status<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='status'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
@@ -428,10 +428,6 @@
                   </tbody>
                 </table>
                 <pagination-controls (pageChange)="properties.partnerTyreTable.page = $event"></pagination-controls>
-                <div class="update-text pull-right font-italic p-1">
-                  <span *ngIf="properties.pz.updatingTyres">Saving changes...</span>
-                </div>
-                <br>
               </div>
               <div class="tab-pane fade" id="pzServices" role="tabpanel" aria-labelledby="pz-services-tab">
                 <p class="font-italic m-3">Configure wheel alignment and wheel balancing prices (per wheel)</p>
