@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from "@angular/router";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -621,6 +623,7 @@ export class AdminComponent implements OnInit {
         this.getPartnerByEmail(listItem.userRef.username, listItem);      
       });
     }, err => {
+      this.properties.loadingPendingPartnerServices = false;
       this.properties.errorMessage = this.extractError(err);
     });
   }
@@ -629,7 +632,6 @@ export class AdminComponent implements OnInit {
     this.properties.loadingPendingPartnerServices = true;
     this.data.pendingItems = [];
     this.http.get('/api/pendingPartnerServices', this.httpOptions).subscribe(data => {
-      /* TODO - get pending partner tyres */
       let arr:any = data;
       arr.forEach(e => {
         let item = {
@@ -649,16 +651,23 @@ export class AdminComponent implements OnInit {
   }
 
   getPartnerByEmail = (email:String, partner:Object) => {
+    this.properties.loadingPendingPartnerServices = true;
     this.http.get('/api/partnerByEmail?email=' + email, this.httpOptions).subscribe(data => {
       partner['userDetails'] = data;
       this.data.pendingItems.push(partner);
+      this.properties.loadingPendingPartnerServices = false;
     }, err => {
+      this.properties.loadingPendingPartnerServices = false;
       this.properties.errorMessage = this.extractError(err);
     });
   }
 
   approveAllChanges = (pendingItem: any) => {
     pendingItem.approving = true;
+
+    let tasks$ = []; /* All the service call updates needed */
+    let historyItems = []; /* All the history that needs to be added */
+
     if (pendingItem.wheelAlignmentPrice || pendingItem.wheelBalancingPrice) { /* Review service prices */
       let req = {
         services: {
@@ -667,14 +676,11 @@ export class AdminComponent implements OnInit {
         },
         userInfo: pendingItem.userRef,
       }
-      this.http.post('/api/partnerServices?review=true', req, this.httpOptions).subscribe(resp => {
-        pendingItem.approving = false;
-        this.toastr.success('Prices have been approved', 'Prices approved');
-        this.getPendingPartnerServices();
-        this.addToHistory('Prices approved', JSON.stringify(req.services), pendingItem.userRef);
-      }, err => {
-        pendingItem.approving = false;
-        this.properties.errorMessage = this.extractError(err);
+      tasks$.push(this.http.post('/api/partnerServices?review=true', req, this.httpOptions));
+      historyItems.push({
+        type: 'Service',
+        body: JSON.stringify(req.services),
+        ref: pendingItem.userRef,
       });
     }
 
@@ -685,21 +691,30 @@ export class AdminComponent implements OnInit {
           t.obj.livePrice = '' + t.obj.price;
         }
         t.obj.liveInclusion = JSON.parse(JSON.stringify(t.obj.inclusion));
-        this.http.post('/api/partnerTyre?review=true', t.obj, this.httpOptions).subscribe(resp => {
-          pendingItem.approving = false;
-          let historyObject = {
-            'Tyre': t.obj.tyreRef.brand + ' ' + t.obj.tyreRef.tyreModel + ' (' + t.obj.tyreRef.runFlat + ') ' + t.obj.tyreRef.width + '/' + t.obj.tyreRef.profile + '/' + t.obj.tyreRef.size,
-            'Live Price': t.obj.livePrice,
-            'Live Inclusion': t.obj.liveInclusion,
-          }
-          this.addToHistory('Tyre approved', JSON.stringify(historyObject), pendingItem.userRef);
-          this.toastr.success('Changes have been approved', 'Tyre approved');
-        }, err => {
-            pendingItem.approving = false;
-            this.properties.errorMessage = this.extractError(err);
+        tasks$.push(this.http.post('/api/partnerTyre?review=true', t.obj, this.httpOptions));
+        let historyObject = {
+          'Tyre': t.obj.tyreRef.brand + ' ' + t.obj.tyreRef.tyreModel + ' (' + t.obj.tyreRef.runFlat + ') ' + t.obj.tyreRef.width + '/' + t.obj.tyreRef.profile + '/' + t.obj.tyreRef.size,
+          'Live Price': t.obj.livePrice,
+          'Live Inclusion': t.obj.liveInclusion,
+        }
+        historyItems.push({
+          type: 'Tyre',
+          body: JSON.stringify(historyObject),
+          ref: pendingItem.userRef,
         });
       });
     }
+    Observable.forkJoin(...tasks$).subscribe(results => { 
+      pendingItem.approving = false;
+      historyItems.forEach(hi => {
+        this.addToHistory(hi.type + ' price approved', hi.body, hi.ref);
+      });
+      this.toastr.success('New prices now available on TyreLess.co.za', 'Changes approved');
+      this.getPendingPartnerServices();
+    }, err => {
+      pendingItem.approving = false;
+      this.properties.errorMessage = this.extractError(err);
+    });
   }
 
   addToHistory = (description: String, payload: String, affectedId?: String) => {
