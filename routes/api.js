@@ -342,6 +342,19 @@ router.delete('/inclusion', passport.authenticate('jwt', { session: false }), fu
     }
 });
 
+router.get('/allPartnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerService.find().populate('userRef').exec((err, partnerServices) => {
+            if (err) return next(err);
+            else if (partnerServices) res.json(partnerServices)
+            else return res.status(200).send({ success: true, noResults: true, msg: 'No Partner Service found.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.get('/partnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {

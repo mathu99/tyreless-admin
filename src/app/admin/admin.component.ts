@@ -15,6 +15,7 @@ import {
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Buffer } from 'buffer';
+import { ExcelService } from '../../services/excel.service';
 
 @Component({
   selector: 'app-admin',
@@ -157,7 +158,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('historyDetailModal') private historyDetailModal;
   @ViewChild('partnerTyreDetailModal') private partnerTyreDetailModal;
 
-  constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService, private excelService:ExcelService) { }
 
   ngOnInit() {
     if (!localStorage.getItem('jwtToken')) {
@@ -762,6 +763,21 @@ export class AdminComponent implements OnInit {
     this.properties.partnerTyreItem = partnerTyre;
     this.properties.partnerTyreItem.url = 'data:' + _.get(this.properties, 'partnerTyreItem.tyreRef.tyreImage.contentType', '') + ';base64,' + new Buffer(_.get(this.properties, 'partnerTyreItem.tyreRef.tyreImage.data.data', '')).toString('base64');
     this.open(this.partnerTyreDetailModal);
+  }
+
+
+  exportPartnerDeals = () => {
+    Observable.forkJoin(this.http.get('/api/allPartnerServices', this.httpOptions)).subscribe(results => { 
+      let arr: any = results;
+      arr[0].forEach(e => { /* Clean-up services objects */
+        e.userRef = e.userRef.username;
+        delete e['__v'];
+        delete e['_id'];
+      });
+      this.excelService.exportAsExcelFile(arr[0], [], 'partner_deals');
+    }, err => {
+      this.properties.errorMessage = this.extractError(err);
+    });
   }
 
 }

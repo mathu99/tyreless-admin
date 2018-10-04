@@ -227,6 +227,9 @@
             </div>
           </div>
           <div *ngIf="data.title == 'Admin'" class="tab-pane fade" id="v-pills-partner-deals" role="tabpanel" aria-labelledby="v-pills-partner-deals-tab">
+            <div class="w-100 text-right mb-1">
+              <a (click)="exportPartnerDeals()" ngbTooltip="Export Deals to .csv">Export all Deals <i class="fa fa-file-excel-o"></i></a>
+            </div>
             <div class="card" *ngIf="properties.loadingPendingPartnerServices">
               <div class="card-header bg-light">
                 <h6 class="m-1 mt-2 pull-left">Loading...</h6>

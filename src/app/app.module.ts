@@ -14,6 +14,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 
+import { ExcelService } from '../services/excel.service';
+
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 
@@ -71,7 +73,7 @@ const appRoutes: Routes = [
       preventDuplicates: true,
     }),
   ],
-  providers: [],
+  providers: [ExcelService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
