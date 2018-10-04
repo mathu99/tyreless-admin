@@ -78,7 +78,7 @@ export class AdminComponent implements OnInit {
     },
     historyTable: {
       key: 'date',
-      reverse: false,
+      reverse: true,  /* Show most recent history at the top */
       page: 1,
     },
     searchTyreTable: {
@@ -557,15 +557,6 @@ export class AdminComponent implements OnInit {
     if (tyre.inclusionIndex) {
       tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
     }
-    // 
-    // this.properties.pz.updatingTyres = true;
-    // tyre.changesMade = true;
-    // this.http.post('/api/partnerTyre', tyre, this.httpOptions).subscribe(resp => {
-    //   this.properties.pz.updatingTyres = false;
-    // }, err => {
-    //   this.properties.errorMessage = this.extractError(err);
-    //   this.properties.pz.updatingTyres = false;
-    // });
   }
 
   submitPartnerChanges = () => {
@@ -586,6 +577,7 @@ export class AdminComponent implements OnInit {
           this.properties.pz.changesMade = false;
           this.toastr.success('Changes have been submitted for approval', 'Prices submitted');
           this.addToHistory('Tyre submitted for approval', JSON.stringify(historyObject));
+          this.getPartnerTyres(this.userInfo['_id']);
         }, err => {
           this.properties.errorMessage = this.extractError(err);
           this.properties.pz.submittingChanges = false;
@@ -767,14 +759,27 @@ export class AdminComponent implements OnInit {
 
 
   exportPartnerDeals = () => {
-    Observable.forkJoin(this.http.get('/api/allPartnerServices', this.httpOptions)).subscribe(results => { 
+    Observable.forkJoin(this.http.get('/api/allPartnerServices', this.httpOptions), this.http.get('/api/allPartnerTyres', this.httpOptions)).subscribe(results => { 
       let arr: any = results;
       arr[0].forEach(e => { /* Clean-up services objects */
         e.userRef = e.userRef.username;
         delete e['__v'];
         delete e['_id'];
       });
-      this.excelService.exportAsExcelFile(arr[0], [], 'partner_deals');
+      arr[1] = arr[1].map(e => { /* Clean-up tyre objects */
+        delete e.tyreRef['tyreImage'];
+        e = {...e, ...e.tyreRef};
+        e.inclusion = (_.get(e, 'inclusion', '') || '').toString();
+        e.liveInclusion = (_.get(e, 'liveInclusion', '') || '').toString();
+        e.userRef = e.userRef.username;
+        delete e['id'];
+        delete e['_id'];
+        delete e['__v'];
+        delete e['tyreRef'];
+        return e;
+      });
+      
+      this.excelService.exportAsExcelFile(arr[0], arr[1], 'partner_deals');
     }, err => {
       this.properties.errorMessage = this.extractError(err);
     });

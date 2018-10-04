@@ -11,8 +11,9 @@ export class ExcelService {
   constructor() { }
 
   public exportAsExcelFile(services: any[], tyres: any[], excelFileName: string): void {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(services);
-    const workbook: XLSX.WorkBook = { Sheets: { 'Service Prices': worksheet }, SheetNames: ['Service Prices'] };
+    const serviceSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(services);
+    const tyreSheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(tyres);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Service Prices': serviceSheet, 'Tyre Prices': tyreSheet }, SheetNames: ['Service Prices', 'Tyre Prices'] };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     this.saveAsExcelFile(excelBuffer, excelFileName);
   }

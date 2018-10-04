@@ -227,6 +227,19 @@ router.delete('/tyre', passport.authenticate('jwt', { session: false }), functio
     }
 });
 
+router.get('/allPartnerTyres', passport.authenticate('jwt', { session: false }), function (req, res) {
+    var token = getToken(req.headers);
+    if (token) {
+        PartnerTyre.find().populate('userRef').populate('tyreRef').exec((err, partnerTyres) => {
+            if (err) return next(err);
+            else if (partnerTyres) res.json(partnerTyres)
+            else return res.status(200).send({ success: true, noResults: true, msg: 'No Tyres found for this Partner.' });
+        });
+    } else {
+        return res.status(403).send({ success: false, msg: 'Unauthorized.' });
+    }
+});
+
 router.get('/pendingPartnerTyres', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
