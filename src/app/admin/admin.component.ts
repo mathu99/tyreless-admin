@@ -774,6 +774,7 @@ export class AdminComponent implements OnInit {
         e.userRef = e.userRef.username;
         delete e['id'];
         delete e['_id'];
+        delete e['modified'];
         delete e['__v'];
         delete e['tyreRef'];
         return e;

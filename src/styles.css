@@ -1081,7 +1081,8 @@ li::before {
   
   .site-footer{
     text-align:center;
-    margin-top: 50pt;
+    margin-top: 30pt;
+    margin-bottom: 10pt;
   }
 
   .nav-logo-left{

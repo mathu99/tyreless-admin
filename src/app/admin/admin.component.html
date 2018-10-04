@@ -198,7 +198,7 @@
                                 placeholder="Speed Rating" />
                             </div>
                             <div class="col-3 p-1">
-                              <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid">
+                              <button class="btn btn-success p-1 w-100 h-100" type="submit" [ladda]="this.properties.createTyresLoading" [disabled]="!dealInputTyresForm.form.valid || !data.tyre.url">
                                 <span *ngIf="!properties.tyreSelected">Create</span>
                                 <span *ngIf="properties.tyreSelected">Update</span>
                               </button>
