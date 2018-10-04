@@ -772,7 +772,7 @@
   
   <ng-template #historyDetailModal let-c="close" let-d="dismiss">
       <div class="modal-header">
-        <h5 class="modal-title custom">View Detail</h5>
+        <h5 class="modal-title custom">{{ properties.historyItem.description }}</h5>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -783,10 +783,6 @@
             <tr>
               <th scope="col">Date</th>
               <td>{{ properties.historyItem.date }}</td>
-            </tr>
-            <tr>
-              <th scope="col">Action</th>
-              <td>{{ properties.historyItem.description }}</td>
             </tr>
             <tr>
               <th scope="col">Done By</th>

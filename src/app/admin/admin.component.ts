@@ -584,7 +584,7 @@ export class AdminComponent implements OnInit {
           }
           this.properties.pz.changesMade = false;
           this.toastr.success('Changes have been submitted for approval', 'Prices submitted');
-          this.addToHistory('Tyre submitted for approval', JSON.stringify(historyObject), e.userRef);
+          this.addToHistory('Tyre submitted for approval', JSON.stringify(historyObject));
         }, err => {
           this.properties.errorMessage = this.extractError(err);
           this.properties.pz.submittingChanges = false;
