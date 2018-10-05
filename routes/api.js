@@ -285,6 +285,7 @@ router.post('/partnerTyre', passport.authenticate('jwt', { session: false }), fu
             id: (req.body.id) ? req.body.id : uuidv4(),
             userRef: req.body.userRef,
             tyreRef: req.body.tyreRef,
+            partnerRef: req.body.partnerRef,
             inclusion: req.body.inclusion,
         };
         if (req.query && req.query.review == 'true') { /* Review deal */

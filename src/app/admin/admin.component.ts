@@ -169,7 +169,7 @@ export class AdminComponent implements OnInit {
       this.userInfo = data;
       this.data.title = this.userInfo.role === 'admin' ? 'Admin' : 'PartnerZone';
       this.data.activeTab = this.userInfo.role === 'admin' ? 'Manage Partner' : 'My Deals';
-      if (this.userInfo.role !== 'admin') {
+      if (this.userInfo.role !== 'admin') { /* Partner-only */
         this.data.pzPartner.userInfo = this.userInfo;
         this.getPartnerTyres(this.userInfo['_id']);
         this.getPartnerServices(this.userInfo['_id']);
@@ -525,6 +525,7 @@ export class AdminComponent implements OnInit {
     let partnerTyre = {
       userRef: this.userInfo._id,
       tyreRef: tyre._id,
+      partnerRef: this.data.partnerDetails._id,
     }
     this.http.post('/api/partnerTyre', partnerTyre, this.httpOptions).subscribe(resp => {
       this.toastr.success('Don\'t forget to configure tyre price and inclusions', 'Tyre Added', {timeOut:5000});

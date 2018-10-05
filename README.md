@@ -2,6 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
 
+## For Heroku
+`"start": "node ./bin/www"`
+`"postinstall": "ng build"`
+
+## For Dev
+`"start": "ng build && node ./bin/www"`
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
