@@ -230,7 +230,7 @@ router.delete('/tyre', passport.authenticate('jwt', { session: false }), functio
 router.get('/allPartnerTyres', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        PartnerTyre.find().populate('userRef').populate('tyreRef').exec((err, partnerTyres) => {
+        PartnerTyre.find().populate('userRef').populate('tyreRef').populate('partnerRef').exec((err, partnerTyres) => {
             if (err) return next(err);
             else if (partnerTyres) res.json(partnerTyres)
             else return res.status(200).send({ success: true, noResults: true, msg: 'No Tyres found for this Partner.' });
@@ -359,7 +359,8 @@ router.delete('/inclusion', passport.authenticate('jwt', { session: false }), fu
 router.get('/allPartnerServices', passport.authenticate('jwt', { session: false }), function (req, res) {
     var token = getToken(req.headers);
     if (token) {
-        PartnerService.find().populate('userRef').exec((err, partnerServices) => {
+        PartnerService.find().populate('partnerRef').populate('userRef').exec((err, partnerServices) => {
+            console.log(partnerServices)
             if (err) return next(err);
             else if (partnerServices) res.json(partnerServices)
             else return res.status(200).send({ success: true, noResults: true, msg: 'No Partner Service found.' });
@@ -387,6 +388,7 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
     if (token) {
         var partnerService = {
             userRef: req.body.userInfo._id,
+            partnerRef: req.body.partnerRef,
         };
         if (req.query.review != 'true') { /* Submit for review */
             partnerService.wheelAlignmentPrice = req.body.services.wheelAlignmentPrice;

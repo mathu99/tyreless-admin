@@ -3,8 +3,12 @@ var Schema = mongoose.Schema;
 
 var PartnerServiceSchema = new Schema({
   userRef: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  partnerRef: {
+    type: Schema.Types.ObjectId,
+    ref: 'Partner',
   },
   wheelAlignmentPrice: {
     type: String,

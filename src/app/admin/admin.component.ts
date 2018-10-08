@@ -339,6 +339,7 @@ export class AdminComponent implements OnInit {
 
   updatePartnerServices = () => {
     this.properties.pz.updatingService = true;
+    this.data.pzPartner.partnerRef = this.data.partnerDetails._id;
     this.http.post('/api/partnerServices', this.data.pzPartner, this.httpOptions).subscribe(resp => {
       let auditPayload = {
         'Live Wheel Alignment Price': _.get(this.data, 'pzPartner.services.liveWheelAlignmentPrice', ''),
@@ -764,6 +765,8 @@ export class AdminComponent implements OnInit {
       let arr: any = results;
       arr[0].forEach(e => { /* Clean-up services objects */
         e.userRef = e.userRef.username;
+        e.partnerCode = _.get(e, 'partnerRef.customerCode', 'N/A');
+        delete e['partnerRef'];
         delete e['__v'];
         delete e['_id'];
       });
@@ -773,6 +776,8 @@ export class AdminComponent implements OnInit {
         e.inclusion = (_.get(e, 'inclusion', '') || '').toString();
         e.liveInclusion = (_.get(e, 'liveInclusion', '') || '').toString();
         e.userRef = e.userRef.username;
+        e.partnerCode = _.get(e, 'partnerRef.customerCode', 'N/A');
+        delete e['partnerRef'];
         delete e['id'];
         delete e['_id'];
         delete e['modified'];
