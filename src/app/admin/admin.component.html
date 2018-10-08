@@ -386,6 +386,7 @@
                       <th scope="col" (click)="sort('partnerTyreTable','profile')">Tyre Profile<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='profile'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
                       <th scope="col" (click)="sort('partnerTyreTable','size')">Wheel Size<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='size'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
                       <th scope="col" (click)="sort('partnerTyreTable','speedRating')">Speed Rating<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='speedRating'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
+                      <th scope="col" (click)="sort('partnerTyreTable','runFlat')">Type<i class="fa sort-icon" *ngIf="properties.partnerTyreTable.key =='runFlat'" [ngClass]="{'fa-chevron-up':properties.partnerTyreTable.reverse,'fa-chevron-down':!properties.partnerTyreTable.reverse}"></i></th>
                       <th scope="col">Inclusions</th>
                       <th scope="col">Price</th>
                       <th scope="col"></th>
@@ -401,6 +402,7 @@
                       <td>{{ tyre.tyreRef.profile }}</td>
                       <td>{{ tyre.tyreRef.size }}</td>
                       <td>{{ tyre.tyreRef.speedRating }}</td>
+                      <td>{{ tyre.tyreRef.runFlat }}</td>
                       <td>
                         <ss-multiselect-dropdown [options]="inclusionOptions" [texts]="inclusionTexts" [settings]="dropdownSettings" [(ngModel)]="tyre.inclusionIndex"
                           (ngModelChange)="updateChangesMade(true, tyre)"></ss-multiselect-dropdown>
@@ -740,6 +742,7 @@
             <th scope="col" (click)="sort('searchTyreTable','profile')">Tyre Profile<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='profile'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
             <th scope="col" (click)="sort('searchTyreTable','size')">Wheel Size<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='size'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
             <th scope="col" (click)="sort('searchTyreTable','speedRating')">Speed Rating<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='speedRating'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
+            <th scope="col" (click)="sort('searchTyreTable','runFlat')">Type<i class="fa sort-icon" *ngIf="properties.searchTyreTable.key =='runFlat'" [ngClass]="{'fa-chevron-up':properties.searchTyreTable.reverse,'fa-chevron-down':!properties.searchTyreTable.reverse}"></i></th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -752,6 +755,7 @@
             <td>{{ tyre.profile }}</td>
             <td>{{ tyre.size }}</td>
             <td>{{ tyre.speedRating }}</td>
+            <td>{{ tyre.runFlat }}</td>
             <td>
               <img *ngIf="tyre.adding" class="row-spinner" src="../../assets/spinner.gif" />
               <i *ngIf="!tyre.deleting" (click)="addTyreToPartner(tyre); d('Add Tyre')" class="suspend-icon fa fa-plus-circle" placement="top"
@@ -759,10 +763,10 @@
             </td>
           </tr>
           <tr *ngIf="!properties.loadingTyres && (!data.tyreList || data.tyreList.length == 0)">
-            <td colspan="8" class="text-center">No results</td>
+            <td colspan="9" class="text-center">No results</td>
           </tr>
           <tr *ngIf="properties.loadingTyres">
-            <td colspan="8" class="text-center">
+            <td colspan="9" class="text-center">
               <img class="row-spinner" src="../../assets/spinner.gif" /> Loading...
             </td>
           </tr>
