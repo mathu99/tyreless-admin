@@ -360,7 +360,6 @@ router.get('/allPartnerServices', passport.authenticate('jwt', { session: false 
     var token = getToken(req.headers);
     if (token) {
         PartnerService.find().populate('partnerRef').populate('userRef').exec((err, partnerServices) => {
-            console.log(partnerServices)
             if (err) return next(err);
             else if (partnerServices) res.json(partnerServices)
             else return res.status(200).send({ success: true, noResults: true, msg: 'No Partner Service found.' });
@@ -388,8 +387,10 @@ router.post('/partnerServices', passport.authenticate('jwt', { session: false })
     if (token) {
         var partnerService = {
             userRef: req.body.userInfo._id,
-            partnerRef: req.body.partnerRef,
         };
+        if (req.body.partnerRef) {
+            partnerService.partnerRef = req.body.partnerRef;
+        }
         if (req.query.review != 'true') { /* Submit for review */
             partnerService.wheelAlignmentPrice = req.body.services.wheelAlignmentPrice;
             partnerService.wheelBalancingPrice = req.body.services.wheelBalancingPrice;
