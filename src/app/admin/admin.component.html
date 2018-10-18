@@ -418,7 +418,7 @@
                       </td>
                       <td>
                         <img *ngIf="tyre.deleting" class="row-spinner" src="../../assets/spinner.gif" />
-                        <button *ngIf="!tyre.deleting" (click)="removePartnerTyre(tyre, $event)" type="button" class="close delete-row" placement="top"
+                        <button *ngIf="!tyre.deleting" (click)="openConfirmDeleteModalModal(tyre, $event)" type="button" class="close delete-row" placement="top"
                           ngbTooltip="Delete">&times;</button>
                       </td>
                     </tr>
@@ -747,7 +747,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let tyre of data.tyreList | filter : properties.tyreSearch | orderBy: properties.searchTyreTable.key : properties.searchTyreTable.reverse :'case-insensitive' | paginate: { itemsPerPage: 10, currentPage: properties.searchTyreTable.page }; let i = index">
+          <tr *ngFor="let tyre of data.tyreList | filter : properties.tyreSearch | orderBy: properties.searchTyreTable.key : properties.searchTyreTable.reverse :'case-insensitive' | paginate: { itemsPerPage: 10, currentPage: properties.searchTyreTable.page, id: 'searchTyreTableCtrl' }; let i = index">
             <td>{{ tyre.vehicleType }}</td>
             <td>{{ tyre.brand }}</td>
             <td>{{ tyre.tyreModel }}</td>
@@ -772,7 +772,7 @@
           </tr>
         </tbody>
       </table>
-      <pagination-controls style="font-size: 9pt" (pageChange)="properties.searchTyreTable.page = $event"></pagination-controls>
+      <pagination-controls id="searchTyreTableCtrl" style="font-size: 9pt" (pageChange)="properties.searchTyreTable.page = $event"></pagination-controls>
     </div>
   </ng-template>
 
@@ -871,3 +871,20 @@
           </div>
         </div>
       </ng-template>
+
+      <ng-template #confirmDeleteModal let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h5 class="modal-title custom">Delete Tyre</h5>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you really want to delete this tyre?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="c('Delete click'); removePartnerTyre(properties.tyreToDelete)">Delete</button>
+        </div>
+      </ng-template>
+  

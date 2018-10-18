@@ -157,6 +157,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('partnerCreationModal') private partnerCreationModal;
   @ViewChild('historyDetailModal') private historyDetailModal;
   @ViewChild('partnerTyreDetailModal') private partnerTyreDetailModal;
+  @ViewChild('confirmDeleteModal') private confirmDeleteModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService, private excelService:ExcelService) { }
 
@@ -256,6 +257,12 @@ export class AdminComponent implements OnInit {
 
   openErrorModal = ():void => {
     this.open(this.errorModal);
+  }
+
+  openConfirmDeleteModalModal = (tyre: any, $event: any):void => {
+    $event.stopPropagation();
+    this.properties.tyreToDelete = tyre;
+    this.open(this.confirmDeleteModal);
   }
 
   open(content, options?:any) {
@@ -436,8 +443,10 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  removeTyre = (tyre: any, $event: any) => {
-    $event.stopPropagation();
+  removeTyre = (tyre: any, $event?: any) => {
+    if ($event) {
+      $event.stopPropagation();
+    }
     tyre.deleting = true;
     this.data.tyre = {};
     tyre.selected = false;
