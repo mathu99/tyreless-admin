@@ -562,12 +562,21 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  updateChangesMade = (changesMade:boolean, tyre:any) => {
+  updateChangesMade = (changesMade:boolean, tyre:any, $event?:any) => {
     this.properties.pz.changesMade = changesMade;
     tyre.changesMade = changesMade;
+    tyre.price = parseFloat('' + tyre.price).toFixed(2);
     if (tyre.inclusionIndex) {
       tyre.inclusion = tyre.inclusionIndex.map(e => this.inclusionOptions[e].name);
     }
+  }
+
+  formatNumber = (object:any, property:any) =>  {
+    object[property] = parseFloat('' + object[property]).toFixed(2);
+  }
+
+  keypress() {
+    this.properties.pz.changesMade = true;
   }
 
   submitPartnerChanges = () => {

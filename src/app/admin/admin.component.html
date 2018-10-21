@@ -412,7 +412,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">R</span>
                           </div>
-                          <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (change)="updateChangesMade(true, tyre)" [(ngModel)]="tyre.price"
+                          <input type="text" id="partnerTyrePrice" name="partnerTyrePrice" (keypress)="keypress()" (change)="updateChangesMade(true, tyre)" [(ngModel)]="tyre.price"
                             class="form-control p-2" placeholder="" aria-label="Price per Tyre" aria-describedby="basic-addon1">
                         </div>
                       </td>
@@ -467,7 +467,7 @@
                             <span class="input-group-text" id="basic-addon1">R</span>
                           </div>
                           <input type="text" id="partnerServicesUpdateWheelAlignment" name="partnerServicesUpdateWheelAlignment" [(ngModel)]="data.pzPartner.services.wheelAlignmentPrice"
-                            class="form-control" placeholder="" aria-label="Proposed Wheel Alignment Price" aria-describedby="basic-addon1"
+                            (change)="formatNumber(data.pzPartner.services, 'wheelAlignmentPrice')" class="form-control" placeholder="" aria-label="Proposed Wheel Alignment Price" aria-describedby="basic-addon1"
                             required>
                         </div>
                       </div>
@@ -492,7 +492,7 @@
                             <span class="input-group-text" id="basic-addon1">R</span>
                           </div>
                           <input type="text" id="partnerServicesUpdateWheelBalancing" name="partnerServicesUpdateWheelBalancing" [(ngModel)]="data.pzPartner.services.wheelBalancingPrice"
-                            class="form-control" placeholder="" aria-label="Proposed Wheel Balancing Price" aria-describedby="basic-addon1"
+                            (change)="formatNumber(data.pzPartner.services, 'wheelBalancingPrice')" class="form-control" placeholder="" aria-label="Proposed Wheel Balancing Price" aria-describedby="basic-addon1"
                             required>
                         </div>
                       </div>
