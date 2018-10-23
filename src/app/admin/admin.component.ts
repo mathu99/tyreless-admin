@@ -128,6 +128,15 @@ export class AdminComponent implements OnInit {
     },{
       name: 'Regular',
       value: 'Regular',
+    }],
+    vehicleTypeList: [{
+      value: 'Car',
+    },{
+      value: '4x4 / SUV',
+    },{
+      value: 'Bike',
+    },{
+      value: 'Commercial',
     }]
   };
   userInfo: any = {};

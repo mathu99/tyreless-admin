@@ -152,8 +152,12 @@
                       <form (ngSubmit)="tyreUpdate()" #dealInputTyresForm="ngForm">
                           <div class="row m-1">
                             <div class="col-6 p-1">
-                              <input type="text" id="dealInputTyresVehicleType" name="dealInputTyresVehicleType" class="form-control" [(ngModel)]="data.tyre.vehicleType"
-                                placeholder="Vehicle Type" required/>
+                                <select name="dealInputTyresVehicleType" [(ngModel)]="data.tyre.vehicleType" class="custom-select w-100" required>
+                                  <option [ngValue]="undefined" disabled>Vehicle Type</option>
+                                  <option *ngFor="let vehicle of config.vehicleTypeList" [ngValue]="vehicle.value">
+                                    {{ vehicle.value }}
+                                  </option>
+                                </select>
                             </div>
                             <div class="col-6 p-1">
                               <input type="text" id="dealInputTyresBrand" name="dealInputTyresBrand" class="form-control" [(ngModel)]="data.tyre.brand"
@@ -163,7 +167,7 @@
                           <div class="row m-1">
                             <div class="col-6 p-1">
                                 <select name="dealInputTyresRunFlat" [(ngModel)]="data.tyre.runFlat" class="custom-select w-100" required>
-                                  <option [ngValue]="undefined" disabled>Select Tyre Type</option>
+                                  <option [ngValue]="undefined" disabled>Tyre Type</option>
                                   <option *ngFor="let type of config.tyreOptionList" [ngValue]="type.value">
                                     {{ type.name }}
                                   </option>
