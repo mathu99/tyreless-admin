@@ -170,6 +170,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('historyDetailModal') private historyDetailModal;
   @ViewChild('partnerTyreDetailModal') private partnerTyreDetailModal;
   @ViewChild('confirmDeleteModal') private confirmDeleteModal;
+  @ViewChild('confirmDeletePartnerModal') private confirmDeletePartnerModal;
 
   constructor(private http: HttpClient, private router: Router, private modalService: NgbModal, private toastr: ToastrService, private excelService:ExcelService) { }
 
@@ -275,6 +276,12 @@ export class AdminComponent implements OnInit {
     $event.stopPropagation();
     this.properties.tyreToDelete = tyre;
     this.open(this.confirmDeleteModal);
+  }
+
+  openConfirmDeletePartnerModal = (tyre: any, $event: any):void => {
+    $event.stopPropagation();
+    this.properties.partnerToDelete = tyre;
+    this.open(this.confirmDeletePartnerModal);
   }
 
   open(content, options?:any) {
@@ -393,8 +400,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  removePartner = (partner: any, $event: any) => {
-    $event.stopPropagation();
+  removePartner = (partner: any) => {
     partner.deleting = true;
     this.data.partner = {};
     partner.selected = false;
@@ -420,6 +426,7 @@ export class AdminComponent implements OnInit {
     let req = JSON.parse(JSON.stringify(this.data.tyre));
     req['url'] = null;
     this.http.post('/api/tyre', req, this.httpOptions).subscribe(resp => {
+      document.getElementById("dealInputTyresTyreImage")['value'] = "";
       this.getTyres();
       this.data.tyre = {};
       this.properties.createTyresLoading = false;

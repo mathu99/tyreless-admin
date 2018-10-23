@@ -580,7 +580,7 @@
               </td>
               <td>
                 <img *ngIf="partner.deleting" class="row-spinner" src="../../assets/spinner.gif" />
-                <button *ngIf="!partner.deleting" (click)="removePartner(partner, $event)" type="button" class="close delete-row" placement="top"
+                <button *ngIf="!partner.deleting" (click)="openConfirmDeletePartnerModal(partner, $event)" type="button" class="close delete-row" placement="top"
                   ngbTooltip="Delete">&times;</button>
               </td>
             </tr>
@@ -889,6 +889,22 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancel</button>
           <button type="button" class="btn btn-danger" (click)="c('Delete click'); removePartnerTyre(properties.tyreToDelete)">Delete</button>
+        </div>
+      </ng-template>
+
+      <ng-template #confirmDeletePartnerModal let-c="close" let-d="dismiss">
+        <div class="modal-header">
+          <h5 class="modal-title custom">Delete Partner</h5>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Do you really want to delete this partner?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="c('Close click')">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="c('Delete click'); removePartner(properties.partnerToDelete)">Delete</button>
         </div>
       </ng-template>
   
