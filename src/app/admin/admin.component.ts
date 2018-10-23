@@ -533,10 +533,14 @@ export class AdminComponent implements OnInit {
 
   getPartnerTyres = (userRef: String) => {
     this.properties.pz.loadingTyres = true;
+    this.properties.pz.changesMade = false;
     this.http.get('/api/partnerTyre?userRef=' + userRef, this.httpOptions).subscribe(data => {
       this.properties.pz.loadingTyres = false;
       this.data.pzPartner.tyreList = data;
       this.data.pzPartner.tyreList.forEach(e => {
+        if (e.changesMade) {
+          this.properties.pz.changesMade = true;
+        }
         if (e.inclusion) {
           e.inclusionIndex = e.inclusion.map(inc => {
             let item = this.data.inclusionList.filter(i => i.description === inc)[0];
