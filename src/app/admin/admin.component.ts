@@ -98,23 +98,26 @@ export class AdminComponent implements OnInit {
       name: 'Best Drive',
       value: 'Best Drive.jpg',
     }, {
+      name: 'Car Tyre City',
+      value: 'Car Tyre City.jpg',
+    }, {
       name: 'Dunlop Zone',
       value: 'Dunlop Zone.jpg',
-    },{
+    }, {
       name: 'Hi-Q',
       value: 'Hi-Q.jpg',
     }, {
       name: 'Speedy',
       value: 'Speedy.jpg',
-    },{
+    }, {
       name: 'Supaquick',
       value: 'Supaquick.jpg',
     }, {
       name: 'Tiger Wheel & Tyre',
       value: 'Tiger Wheel & Tyre.jpg',
-    },{
+    }, {
       name: 'Tyre Boss',
-      value: 'TyreBoss.jpg',
+      value: 'Tyre Boss.jpg',
     }, {
       name: 'Tyremart',
       value: 'Tyremart.jpg',
