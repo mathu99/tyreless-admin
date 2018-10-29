@@ -107,11 +107,17 @@ export class AdminComponent implements OnInit {
       name: 'Hi-Q',
       value: 'Hi-Q.jpg',
     }, {
+      name: 'Lombard Tyres',
+      value: 'Lombard.jpg',
+    }, {
       name: 'Speedy',
       value: 'Speedy.jpg',
     }, {
       name: 'Supaquick',
       value: 'Supaquick.jpg',
+    }, {
+      name: 'Tempo Tyres',
+      value: 'TempoTyres.jpg',
     }, {
       name: 'Tiger Wheel & Tyre',
       value: 'Tiger Wheel & Tyre.jpg',
@@ -124,6 +130,9 @@ export class AdminComponent implements OnInit {
     }, {
       name: 'Tyres & More',
       value: 'Tyres & More.jpg',
+    }, {
+      name: 'Xpert Wheels & Tyres',
+      value: 'Xpert.jpg',
     }],
     tyreOptionList: [{
       name: 'Run Flat',
