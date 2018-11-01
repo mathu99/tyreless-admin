@@ -116,9 +116,6 @@ export class AdminComponent implements OnInit {
       name: 'Supaquick',
       value: 'Supaquick.jpg',
     }, {
-      name: 'Tempo Tyres',
-      value: 'TempoTyres.jpg',
-    }, {
       name: 'Tiger Wheel & Tyre',
       value: 'Tiger Wheel & Tyre.jpg',
     }, {
